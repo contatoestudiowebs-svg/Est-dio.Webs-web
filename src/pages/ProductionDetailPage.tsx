@@ -11,12 +11,15 @@ import {
   Check,
   ImagePlus,
   Sparkles,
-  FileText
+  FileText,
+  Star,
+  Trophy
 } from 'lucide-react';
 import { getProductionBySlug, PRODUCTIONS_DATA } from '../data/productions';
 import { useProductionCover } from '../utils/imageManager';
 import { useManager } from '../utils/managerAuth';
 import { ImageUploadModal } from '../components/ImageUploadModal';
+import { AwardedWebsModal } from '../components/AwardedWebsModal';
 import { WebCard } from '../components/WebCard';
 import { SEOHead } from '../components/SEOHead';
 
@@ -29,6 +32,7 @@ export function ProductionDetailPage({ slug, onNavigate }: ProductionDetailPageP
   const { isManager } = useManager();
   const production = getProductionBySlug(slug);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [isAwardsModalOpen, setIsAwardsModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
   if (!production) {
@@ -269,6 +273,39 @@ export function ProductionDetailPage({ slug, onNavigate }: ProductionDetailPageP
               </button>
             </div>
 
+            {/* Award Star Information Badge */}
+            {production.slug === 'um-novo-rei-1-temporada' && (
+              <div
+                onClick={() => setIsAwardsModalOpen(true)}
+                className="mb-6 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-yellow-400/20 to-amber-500/10 border-2 border-amber-400/80 hover:border-amber-500 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group flex items-center justify-between gap-4"
+                title="Clique na estrela para ver todas as webs premiadas"
+              >
+                <div className="flex items-center gap-3.5">
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-amber-400 to-yellow-500 text-slate-950 flex items-center justify-center shrink-0 shadow-sm group-hover:scale-110 group-hover:rotate-6 transition-transform">
+                    <Star className="w-6 h-6 fill-slate-950 text-slate-950" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-amber-900 bg-amber-100/90 px-2 py-0.5 rounded border border-amber-300">
+                        PREMIAÇÃO OFICIAL
+                      </span>
+                      <span className="text-[11px] text-amber-800 font-bold hidden sm:inline">
+                        ★ Clique para ver todas as webs premiadas
+                      </span>
+                    </div>
+                    <div className="text-sm sm:text-base font-black text-slate-950 font-brand leading-tight">
+                      Vencedor de Melhor Série e Melhor Personagem de Série (Emma) no TFA 2023
+                    </div>
+                  </div>
+                </div>
+
+                <div className="shrink-0 flex items-center gap-1.5 text-xs font-black text-amber-900 group-hover:text-amber-950 group-hover:translate-x-1 transition-transform">
+                  <span className="hidden sm:inline">Ver premiadas</span>
+                  <ChevronRight className="w-4 h-4 text-amber-700" />
+                </div>
+              </div>
+            )}
+
             {/* Synopsis */}
             <div className="mb-8">
               <h3 className="text-xs font-extrabold uppercase tracking-widest text-slate-500 mb-2.5">
@@ -394,6 +431,13 @@ export function ProductionDetailPage({ slug, onNavigate }: ProductionDetailPageP
           </div>
         </section>
       )}
+
+      <AwardedWebsModal
+        isOpen={isAwardsModalOpen}
+        onClose={() => setIsAwardsModalOpen(false)}
+        onNavigate={onNavigate}
+        currentSlug={production.slug}
+      />
 
       {isManager && (
         <ImageUploadModal
