@@ -159,6 +159,16 @@ export function Footer({ onNavigate }: FooterProps) {
                 </button>
               </li>
               <li>
+                <a
+                  href="mailto:contatoestudiowebs@gmail.com"
+                  className="hover:text-white transition flex items-center gap-1.5 text-slate-300 font-semibold text-[11px] pt-1"
+                  title="Enviar e-mail para contatoestudiowebs@gmail.com"
+                >
+                  <Mail className="w-3 h-3 text-[#D80050]" />
+                  <span>contatoestudiowebs@gmail.com</span>
+                </a>
+              </li>
+              <li>
                 <span className="text-slate-400 text-[11px] block mt-4">
                   Referência editorial:
                   <br />
