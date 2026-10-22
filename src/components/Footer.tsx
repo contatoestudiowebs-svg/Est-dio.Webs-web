@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tv, Heart, ShieldCheck, Film, BookOpen, Send, Mail, Lock } from 'lucide-react';
+import { Tv, Heart, ShieldCheck, Film, BookOpen, Send, Mail, Lock, Newspaper } from 'lucide-react';
 import { AUTHORS_DATA } from '../data/authors';
 import { EstudioWebsLogo } from './EstudioWebsLogo';
 import { useManager } from '../utils/managerAuth';
@@ -138,6 +138,15 @@ export function Footer({ onNavigate }: FooterProps) {
                   className="hover:text-[#D80050] transition"
                 >
                   Fale Conosco
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onNavigate('/sala-de-imprensa')}
+                  className="hover:text-[#FFDD00] transition flex items-center gap-1.5 text-slate-200"
+                >
+                  <Newspaper className="w-3 h-3 text-[#FFDD00]" />
+                  <span>Sala de Imprensa</span>
                 </button>
               </li>
               <li>

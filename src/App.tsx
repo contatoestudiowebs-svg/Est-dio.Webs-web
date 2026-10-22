@@ -15,6 +15,7 @@ import { SubmitProjectPage } from './pages/SubmitProjectPage';
 import { ConfiguracoesPage } from './pages/ConfiguracoesPage';
 import { CommunityPage } from './pages/CommunityPage';
 import { CommunityStoryDetailPage } from './pages/CommunityStoryDetailPage';
+import { SalaDeImprensaPage } from './pages/SalaDeImprensaPage';
 import { ProductionCategory } from './types';
 import { ManagerProvider, useManager } from './utils/managerAuth';
 import { ManagerModal, ManagerFloatingBar } from './components/ManagerModal';
@@ -295,7 +296,12 @@ function AppContent() {
       return <SubmitProjectPage />;
     }
 
-    // 11. Configurations & Covers: /configuracoes & /configuracao
+    // 11. Sala de Imprensa: /sala-de-imprensa, /imprensa, /press
+    if (pathOnly === '/sala-de-imprensa' || pathOnly === '/imprensa' || pathOnly === '/press') {
+      return <SalaDeImprensaPage onNavigate={navigate} />;
+    }
+
+    // 12. Configurations & Covers: /configuracoes & /configuracao
     if (pathOnly === '/configuracoes' || pathOnly === '/configuracao') {
       return <ConfiguracoesPage onNavigate={navigate} />;
     }
