@@ -61,7 +61,7 @@ export function SalaDeImprensaPage({ onNavigate }: SalaDeImprensaPageProps) {
             </span>
             <span className="h-1 w-8 bg-black/40 rounded-full hidden sm:inline-block" />
             <span className="text-[11px] sm:text-xs font-bold text-black/60 hidden sm:inline-block">
-              RELEASES & NOTÍCIAS OFICIAIS
+              NOTÍCIAS E BASTIDORES
             </span>
           </div>
 
@@ -71,7 +71,7 @@ export function SalaDeImprensaPage({ onNavigate }: SalaDeImprensaPageProps) {
           </h1>
 
           <p className="mt-4 sm:mt-6 text-sm sm:text-base lg:text-lg font-medium text-black/80 max-w-2xl leading-relaxed">
-            Canal oficial para jornalistas, pesquisadores de mídia e o público da teledramaturgia virtual acompanhar comunicados, lançamentos e diretrizes artísticas do Estúdio Webs.
+            Espaço dedicado às notícias, novidades e aos bastidores das produções da Estúdio Webs. Acompanhe pré-estreias e destaques das nossas produções.
           </p>
         </div>
       </section>
