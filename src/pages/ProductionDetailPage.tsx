@@ -20,6 +20,7 @@ import { useProductionCover } from '../utils/imageManager';
 import { useManager } from '../utils/managerAuth';
 import { ImageUploadModal } from '../components/ImageUploadModal';
 import { AwardedWebsModal } from '../components/AwardedWebsModal';
+import { getProductionAward } from '../data/awardsData';
 import { WebCard } from '../components/WebCard';
 import { SEOHead } from '../components/SEOHead';
 
@@ -57,6 +58,7 @@ export function ProductionDetailPage({ slug, onNavigate }: ProductionDetailPageP
   const unitLabelSingular = isSerie ? 'Episódio' : 'Capítulo';
   const unitLabelPlural = production.unitType; // 'episódios' or 'capítulos'
   const firstEpisodeSlug = production.episodes[0]?.slug || (isSerie ? 'episodio-01' : 'capitulo-01');
+  const awardInfo = getProductionAward(production.slug);
 
   // Related works: same author or same category
   const relatedWorks = PRODUCTIONS_DATA.filter(
@@ -274,7 +276,7 @@ export function ProductionDetailPage({ slug, onNavigate }: ProductionDetailPageP
             </div>
 
             {/* Award Star Information Badge */}
-            {production.slug === 'um-novo-rei-1-temporada' && (
+            {awardInfo && (
               <div
                 onClick={() => setIsAwardsModalOpen(true)}
                 className="mb-6 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-yellow-400/20 to-amber-500/10 border-2 border-amber-400/80 hover:border-amber-500 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group flex items-center justify-between gap-4"
@@ -287,14 +289,14 @@ export function ProductionDetailPage({ slug, onNavigate }: ProductionDetailPageP
                   <div>
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-[10px] font-black uppercase tracking-widest text-amber-900 bg-amber-100/90 px-2 py-0.5 rounded border border-amber-300">
-                        PREMIAÇÃO OFICIAL
+                        {awardInfo.festivalOrAward}
                       </span>
                       <span className="text-[11px] text-amber-800 font-bold hidden sm:inline">
                         ★ Clique para ver todas as webs premiadas
                       </span>
                     </div>
-                    <div className="text-sm sm:text-base font-black text-slate-950 font-brand leading-tight">
-                      Vencedor de Melhor Série e Melhor Personagem de Série (Emma) no TFA 2023
+                    <div className="text-sm sm:text-base font-black text-slate-900 font-brand leading-tight">
+                      {awardInfo.awardText}
                     </div>
                   </div>
                 </div>

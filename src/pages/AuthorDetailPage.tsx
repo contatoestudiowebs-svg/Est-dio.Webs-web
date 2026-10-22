@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { getAuthorBySlug, getAuthorWorksCount } from '../data/authors';
 import { getProductionsByAuthor } from '../data/productions';
 import { WebCard } from '../components/WebCard';
-import { ArrowLeft, BookOpen, Film, User, Layers } from 'lucide-react';
+import { ArrowLeft, BookOpen, Film, User, Layers, Star, ChevronRight } from 'lucide-react';
 import { ProductionCategory } from '../types';
 import { SEOHead } from '../components/SEOHead';
+import { AwardedWebsModal } from '../components/AwardedWebsModal';
+import { getAuthorAward } from '../data/awardsData';
 
 interface AuthorDetailPageProps {
   slug: string;
@@ -14,6 +16,7 @@ interface AuthorDetailPageProps {
 export function AuthorDetailPage({ slug, onNavigate }: AuthorDetailPageProps) {
   const author = getAuthorBySlug(slug);
   const [categoryFilter, setCategoryFilter] = useState<'TODAS' | ProductionCategory>('TODAS');
+  const [isAwardsModalOpen, setIsAwardsModalOpen] = useState(false);
 
   if (!author) {
     return (
@@ -34,6 +37,7 @@ export function AuthorDetailPage({ slug, onNavigate }: AuthorDetailPageProps) {
 
   const allWorks = getProductionsByAuthor(author.name);
   const counts = getAuthorWorksCount(author.name);
+  const authorAward = getAuthorAward(author.slug);
 
   const filteredWorks =
     categoryFilter === 'TODAS'
@@ -127,6 +131,39 @@ export function AuthorDetailPage({ slug, onNavigate }: AuthorDetailPageProps) {
                 <strong className="text-slate-900">{counts.series}</strong> web séries
               </span>
             </div>
+
+            {/* Author Award Star Badge */}
+            {authorAward && (
+              <div
+                onClick={() => setIsAwardsModalOpen(true)}
+                className="mt-5 p-4 rounded-xl bg-gradient-to-r from-amber-500/15 via-yellow-400/20 to-amber-500/10 border-2 border-amber-400/80 hover:border-amber-500 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group flex items-center justify-between gap-4"
+                title="Clique na estrela para ver todas as produções premiadas"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-yellow-500 text-slate-950 flex items-center justify-center shrink-0 shadow-sm group-hover:scale-110 group-hover:rotate-6 transition-transform">
+                    <Star className="w-5 h-5 fill-slate-950 text-slate-950" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-amber-900 bg-amber-100/90 px-2 py-0.5 rounded border border-amber-300">
+                        {authorAward.festivalOrAward}
+                      </span>
+                      <span className="text-[11px] text-amber-800 font-bold hidden sm:inline">
+                        ★ Clique para ver as webs premiadas
+                      </span>
+                    </div>
+                    <div className="text-xs sm:text-sm font-black text-slate-900 font-brand leading-tight">
+                      {authorAward.awardText}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="shrink-0 flex items-center gap-1 text-xs font-black text-amber-900 group-hover:text-amber-950 group-hover:translate-x-1 transition-transform">
+                  <span className="hidden sm:inline">Ver premiadas</span>
+                  <ChevronRight className="w-4 h-4 text-amber-700" />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -187,6 +224,12 @@ export function AuthorDetailPage({ slug, onNavigate }: AuthorDetailPageProps) {
           ))}
         </div>
       </section>
+
+      <AwardedWebsModal
+        isOpen={isAwardsModalOpen}
+        onClose={() => setIsAwardsModalOpen(false)}
+        onNavigate={onNavigate}
+      />
     </div>
   );
 }
