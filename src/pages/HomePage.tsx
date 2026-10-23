@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { HeroDestaque } from '../components/HeroDestaque';
+import { FeaturedProgrammingCarousel } from '../components/FeaturedProgrammingCarousel';
 import { WebCard } from '../components/WebCard';
 import { PRODUCTIONS_DATA, getFeaturedProductions } from '../data/productions';
 import { AUTHORS_DATA, getAuthorWorksCount } from '../data/authors';
@@ -22,8 +22,6 @@ interface HomePageProps {
 
 export function HomePage({ onNavigate }: HomePageProps) {
   const [activeTab, setActiveTab] = useState<'novelas' | 'series'>('novelas');
-
-  const featuredProductions = getFeaturedProductions();
 
   const novelas = PRODUCTIONS_DATA.filter((p) => p.category === 'Web novela');
   const series = PRODUCTIONS_DATA.filter((p) => p.category === 'Web série');
@@ -50,8 +48,8 @@ export function HomePage({ onNavigate }: HomePageProps) {
         }}
       />
 
-      {/* Hero Showcase with Featured Productions */}
-      <HeroDestaque productions={featuredProductions} onNavigate={onNavigate} />
+      {/* Featured Programming Horizon Carousel */}
+      <FeaturedProgrammingCarousel onNavigate={onNavigate} />
 
       {/* Broadcaster Metrics / Highlights Bar */}
       <section className="bg-white border-b border-slate-200 py-8 shadow-xs">
