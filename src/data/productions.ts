@@ -10,6 +10,7 @@ import { SUPLICIO_EPISODES } from './suplicioData';
 import { PANDORUM_EPISODES } from './pandorumData';
 import { PONTO_FRACO_EPISODES } from './pontoFracoData';
 import { SENA_EPISODES } from './senaData';
+import { CAMINHO_AO_PODER_EPISODES } from './caminhoAoPoderData';
 
 function generateUnits(count: number, unitType: UnitType): ChapterEpisode[] {
   const prefix = unitType === 'capítulos' ? 'Capítulo' : 'Episódio';
@@ -56,7 +57,7 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     highlightOrder: 2,
     coverImage: 'https://static.wixstatic.com/media/cbfc82_294c7c2efa1c48458e17b151396cb510~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_294c7c2efa1c48458e17b151396cb510~mv2.png',
     synopsis: 'Em meio à corrida presidencial dos Estados Unidos, uma mulher brilhante e ambiciosa, Evelyn Harper, é candidata à presidência, prometendo uma nova era de liderança e transformação para o país. No entanto, por trás de sua candidatura, existe uma trama complexa de intrigas e traições, orquestrada por sua própria assessora, Melissa Carter, que usa Evelyn para alcançar seus próprios objetivos de poder. A história se desdobra através de segredos, alianças e disputas, culminando em uma batalha de inteligência e estratégia para manter a verdade a salvo e garantir que os vilões paguem pelo que fizeram.',
-    episodes: generateUnits(10, 'episódios')
+    episodes: CAMINHO_AO_PODER_EPISODES
   },
   {
     id: 'cold-case-brasil',

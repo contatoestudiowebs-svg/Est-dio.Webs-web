@@ -12,6 +12,7 @@ export interface ChapterEpisode {
   summary?: string;
   content?: string;
   pdfPages?: string[];
+  pdfUrl?: string;
   videoUrl?: string;
 }
 

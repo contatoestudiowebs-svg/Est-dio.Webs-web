@@ -96,6 +96,22 @@ function AppContent() {
       );
     }
 
+    // Direct shortcut for /caminho-ao-poder
+    if (pathOnly === '/caminho-ao-poder') {
+      return <ProductionDetailPage slug="caminho-ao-poder" onNavigate={navigate} />;
+    }
+    const caminhoChapterMatch = pathOnly.match(/^\/caminho-ao-poder\/([^/]+)$/);
+    if (caminhoChapterMatch) {
+      const [, chapterSlug] = caminhoChapterMatch;
+      return (
+        <ChapterEpisodeReaderPage
+          productionSlug="caminho-ao-poder"
+          chapterSlug={chapterSlug}
+          onNavigate={navigate}
+        />
+      );
+    }
+
     // Direct shortcut for /cold-case-brasil
     if (pathOnly === '/cold-case-brasil') {
       return <ProductionDetailPage slug="cold-case-brasil" onNavigate={navigate} />;

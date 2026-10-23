@@ -297,6 +297,21 @@ export function ChapterEpisodeReaderPage({
 
           {/* Quick Selector Dropdown & Actions */}
           <div className="flex items-center gap-2 flex-wrap">
+            {currentUnit?.pdfUrl && (
+              <a
+                href={currentUnit.pdfUrl}
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3.5 py-2 rounded-xl bg-[#D80050] hover:bg-[#be0044] text-white font-bold text-xs flex items-center gap-1.5 transition shadow-xs"
+                title="Baixar arquivo original do roteiro em PDF"
+              >
+                <FileDown className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Baixar PDF</span>
+                <span className="sm:hidden">PDF</span>
+              </a>
+            )}
+
             {hasPdf && (
               <button
                 onClick={handleDownloadOrPrintPdf}
@@ -304,8 +319,8 @@ export function ChapterEpisodeReaderPage({
                 title="Salvar como PDF ou Imprimir Roteiro Oficial"
               >
                 <Download className="w-3.5 h-3.5 text-[#D80050]" />
-                <span className="hidden sm:inline">Baixar / Imprimir PDF</span>
-                <span className="sm:hidden">PDF</span>
+                <span className="hidden sm:inline">Imprimir / Salvar</span>
+                <span className="sm:hidden">Imprimir</span>
               </button>
             )}
 
