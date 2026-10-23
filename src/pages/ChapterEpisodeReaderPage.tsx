@@ -19,11 +19,14 @@ import {
   Sparkles,
   Layers,
   Eye,
-  MessageSquare
+  MessageSquare,
+  FileCode2
 } from 'lucide-react';
 import { getProductionBySlug } from '../data/productions';
 import { SEOHead } from '../components/SEOHead';
 import { ChapterCommentsSection } from '../components/ChapterCommentsSection';
+import { WriterSoloPageRenderer } from '../components/WriterSoloPageRenderer';
+import { generateWriterSoloPrintHtml, exportToFountain } from '../utils/writerSoloFormatter';
 
 interface ChapterEpisodeReaderPageProps {
   productionSlug: string;
@@ -39,6 +42,7 @@ export function ChapterEpisodeReaderPage({
   const production = getProductionBySlug(productionSlug);
   const [fontSize, setFontSize] = useState<'normal' | 'large' | 'xlarge'>('normal');
   const [copied, setCopied] = useState(false);
+  const [scriptFormat, setScriptFormat] = useState<'writersolo' | 'raw'>('writersolo');
 
   // Fallback 404
   if (!production) {
@@ -98,115 +102,34 @@ export function ChapterEpisodeReaderPage({
       return;
     }
 
-    const pagesHtml = currentUnit.pdfPages
-      .map(
-        (pageText, idx) => `
-        <div class="pdf-page">
-          <div class="page-number">${idx > 0 ? idx + 1 + '.' : ''}</div>
-          <pre class="page-content">${pageText.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
-        </div>
-      `
-      )
-      .join('');
+    const html = generateWriterSoloPrintHtml(
+      production.title,
+      currentUnit.label,
+      production.author,
+      currentUnit.pdfPages
+    );
 
-    printWindow.document.write(`
-      <!DOCTYPE html>
-      <html lang="pt-BR">
-      <head>
-        <meta charset="utf-8">
-        <title>${production.title} - ${currentUnit.label} (Roteiro em PDF)</title>
-        <style>
-          @page {
-            size: A4;
-            margin: 15mm 15mm 20mm 20mm;
-          }
-          * { box-sizing: border-box; }
-          body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Courier New', Courier, monospace;
-            background: #e2e8f0;
-            color: #000;
-          }
-          .pdf-page {
-            width: 210mm;
-            min-height: 297mm;
-            margin: 20px auto;
-            background: #ffffff;
-            padding: 25mm 20mm 25mm 25mm;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.12);
-            position: relative;
-            page-break-after: always;
-          }
-          @media print {
-            body { background: #fff; }
-            .pdf-page {
-              margin: 0;
-              box-shadow: none;
-              width: 100%;
-              min-height: 100%;
-              padding: 0;
-              page-break-after: always;
-            }
-            .no-print { display: none !important; }
-          }
-          .page-number {
-            position: absolute;
-            top: 15mm;
-            right: 20mm;
-            font-size: 11pt;
-            font-weight: bold;
-          }
-          .page-content {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 11pt;
-            line-height: 1.5;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            margin: 0;
-          }
-          .toolbar {
-            position: sticky;
-            top: 0;
-            background: #0f172a;
-            color: #fff;
-            padding: 14px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 100;
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 14px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-          }
-          .btn-print {
-            background: #D80050;
-            color: white;
-            border: none;
-            padding: 10px 22px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-          }
-          .btn-print:hover { background: #be0044; }
-        </style>
-      </head>
-      <body>
-        <div class="toolbar no-print">
-          <div>
-            <span style="color:#D80050; font-weight:800; margin-right:8px;">ESTÚDIO WEBS</span>
-            <strong>${production.title}</strong> — ${currentUnit.label} (${currentUnit.pdfPages.length} páginas)
-          </div>
-          <button class="btn-print" onclick="window.print()">Salvar como PDF / Imprimir</button>
-        </div>
-        ${pagesHtml}
-      </body>
-      </html>
-    `);
+    printWindow.document.write(html);
     printWindow.document.close();
+  };
+
+  const handleExportFountain = () => {
+    if (!currentUnit?.pdfPages || currentUnit.pdfPages.length === 0) return;
+    const fountainContent = exportToFountain(
+      currentUnit.pdfPages,
+      production.title,
+      production.author,
+      currentUnit.label
+    );
+    const blob = new Blob([fountainContent], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${production.slug}-${currentUnit.slug}-writersolo.fountain`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const seoTitle = `${currentUnit?.label} | ${production.title} | Estúdio Webs`;
@@ -297,31 +220,43 @@ export function ChapterEpisodeReaderPage({
 
           {/* Quick Selector Dropdown & Actions */}
           <div className="flex items-center gap-2 flex-wrap">
+            {hasPdf && (
+              <>
+                <button
+                  onClick={handleDownloadOrPrintPdf}
+                  className="px-3.5 py-2 rounded-xl bg-[#D80050] hover:bg-[#be0044] text-white font-bold text-xs flex items-center gap-1.5 transition shadow-xs cursor-pointer"
+                  title="Salvar como PDF ou Imprimir Roteiro formatado no padrão WriterSolo"
+                >
+                  <Printer className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">PDF WriterSolo</span>
+                  <span className="sm:hidden">PDF WS</span>
+                </button>
+
+                <button
+                  onClick={handleExportFountain}
+                  className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center gap-1.5 transition shadow-xs cursor-pointer"
+                  title="Exportar arquivo .fountain para abrir no writersolo.com"
+                >
+                  <FileCode2 className="w-3.5 h-3.5 text-rose-400" />
+                  <span className="hidden sm:inline">Exportar .Fountain</span>
+                  <span className="sm:hidden">Fountain</span>
+                </button>
+              </>
+            )}
+
             {currentUnit?.pdfUrl && (
               <a
                 href={currentUnit.pdfUrl}
                 download
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3.5 py-2 rounded-xl bg-[#D80050] hover:bg-[#be0044] text-white font-bold text-xs flex items-center gap-1.5 transition shadow-xs"
-                title="Baixar arquivo original do roteiro em PDF"
+                className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 transition border border-slate-200 shadow-xs"
+                title="Baixar arquivo original"
               >
                 <FileDown className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Baixar PDF</span>
-                <span className="sm:hidden">PDF</span>
+                <span className="hidden sm:inline">PDF Original</span>
+                <span className="sm:hidden">Original</span>
               </a>
-            )}
-
-            {hasPdf && (
-              <button
-                onClick={handleDownloadOrPrintPdf}
-                className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center gap-1.5 transition shadow-xs"
-                title="Salvar como PDF ou Imprimir Roteiro Oficial"
-              >
-                <Download className="w-3.5 h-3.5 text-[#D80050]" />
-                <span className="hidden sm:inline">Imprimir / Salvar</span>
-                <span className="sm:hidden">Imprimir</span>
-              </button>
             )}
 
             <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 shadow-xs">
@@ -480,10 +415,38 @@ export function ChapterEpisodeReaderPage({
         {/* PDF Page Controls (when activeTab is pdf) */}
         {activeTab === 'pdf' && currentUnit?.pdfPages && (
           <div className="flex items-center gap-2 flex-wrap">
+            {/* Format toggle: WriterSolo standard vs Raw Text */}
+            <div className="flex items-center bg-white border border-slate-200 rounded-lg p-0.5 shadow-xs text-xs font-bold text-slate-700">
+              <button
+                onClick={() => setScriptFormat('writersolo')}
+                className={`px-2.5 py-1 rounded flex items-center gap-1.5 transition ${
+                  scriptFormat === 'writersolo'
+                    ? 'bg-[#D80050] text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+                title="Padrão de Roteiro Desenvolvido no WriterSolo"
+              >
+                <Sparkles className="w-3 h-3" />
+                <span>Padrão WriterSolo</span>
+              </button>
+              <button
+                onClick={() => setScriptFormat('raw')}
+                className={`px-2.5 py-1 rounded transition ${
+                  scriptFormat === 'raw'
+                    ? 'bg-slate-900 text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+                title="Visualizar texto original"
+              >
+                Texto Bruto
+              </button>
+            </div>
+
+            {/* View mode: All pages vs Single page */}
             <div className="flex items-center bg-white border border-slate-200 rounded-lg p-0.5 shadow-xs text-xs font-bold text-slate-700">
               <button
                 onClick={() => setPdfViewMode('all')}
-                className={`px-2.5 py-1 rounded ${
+                className={`px-2.5 py-1 rounded transition ${
                   pdfViewMode === 'all'
                     ? 'bg-slate-900 text-white'
                     : 'text-slate-600 hover:text-slate-900'
@@ -493,7 +456,7 @@ export function ChapterEpisodeReaderPage({
               </button>
               <button
                 onClick={() => setPdfViewMode('single')}
-                className={`px-2.5 py-1 rounded ${
+                className={`px-2.5 py-1 rounded transition ${
                   pdfViewMode === 'single'
                     ? 'bg-slate-900 text-white'
                     : 'text-slate-600 hover:text-slate-900'
@@ -530,65 +493,98 @@ export function ChapterEpisodeReaderPage({
         )}
       </div>
 
-      {/* VIEW MODE 1: PDF Screenplay Visualizer */}
+      {/* VIEW MODE 1: PDF Screenplay Visualizer in WriterSolo Format */}
       {activeTab === 'pdf' && currentUnit?.pdfPages && (
-        <div className="space-y-8 mb-8">
-          {pdfViewMode === 'all' ? (
-            currentUnit.pdfPages.map((pageText, pageIndex) => (
-              <div
-                key={pageIndex}
-                className="bg-white border border-slate-300 rounded-sm shadow-md sm:shadow-lg p-6 sm:p-14 font-mono text-[13px] sm:text-[14px] leading-relaxed text-slate-950 relative select-text"
-              >
-                <div className="flex items-center justify-between pb-3 mb-6 border-b border-slate-200 text-xs text-slate-400 font-sans">
-                  <span>
-                    {production.title} • {currentUnit.label}
-                  </span>
-                  <span className="font-mono font-bold text-slate-700">
-                    Página {pageIndex + 1} de {currentUnit.pdfPages!.length}
-                  </span>
-                </div>
-
-                <pre className="whitespace-pre-wrap font-mono text-slate-900 leading-relaxed tracking-normal font-medium">
-                  {pageText}
-                </pre>
-
-                <div className="mt-8 pt-4 border-t border-slate-100 text-right text-[11px] text-slate-400 font-sans">
-                  {pageIndex + 1}.
-                </div>
+        <div className="space-y-6 mb-8">
+          {/* WriterSolo Screenplay Standard Banner */}
+          <div className="bg-slate-900 text-white rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm border border-slate-800">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-[#D80050] text-white flex items-center justify-center font-black text-xs shrink-0 shadow-xs">
+                WS
               </div>
-            ))
-          ) : (
-            <div className="bg-white border border-slate-300 rounded-sm shadow-md sm:shadow-lg p-6 sm:p-14 font-mono text-[13px] sm:text-[14px] leading-relaxed text-slate-950 relative select-text min-h-[600px] flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between pb-3 mb-6 border-b border-slate-200 text-xs text-slate-400 font-sans">
-                  <span>
-                    {production.title} • {currentUnit.label}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-xs font-bold uppercase tracking-wider text-white">
+                    Formato de Roteiro WriterSolo
                   </span>
-                  <span className="font-mono font-bold text-slate-700">
-                    Página {currentPdfPage + 1} de {currentUnit.pdfPages.length}
+                  <span className="text-[10px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded">
+                    writersolo.com
+                  </span>
+                  <span className="text-[10px] text-slate-400">
+                    Fonte Courier Prime 12pt • Margens Padrão de Hollywood
                   </span>
                 </div>
-
-                <pre className="whitespace-pre-wrap font-mono text-slate-900 leading-relaxed tracking-normal font-medium">
-                  {currentUnit.pdfPages[currentPdfPage]}
-                </pre>
+                <p className="text-[11px] text-slate-300 mt-0.5">
+                  Cabeçalhos de cena em caixa alta, personagens centralizados e diálogos alinhados conforme o padrão oficial do WriterSolo.
+                </p>
               </div>
+            </div>
 
-              <div className="mt-8 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-sans">
+            <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
+              <button
+                onClick={handleDownloadOrPrintPdf}
+                className="px-3 py-1.5 rounded-lg bg-[#D80050] hover:bg-[#eb0058] text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
+                title="Salvar como PDF no formato WriterSolo"
+              >
+                <Printer className="w-3.5 h-3.5" />
+                <span>Salvar PDF</span>
+              </button>
+              <button
+                onClick={handleExportFountain}
+                className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition flex items-center gap-1.5 border border-white/20 cursor-pointer active:scale-95"
+                title="Baixar arquivo compatível com writersolo.com e Final Draft"
+              >
+                <FileCode2 className="w-3.5 h-3.5 text-rose-400" />
+                <span>.Fountain</span>
+              </button>
+            </div>
+          </div>
+
+          {pdfViewMode === 'all' ? (
+            <div className="space-y-8">
+              {currentUnit.pdfPages.map((pageText, pageIndex) => (
+                <WriterSoloPageRenderer
+                  key={pageIndex}
+                  rawPageText={pageText}
+                  pageIndex={pageIndex}
+                  totalPages={currentUnit.pdfPages!.length}
+                  productionTitle={production.title}
+                  episodeLabel={currentUnit.label}
+                  author={production.author}
+                  viewFormat={scriptFormat}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <WriterSoloPageRenderer
+                rawPageText={currentUnit.pdfPages[currentPdfPage]}
+                pageIndex={currentPdfPage}
+                totalPages={currentUnit.pdfPages.length}
+                productionTitle={production.title}
+                episodeLabel={currentUnit.label}
+                author={production.author}
+                viewFormat={scriptFormat}
+              />
+
+              {/* Single Page Pagination Footer */}
+              <div className="bg-white border border-slate-200 rounded-xl p-3 flex items-center justify-between text-xs text-slate-700 shadow-xs">
                 <button
                   disabled={currentPdfPage <= 0}
                   onClick={() => setCurrentPdfPage((p) => Math.max(0, p - 1))}
-                  className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed font-bold"
+                  className="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed font-bold transition"
                 >
                   ← Página Anterior
                 </button>
-                <span className="font-mono font-bold">{currentPdfPage + 1}.</span>
+                <span className="font-['Courier_Prime',Courier,monospace] font-bold text-slate-900 text-sm">
+                  Página {currentPdfPage + 1} de {currentUnit.pdfPages.length}
+                </span>
                 <button
                   disabled={currentPdfPage >= currentUnit.pdfPages.length - 1}
                   onClick={() =>
                     setCurrentPdfPage((p) => Math.min(currentUnit.pdfPages!.length - 1, p + 1))
                   }
-                  className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed font-bold"
+                  className="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed font-bold transition"
                 >
                   Próxima Página →
                 </button>

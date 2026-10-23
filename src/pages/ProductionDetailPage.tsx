@@ -331,10 +331,10 @@ export function ProductionDetailPage({ slug, onNavigate }: ProductionDetailPageP
               {production.episodes.some((e) => e.pdfPages && e.pdfPages.length > 0) && (
                 <button
                   onClick={() => onNavigate(`/webs/${production.slug}/${firstEpisodeSlug}`)}
-                  className="px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-xs"
+                  className="px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-xs cursor-pointer"
                 >
                   <FileText className="w-4 h-4 text-[#D80050]" />
-                  <span>Ver Roteiro em PDF</span>
+                  <span>Roteiro PDF (WriterSolo)</span>
                 </button>
               )}
 
@@ -384,7 +384,7 @@ export function ProductionDetailPage({ slug, onNavigate }: ProductionDetailPageP
                     {ep.pdfPages && ep.pdfPages.length > 0 && (
                       <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 flex items-center gap-1">
                         <FileText className="w-3 h-3 text-[#D80050]" />
-                        <span>PDF ({ep.pdfPages.length}p)</span>
+                        <span>WriterSolo ({ep.pdfPages.length}p)</span>
                       </span>
                     )}
                     <span className="w-2 h-2 rounded-full bg-emerald-500" />
