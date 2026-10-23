@@ -16,6 +16,7 @@ import { ConfiguracoesPage } from './pages/ConfiguracoesPage';
 import { CommunityPage } from './pages/CommunityPage';
 import { CommunityStoryDetailPage } from './pages/CommunityStoryDetailPage';
 import { SalaDeImprensaPage } from './pages/SalaDeImprensaPage';
+import { VemAiPage } from './pages/VemAiPage';
 import { ProductionCategory } from './types';
 import { ManagerProvider, useManager } from './utils/managerAuth';
 import { ManagerModal, ManagerFloatingBar } from './components/ManagerModal';
@@ -301,7 +302,12 @@ function AppContent() {
       return <SalaDeImprensaPage onNavigate={navigate} />;
     }
 
-    // 12. Configurations & Covers: /configuracoes & /configuracao
+    // 12. Vem Aí: /vem-ai, /vem-aí, /vemai
+    if (pathOnly === '/vem-ai' || pathOnly === '/vem-a%C3%AD' || pathOnly === '/vem-aí' || pathOnly === '/vemai') {
+      return <VemAiPage onNavigate={navigate} />;
+    }
+
+    // 13. Configurations & Covers: /configuracoes & /configuracao
     if (pathOnly === '/configuracoes' || pathOnly === '/configuracao') {
       return <ConfiguracoesPage onNavigate={navigate} />;
     }

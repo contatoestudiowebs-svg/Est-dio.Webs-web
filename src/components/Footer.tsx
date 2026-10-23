@@ -77,6 +77,14 @@ export function Footer({ onNavigate }: FooterProps) {
               </li>
               <li>
                 <button
+                  onClick={() => onNavigate('/vem-ai')}
+                  className="hover:text-[#D80050] transition font-semibold text-rose-300"
+                >
+                  Vem Aí (Próximas Estreias)
+                </button>
+              </li>
+              <li>
+                <button
                   onClick={() => onNavigate('/comunidade')}
                   className="hover:text-[#efae54] transition text-[#efae54] font-bold"
                 >
