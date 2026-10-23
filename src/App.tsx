@@ -240,6 +240,22 @@ function AppContent() {
       );
     }
 
+    // Direct shortcuts for /sena
+    if (pathOnly === '/sena') {
+      return <ProductionDetailPage slug="sena" onNavigate={navigate} />;
+    }
+    const senaChapterMatch = pathOnly.match(/^\/sena\/([^/]+)$/);
+    if (senaChapterMatch) {
+      const [, chapterSlug] = senaChapterMatch;
+      return (
+        <ChapterEpisodeReaderPage
+          productionSlug="sena"
+          chapterSlug={chapterSlug}
+          onNavigate={navigate}
+        />
+      );
+    }
+
     // 3. Production Detail: /webs/:slug
     const productionMatch = pathOnly.match(/^\/webs\/([^/]+)$/);
     if (productionMatch) {

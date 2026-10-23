@@ -9,6 +9,7 @@ import { HOMEM_COM_H_EPISODES } from './homemComHData';
 import { SUPLICIO_EPISODES } from './suplicioData';
 import { PANDORUM_EPISODES } from './pandorumData';
 import { PONTO_FRACO_EPISODES } from './pontoFracoData';
+import { SENA_EPISODES } from './senaData';
 
 function generateUnits(count: number, unitType: UnitType): ChapterEpisode[] {
   const prefix = unitType === 'capítulos' ? 'Capítulo' : 'Episódio';
@@ -439,7 +440,7 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     status: 'Finalizada',
     coverImage: 'https://static.wixstatic.com/media/cbfc82_2a44a37db9514aa99f3f78485abc1abc~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_2a44a37db9514aa99f3f78485abc1abc~mv2.png',
     synopsis: 'Em uma intrincada teia de poder e lealdade volátil, Sena, líder de uma quadrilha habilidosa, enfrenta uma ameaça desconhecida. Ao perceber a necessidade de proteger seus aliados, toma a surpreendente decisão de entregá-los à polícia. Traídos, seus subordinados enfrentam a justiça, enquanto Sena elabora secretamente um plano audacioso, envolvendo a delegada Helena para enganar os investigadores. A trama se desenrola com mistérios e reviravoltas, revelando a complexidade do jogo de Sena.',
-    episodes: generateUnits(6, 'episódios')
+    episodes: SENA_EPISODES
   },
   {
     id: 'o-suplicio',
