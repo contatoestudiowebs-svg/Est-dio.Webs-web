@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, Play, Film, BookOpen, Calendar, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Film, BookOpen, Calendar, Sparkles } from 'lucide-react';
 import { PRODUCTIONS_DATA } from '../data/productions';
 import { WebProduction, ProductionStatus } from '../types';
 import { useProductionCover } from '../utils/imageManager';
@@ -62,15 +62,15 @@ function ProductionCardItem({
   const getSlotClasses = () => {
     switch (diff) {
       case 0:
-        return 'z-30 left-1/2 -translate-x-1/2 scale-100 opacity-100 shadow-2xl shadow-black/90 ring-1 ring-white/20';
+        return 'z-30 left-1/2 -translate-x-1/2 scale-100 opacity-100 shadow-2xl shadow-slate-900/30 ring-1 ring-slate-900/10';
       case -1:
-        return 'z-20 left-1/2 -translate-x-[calc(50%+160px)] sm:-translate-x-[calc(50%+210px)] md:-translate-x-[calc(50%+230px)] lg:-translate-x-[calc(50%+280px)] scale-[0.82] sm:scale-[0.85] lg:scale-[0.87] opacity-75 hover:opacity-95 shadow-xl cursor-pointer';
+        return 'z-20 left-1/2 -translate-x-[calc(50%+160px)] sm:-translate-x-[calc(50%+210px)] md:-translate-x-[calc(50%+230px)] lg:-translate-x-[calc(50%+280px)] scale-[0.82] sm:scale-[0.85] lg:scale-[0.87] opacity-80 hover:opacity-100 shadow-xl shadow-slate-900/15 cursor-pointer ring-1 ring-slate-900/5';
       case 1:
-        return 'z-20 left-1/2 translate-x-[calc(-50%+160px)] sm:translate-x-[calc(-50%+210px)] md:translate-x-[calc(-50%+230px)] lg:translate-x-[calc(-50%+280px)] scale-[0.82] sm:scale-[0.85] lg:scale-[0.87] opacity-75 hover:opacity-95 shadow-xl cursor-pointer';
+        return 'z-20 left-1/2 translate-x-[calc(-50%+160px)] sm:translate-x-[calc(-50%+210px)] md:translate-x-[calc(-50%+230px)] lg:translate-x-[calc(-50%+280px)] scale-[0.82] sm:scale-[0.85] lg:scale-[0.87] opacity-80 hover:opacity-100 shadow-xl shadow-slate-900/15 cursor-pointer ring-1 ring-slate-900/5';
       case -2:
-        return 'z-10 hidden lg:block left-1/2 -translate-x-[calc(50%+510px)] scale-[0.72] opacity-40 hover:opacity-70 shadow-lg cursor-pointer';
+        return 'z-10 hidden lg:block left-1/2 -translate-x-[calc(50%+510px)] scale-[0.72] opacity-50 hover:opacity-85 shadow-lg shadow-slate-900/10 cursor-pointer ring-1 ring-slate-900/5';
       case 2:
-        return 'z-10 hidden lg:block left-1/2 translate-x-[calc(-50%+510px)] scale-[0.72] opacity-40 hover:opacity-70 shadow-lg cursor-pointer';
+        return 'z-10 hidden lg:block left-1/2 translate-x-[calc(-50%+510px)] scale-[0.72] opacity-50 hover:opacity-85 shadow-lg shadow-slate-900/10 cursor-pointer ring-1 ring-slate-900/5';
       default:
         return 'opacity-0 scale-50 pointer-events-none left-1/2 -translate-x-1/2';
     }
@@ -79,7 +79,7 @@ function ProductionCardItem({
   return (
     <div
       onClick={handleClick}
-      className={`absolute top-1/2 -translate-y-1/2 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] select-none rounded-2xl overflow-hidden ${getSlotClasses()}`}
+      className={`absolute top-1/2 -translate-y-1/2 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] select-none rounded-2xl overflow-hidden bg-slate-900 ${getSlotClasses()}`}
       style={{
         width: isCenter ? 'min(330px, 80vw)' : 'min(270px, 68vw)',
         height: isCenter ? 'min(490px, 66vh)' : 'min(400px, 54vh)',
@@ -95,20 +95,26 @@ function ProductionCardItem({
         }
       }}
     >
-      <div className="relative w-full h-full bg-slate-950 flex flex-col justify-end group">
-        {/* Background Artwork */}
+      <div className="relative w-full h-full flex flex-col justify-end group overflow-hidden bg-slate-950">
+        {/* Background Artwork - complete image with object-contain (no cropping) */}
         {coverUrl && !imgError ? (
           <img
             src={coverUrl}
             alt={production.title}
             onError={() => setImgError(true)}
             referrerPolicy="no-referrer"
-            className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ${
-              isCenter ? 'group-hover:scale-105' : 'group-hover:scale-102'
+            className={`absolute inset-0 w-full h-full object-contain transition-all duration-700 ease-out ${
+              isCenter
+                ? 'blur-none group-hover:scale-102'
+                : 'blur-[2.5px] scale-102 group-hover:blur-[1px]'
             }`}
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-950 to-black p-6 flex flex-col justify-between items-center text-center">
+          <div
+            className={`absolute inset-0 bg-gradient-to-br from-slate-800 via-slate-900 to-black p-6 flex flex-col justify-between items-center text-center transition-all duration-700 ${
+              !isCenter ? 'blur-[2px]' : 'blur-none'
+            }`}
+          >
             <span className="text-[10px] uppercase font-bold tracking-widest text-[#D80050] bg-white/10 px-2.5 py-0.5 rounded">
               Estúdio Webs
             </span>
@@ -122,88 +128,62 @@ function ProductionCardItem({
           </div>
         )}
 
-        {/* Semi-transparent tint overlay on lateral panels to harmonize with visual identity */}
+        {/* Subtle tint overlay on lateral panels */}
         {!isCenter && (
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/70 to-slate-950/50 transition-colors duration-300 group-hover:bg-slate-950/40" />
+          <div className="absolute inset-0 bg-slate-950/35 group-hover:bg-slate-950/15 transition-colors duration-300" />
         )}
 
-        {/* Scrim gradient on central panel for contrast and readability */}
+        {/* Minimal scrim gradient strictly at the bottom edge so the artwork remains completely visible */}
         {isCenter && (
-          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-transparent pointer-events-none" />
+          <div className="absolute bottom-0 inset-x-0 h-28 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
         )}
 
-        {/* Subtle glow highlight behind center card */}
-        {isCenter && (
-          <div className="absolute -inset-1 rounded-2xl bg-[#D80050]/20 blur-md pointer-events-none -z-10" />
-        )}
-
-        {/* Center Card Play Button In Middle of Poster */}
-        {isCenter && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onNavigate(`/webs/${production.slug}`);
-              }}
-              className="pointer-events-auto w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#D80050] hover:bg-[#eb0058] text-white flex items-center justify-center shadow-2xl shadow-rose-950/80 transition-all duration-300 hover:scale-110 active:scale-95 group/btn cursor-pointer ring-4 ring-white/20"
-              aria-label={`Assistir ou Ler ${production.title}`}
-            >
-              <Play className="w-6 h-6 sm:w-7 sm:h-7 fill-white text-white ml-1 transition-transform group-hover/btn:scale-110" />
-            </button>
-          </div>
-        )}
-
-        {/* CENTER CONTENT AT BOTTOM */}
+        {/* CENTER CONTENT AT BOTTOM - Sleek, non-intrusive layout */}
         {isCenter ? (
-          <div className="relative z-10 p-5 sm:p-6 flex flex-col items-center text-center">
+          <div className="relative z-10 p-3 sm:p-4 flex flex-col items-center text-center">
             {/* Category / Premiere Badge */}
-            <div className="mb-2">
+            <div className="mb-1.5">
               {isAmoresFeridos ? (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-black uppercase tracking-wider bg-[#D80050] text-white shadow-md shadow-rose-950/60 animate-pulse">
-                  <Calendar className="w-3.5 h-3.5" />
+                <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] sm:text-[11px] font-black uppercase tracking-wider bg-[#D80050] text-white shadow-md animate-pulse">
+                  <Calendar className="w-3 h-3" />
                   <span>Estreia 11 de janeiro</span>
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold uppercase tracking-wider bg-white/15 backdrop-blur-md text-white border border-white/20">
-                  {isSerie ? <Film className="w-3 h-3 text-cyan-400" /> : <BookOpen className="w-3 h-3 text-rose-400" />}
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-black/70 backdrop-blur-md text-white border border-white/20">
+                  {isSerie ? <Film className="w-3 h-3 text-cyan-300" /> : <BookOpen className="w-3 h-3 text-rose-300" />}
                   <span>{production.category}</span>
                   <span className="text-white/40">·</span>
-                  <span className="text-slate-300">{production.totalUnits} {production.unitType}</span>
+                  <span className="text-slate-200">{production.totalUnits} {production.unitType}</span>
                 </span>
               )}
             </div>
 
             {/* Title */}
-            <h3 className="text-xl sm:text-2xl lg:text-3xl font-black font-brand text-white tracking-tight leading-tight drop-shadow-md max-w-[280px]">
+            <h3 className="text-base sm:text-lg font-black font-brand text-white tracking-tight leading-tight drop-shadow-md line-clamp-1 max-w-[280px]">
               {production.title}
             </h3>
 
-            {/* Author */}
-            <p className="text-xs text-slate-300 mt-1 font-medium drop-shadow-sm">
-              Criada por <span className="text-white font-semibold">{production.author}</span>
-            </p>
-
-            {/* Direct access button */}
+            {/* Subtle direct access link */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 onNavigate(`/webs/${production.slug}`);
               }}
-              className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-white hover:text-rose-200 transition-colors drop-shadow-sm cursor-pointer"
+              className="mt-1.5 inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-rose-200 hover:text-white transition-colors drop-shadow-sm cursor-pointer"
             >
-              <span>Acessar Obra</span>
+              <span>Ver produção completa</span>
               <span aria-hidden="true">→</span>
             </button>
           </div>
         ) : (
           /* LATERAL CONTENT AT BOTTOM */
-          <div className="relative z-10 p-3 sm:p-4 text-center">
+          <div className="relative z-10 p-2.5 sm:p-3 text-center">
             {isAmoresFeridos ? (
               <span className="inline-block mb-1 px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-[#D80050] text-white shadow-xs">
                 Estreia 11/01
               </span>
             ) : (
-              <span className="text-[10px] uppercase font-bold tracking-wider text-slate-300 drop-shadow-xs">
+              <span className="text-[10px] uppercase font-bold tracking-wider text-slate-200 drop-shadow-xs">
                 {production.category}
               </span>
             )}
@@ -303,7 +283,7 @@ export function FeaturedProgrammingCarousel({ onNavigate }: FeaturedProgrammingC
 
   return (
     <section
-      className="relative w-full bg-gradient-to-b from-[#060a12] via-[#0c1220] to-[#080d18] border-b border-slate-800/80 overflow-hidden py-8 sm:py-10 select-none"
+      className="relative w-full bg-white border-b border-slate-200 overflow-hidden py-8 sm:py-10 select-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
@@ -312,13 +292,10 @@ export function FeaturedProgrammingCarousel({ onNavigate }: FeaturedProgrammingC
       tabIndex={0}
       aria-label="Carrossel de Destaques da Programação"
     >
-      {/* Cinematic subtle background lighting */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[450px] bg-[#D80050]/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-0 right-1/4 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
-
-      {/* Subtle top edge border glow */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#D80050]/30 to-transparent" />
+      {/* Light subtle atmospheric background tints */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-rose-500/[0.03] rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-1/4 w-80 h-80 bg-blue-500/[0.03] rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-slate-500/[0.03] rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Top Header Bar */}
@@ -328,27 +305,27 @@ export function FeaturedProgrammingCarousel({ onNavigate }: FeaturedProgrammingC
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D80050] opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#D80050]"></span>
             </span>
-            <h2 className="text-xs sm:text-sm uppercase tracking-widest font-black text-white flex items-center gap-2 font-brand">
+            <h2 className="text-xs sm:text-sm uppercase tracking-widest font-black text-slate-900 flex items-center gap-2 font-brand">
               <Sparkles className="w-3.5 h-3.5 text-[#D80050]" />
               <span>Destaque da Programação</span>
             </h2>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-[11px] sm:text-xs font-semibold text-slate-400 font-mono tabular-nums">
+            <span className="text-[11px] sm:text-xs font-semibold text-slate-500 font-mono tabular-nums">
               {String(activeIndex + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
             </span>
             <div className="hidden sm:flex items-center gap-1.5 ml-2">
               <button
                 onClick={prevSlide}
-                className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#D80050] text-white flex items-center justify-center transition border border-white/10 hover:border-[#D80050] shadow-sm cursor-pointer active:scale-95"
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-[#D80050] text-slate-700 hover:text-white flex items-center justify-center transition border border-slate-200 hover:border-[#D80050] shadow-xs cursor-pointer active:scale-95"
                 aria-label="Produção anterior"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={nextSlide}
-                className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#D80050] text-white flex items-center justify-center transition border border-white/10 hover:border-[#D80050] shadow-sm cursor-pointer active:scale-95"
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-[#D80050] text-slate-700 hover:text-white flex items-center justify-center transition border border-slate-200 hover:border-[#D80050] shadow-xs cursor-pointer active:scale-95"
                 aria-label="Próxima produção"
               >
                 <ChevronRight className="w-4 h-4" />
@@ -383,14 +360,14 @@ export function FeaturedProgrammingCarousel({ onNavigate }: FeaturedProgrammingC
           {/* Floating Chevrons for direct lateral navigation */}
           <button
             onClick={prevSlide}
-            className="absolute left-2 sm:left-4 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 hover:bg-[#D80050] text-white border border-white/20 flex items-center justify-center transition-all duration-200 shadow-xl backdrop-blur-md cursor-pointer active:scale-90"
+            className="absolute left-2 sm:left-4 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/95 hover:bg-[#D80050] text-slate-800 hover:text-white border border-slate-200/90 hover:border-[#D80050] flex items-center justify-center transition-all duration-200 shadow-xl backdrop-blur-md cursor-pointer active:scale-90"
             aria-label="Anterior"
           >
             <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-2 sm:right-4 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 hover:bg-[#D80050] text-white border border-white/20 flex items-center justify-center transition-all duration-200 shadow-xl backdrop-blur-md cursor-pointer active:scale-90"
+            className="absolute right-2 sm:right-4 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/95 hover:bg-[#D80050] text-slate-800 hover:text-white border border-slate-200/90 hover:border-[#D80050] flex items-center justify-center transition-all duration-200 shadow-xl backdrop-blur-md cursor-pointer active:scale-90"
             aria-label="Próximo"
           >
             <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -407,8 +384,8 @@ export function FeaturedProgrammingCarousel({ onNavigate }: FeaturedProgrammingC
                 onClick={() => setActiveIndex(idx)}
                 className={`transition-all duration-300 rounded-full cursor-pointer ${
                   isActive
-                    ? 'w-7 sm:w-8 h-2 bg-[#D80050] shadow-sm shadow-[#D80050]/50'
-                    : 'w-2 h-2 bg-white/30 hover:bg-white/60'
+                    ? 'w-7 sm:w-8 h-2 bg-[#D80050] shadow-xs shadow-[#D80050]/40'
+                    : 'w-2 h-2 bg-slate-300 hover:bg-slate-400'
                 }`}
                 aria-label={`Ir para ${prod.title}`}
                 title={prod.title}
