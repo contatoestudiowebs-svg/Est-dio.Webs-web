@@ -11,6 +11,8 @@ import { PANDORUM_EPISODES } from './pandorumData';
 import { PONTO_FRACO_EPISODES } from './pontoFracoData';
 import { SENA_EPISODES } from './senaData';
 import { CAMINHO_AO_PODER_EPISODES } from './caminhoAoPoderData';
+import { INFIDELIDADE_EPISODES } from './infidelidadeData';
+import { UM_NOVO_REI_1_EPISODES } from './umNovoReiData';
 
 function generateUnits(count: number, unitType: UnitType): ChapterEpisode[] {
   const prefix = unitType === 'capítulos' ? 'Capítulo' : 'Episódio';
@@ -181,7 +183,7 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     status: 'Finalizada',
     coverImage: 'https://static.wixstatic.com/media/cbfc82_cb487eb87446490895186f78c158901e~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_cb487eb87446490895186f78c158901e~mv2.png',
     synopsis: 'Raquel, uma mulher dedicada à carreira e frustrada em seu casamento, se envolve com seu chefe Gutiérrez, um empresário sedutor e manipulador. Paulo, seu marido, fragilizado e desempregado, acaba sendo seduzido por Elza, a irmã mais nova de Raquel, uma mulher ferida e cheia de traumas. Paralelamente, outras histórias se entrelaçam: a jovem Nádia, que vive um romance com Zel e engravida; Catarina, mãe de Sérgio e Paulo, que tenta manter a família unida após a morte do marido Marcello; Adelina e Valter, pais de Raquel e Elza; e Margot, esposa de Gutiérrez, que trama a ruína do marido e o retorno ao poder.',
-    episodes: generateUnits(15, 'episódios')
+    episodes: INFIDELIDADE_EPISODES
   },
   {
     id: 'coracoes-de-acucar',
@@ -467,7 +469,7 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     status: 'Finalizada',
     coverImage: 'https://static.wixstatic.com/media/cbfc82_c64e16466fcb49278c87acf083f99b97~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_c64e16466fcb49278c87acf083f99b97~mv2.png',
     synopsis: 'Com a ambição de tomar Mont-Ar, Emma arma um plano em que mata a rainha e dá um fim ao herdeiro do trono. Ela então casa-se com o rei e o trai ao matá-lo. Ela assume o trono e com ajuda do bruxo Dalibor, ela faz Mont-Ar sucumbir aos seus pés. Anos depois, Emma e Dalibor descobrem que o herdeiro do trono está vivo e que seu reinado está com os dias contados.',
-    episodes: generateUnits(11, 'episódios')
+    episodes: UM_NOVO_REI_1_EPISODES
   }
 ];
 
@@ -480,6 +482,9 @@ export function getProductionBySlug(slug: string): WebProduction | undefined {
   }
   if (slug === 'santa-do-pau-oco') {
     return PRODUCTIONS_DATA.find((p) => p.slug === 'a-santa-do-pau-oco');
+  }
+  if (slug === 'um-novo-rei' || slug === 'um-novo-rei-1') {
+    return PRODUCTIONS_DATA.find((p) => p.slug === 'um-novo-rei-1-temporada');
   }
   return PRODUCTIONS_DATA.find((p) => p.slug === slug);
 }

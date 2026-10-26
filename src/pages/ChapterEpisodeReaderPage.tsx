@@ -66,7 +66,9 @@ export function ChapterEpisodeReaderPage({
   const unitLabelSingular = isSerie ? 'Episódio' : 'Capítulo';
 
   // Find current index
-  const currentIndex = production.episodes.findIndex((e) => e.slug === chapterSlug);
+  const currentIndex = production.episodes.findIndex(
+    (e) => e.slug === chapterSlug || (chapterSlug === 'episodio-10' && e.slug.startsWith('episodio-10'))
+  );
   const currentUnit = currentIndex !== -1 ? production.episodes[currentIndex] : production.episodes[0];
   const unitNumber = currentUnit?.number || 1;
 

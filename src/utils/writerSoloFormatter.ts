@@ -39,14 +39,17 @@ export function isSceneHeading(line: string): boolean {
   const trimmed = line.trim();
   if (!trimmed) return false;
 
+  // Strip leading scene numbers like "01. INT." or "1. EXT."
+  const clean = trimmed.replace(/^\d+[\.\)]\s*/, '');
+
   // Standard slugline prefixes
-  if (/^(INT\.|EXT\.|INT\/EXT\.|INT\.\/EXT\.|I\/E\.|EST\.|CENA\s+\d+)/i.test(trimmed)) {
+  if (/^(INT\.|EXT\.|INT\/EXT\.|INT\.\/EXT\.|I\/E\.|EST\.|CENA\s+\d+)/i.test(clean)) {
     return true;
   }
 
   // Common Portuguese slugline patterns (e.g. "CONDOMÍNIO – CASA DE RÔMULO – VARANDA – NOITE.")
   const timeEndings = /[-–—]\s*(DIA|NOITE|TARDE|MANHÃ|MADRUGADA|ENTARDECER|AMANHECER|CONT\.|CONTINUAÇÃO|FLASHBACK)[\.:]?$/i;
-  if (timeEndings.test(trimmed) && trimmed === trimmed.toUpperCase()) {
+  if (timeEndings.test(clean) && clean === clean.toUpperCase()) {
     return true;
   }
 

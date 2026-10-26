@@ -12,6 +12,7 @@ import {
   ImagePlus,
   Sparkles,
   FileText,
+  FileDown,
   Star,
   Trophy
 } from 'lucide-react';
@@ -405,7 +406,23 @@ export function ProductionDetailPage({ slug, onNavigate }: ProductionDetailPageP
                   <BookOpen className="w-3.5 h-3.5" />
                   <span>LEIA AGORA</span>
                 </span>
-                <span className="text-slate-400 group-hover:text-[#D80050] transition">→</span>
+                <div className="flex items-center gap-2">
+                  {ep.pdfUrl && (
+                    <a
+                      href={ep.pdfUrl}
+                      download
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-1 text-[10px] font-bold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-2 py-0.5 rounded border border-slate-200 transition"
+                      title="Baixar PDF original"
+                    >
+                      <FileDown className="w-3 h-3 text-[#D80050]" />
+                      <span>PDF</span>
+                    </a>
+                  )}
+                  <span className="text-slate-400 group-hover:text-[#D80050] transition">→</span>
+                </div>
               </div>
             </div>
           ))}

@@ -272,6 +272,22 @@ function AppContent() {
       );
     }
 
+    // Direct shortcuts for /infidelidade
+    if (pathOnly === '/infidelidade') {
+      return <ProductionDetailPage slug="infidelidade" onNavigate={navigate} />;
+    }
+    const infidelidadeChapterMatch = pathOnly.match(/^\/infidelidade\/([^/]+)$/);
+    if (infidelidadeChapterMatch) {
+      const [, chapterSlug] = infidelidadeChapterMatch;
+      return (
+        <ChapterEpisodeReaderPage
+          productionSlug="infidelidade"
+          chapterSlug={chapterSlug}
+          onNavigate={navigate}
+        />
+      );
+    }
+
     // 3. Production Detail: /webs/:slug
     const productionMatch = pathOnly.match(/^\/webs\/([^/]+)$/);
     if (productionMatch) {
