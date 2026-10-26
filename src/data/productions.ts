@@ -13,6 +13,7 @@ import { SENA_EPISODES } from './senaData';
 import { CAMINHO_AO_PODER_EPISODES } from './caminhoAoPoderData';
 import { INFIDELIDADE_EPISODES } from './infidelidadeData';
 import { UM_NOVO_REI_1_EPISODES } from './umNovoReiData';
+import { UM_NOVO_REI_2_EPISODES } from './umNovoRei2Data';
 
 function generateUnits(count: number, unitType: UnitType): ChapterEpisode[] {
   const prefix = unitType === 'capítulos' ? 'Capítulo' : 'Episódio';
@@ -89,7 +90,7 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     highlightOrder: 3,
     coverImage: 'https://static.wixstatic.com/media/cbfc82_91a9976d35da412bb0a852f63a297778~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_91a9976d35da412bb0a852f63a297778~mv2.png',
     synopsis: 'Em um reino marcado por guerras e segredos, o rei Dmitri luta para manter Mont-Ar unido enquanto forças obscuras começam a surgir nas sombras. Entre conspirações, magia proibida e inimigos ocultos, o destino do reino passa a depender de jovens herdeiros que ainda não conhecem todo o poder e os perigos que os cercam. Em meio a traições e batalhas pelo poder, uma nova era está prestes a começar.',
-    episodes: generateUnits(12, 'episódios')
+    episodes: UM_NOVO_REI_2_EPISODES
   },
   {
     id: 'rasga-mortalha-2',
@@ -485,6 +486,9 @@ export function getProductionBySlug(slug: string): WebProduction | undefined {
   }
   if (slug === 'um-novo-rei' || slug === 'um-novo-rei-1') {
     return PRODUCTIONS_DATA.find((p) => p.slug === 'um-novo-rei-1-temporada');
+  }
+  if (slug === 'um-novo-rei-2-temporada' || slug === 'um-novo-rei-segunda-temporada') {
+    return PRODUCTIONS_DATA.find((p) => p.slug === 'um-novo-rei-2');
   }
   return PRODUCTIONS_DATA.find((p) => p.slug === slug);
 }
