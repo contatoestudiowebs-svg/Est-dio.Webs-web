@@ -14,6 +14,7 @@ import { CAMINHO_AO_PODER_EPISODES } from './caminhoAoPoderData';
 import { INFIDELIDADE_EPISODES } from './infidelidadeData';
 import { UM_NOVO_REI_1_EPISODES } from './umNovoReiData';
 import { UM_NOVO_REI_2_EPISODES } from './umNovoRei2Data';
+import { NO_TE_PIDO_FLORES_EPISODES } from './noTePidoFloresData';
 
 function generateUnits(count: number, unitType: UnitType): ChapterEpisode[] {
   const prefix = unitType === 'capítulos' ? 'Capítulo' : 'Episódio';
@@ -314,7 +315,7 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     status: 'Finalizada',
     coverImage: 'https://static.wixstatic.com/media/cbfc82_bc4859489b434059b3490eca04ac8b1d~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_bc4859489b434059b3490eca04ac8b1d~mv2.png',
     synopsis: 'Martin e Lupe protagonizam embates épicos, recheados de sagacidade e acidez, mas no meio de tudo isso descobrem um sentimento mais forte que o ódio.',
-    episodes: generateUnits(11, 'episódios')
+    episodes: NO_TE_PIDO_FLORES_EPISODES
   },
   {
     id: 'nada-alem-do-seu-amor',
