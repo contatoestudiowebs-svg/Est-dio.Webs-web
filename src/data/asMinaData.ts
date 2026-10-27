@@ -8,6 +8,10 @@ import { AS_MINA_EPISODE_07_PAGES } from './asMinaEpisodes/episode07';
 import { AS_MINA_EPISODE_08_PAGES } from './asMinaEpisodes/episode08';
 import { AS_MINA_EPISODE_09_PAGES } from './asMinaEpisodes/episode09';
 import { AS_MINA_EPISODE_10_PAGES } from './asMinaEpisodes/episode10';
+import { AS_MINA_EPISODE_11_PAGES } from './asMinaEpisodes/episode11';
+import { AS_MINA_EPISODE_12_PAGES } from './asMinaEpisodes/episode12';
+import { AS_MINA_EPISODE_13_PAGES } from './asMinaEpisodes/episode13';
+import { AS_MINA_EPISODE_14_PAGES } from './asMinaEpisodes/episode14';
 import { ChapterEpisode } from '../types';
 
 export interface AsMinaEpisodeDef {
@@ -121,26 +125,49 @@ export const AS_MINA_EPISODES_RAW: AsMinaEpisodeDef[] = [
     pages: AS_MINA_EPISODE_10_PAGES,
     pdfUrl: '/assets/aistudio/AsMina.CAP.10.docx_53ae5360.pdf',
   },
+  {
+    number: 11,
+    label: 'Episódio 11',
+    slug: 'episodio-11',
+    title: 'Episódio 11',
+    summary:
+      'Carol tira satisfações com Tamara por conversar com Alex. Bruno consegue uma reunião com o vereador, mas não consegue o patrocínio. Bruno recebe uma ligação cobrando sobre o patrocínio. Isa conta a Tony a ideia que teve para enganar Aurora. Alex briga com Renata por sua irmã ter contado mentiras para Carol. Ao chegar no colégio, Tamara desmaia na frente das amigas.',
+    pages: AS_MINA_EPISODE_11_PAGES,
+    pdfUrl: '/assets/aistudio/AsMina.CAP.11.docx_beddcdd7.pdf',
+  },
+  {
+    number: 12,
+    label: 'Episódio 12',
+    slug: 'episodio-12',
+    title: 'Episódio 12',
+    summary:
+      'Carol e Isa ajudam Tamara. Carol se desculpa com Tamara. Renata descobre que Amanda é amiga de Isa. O Conselho Tutelar vai até a casa de Berto checar uma denúncia de abandono de incapaz. Raimundo conversa com Tamara e dá uma oportunidade de trabalho a ela. Aurora descobre que Isa está estudando em um colégio público. Renata conta a Carol e a Tamara que Isa é rica e finge ser pobre.',
+    pages: AS_MINA_EPISODE_12_PAGES,
+    pdfUrl: '/assets/aistudio/AsMina.CAP.12.docx_23845d2e.pdf',
+  },
+  {
+    number: 13,
+    label: 'Episódio 13',
+    slug: 'episodio-13',
+    title: 'Episódio 13 (Penúltimo)',
+    summary:
+      'Confira agora o penúltimo capítulo de AS MINA e o encaminhar dos desfechos da história e seus personagens.',
+    pages: AS_MINA_EPISODE_13_PAGES,
+    pdfUrl: '/assets/aistudio/AsMina.CAP.13.docx_6afa0207.pdf',
+  },
+  {
+    number: 14,
+    label: 'Episódio 14',
+    slug: 'episodio-14',
+    title: 'Episódio 14 (Final)',
+    summary:
+      'Confira agora o último capítulo de AS MINA e os desfechos da história e seus personagens.',
+    pages: AS_MINA_EPISODE_14_PAGES,
+    pdfUrl: '/assets/aistudio/AsMina.CAP.14.docx_52283ef5.pdf',
+  },
 ];
 
-// Remaining episodes 11-14 of season 1
-const REMAINING_EPISODES: AsMinaEpisodeDef[] = Array.from({ length: 4 }, (_, i) => {
-  const num = i + 11;
-  const padded = String(num).padStart(2, '0');
-  return {
-    number: num,
-    label: `Episódio ${padded}`,
-    slug: `episodio-${padded}`,
-    title: `Episódio ${padded}`,
-    summary: `Roteiro original do episódio ${padded} de As Mina, de Liz Santos.`,
-    pages: [],
-  };
-});
-
-export const ALL_AS_MINA_EPISODES_RAW: AsMinaEpisodeDef[] = [
-  ...AS_MINA_EPISODES_RAW,
-  ...REMAINING_EPISODES,
-];
+export const ALL_AS_MINA_EPISODES_RAW: AsMinaEpisodeDef[] = AS_MINA_EPISODES_RAW;
 
 export const AS_MINA_EPISODES: ChapterEpisode[] = ALL_AS_MINA_EPISODES_RAW.map((ep) => ({
   number: ep.number,
