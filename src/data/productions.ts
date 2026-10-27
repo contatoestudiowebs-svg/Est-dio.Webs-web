@@ -283,7 +283,7 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     id: 'rute',
     title: 'Rute',
     slug: 'rute',
-    author: 'Liz Santos',
+    author: 'Maurício Reis',
     category: 'Web novela',
     unitType: 'capítulos',
     totalUnits: 18,

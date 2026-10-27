@@ -17,6 +17,7 @@ import {
   Trophy
 } from 'lucide-react';
 import { getProductionBySlug, PRODUCTIONS_DATA } from '../data/productions';
+import { getAuthorBySlug } from '../data/authors';
 import { useProductionCover } from '../utils/imageManager';
 import { useManager } from '../utils/managerAuth';
 import { ImageUploadModal } from '../components/ImageUploadModal';
@@ -266,14 +267,20 @@ export function ProductionDetailPage({ slug, onNavigate }: ProductionDetailPageP
             <div className="flex items-center gap-2 text-sm text-slate-600 mb-6 pb-4 border-b border-slate-200">
               <User className="w-4 h-4 text-slate-400" />
               <span className="text-slate-500 font-medium">Autor:</span>
-              <button
-                onClick={() =>
-                  onNavigate(`/autores/${production.author.toLowerCase().replace(/\s+/g, '-')}`)
-                }
-                className="font-bold text-slate-900 hover:text-[#D80050] transition underline underline-offset-4 decoration-slate-300"
-              >
-                {production.author}
-              </button>
+              {getAuthorBySlug(production.author.toLowerCase().replace(/\s+/g, '-')) ? (
+                <button
+                  onClick={() =>
+                    onNavigate(`/autores/${production.author.toLowerCase().replace(/\s+/g, '-')}`)
+                  }
+                  className="font-bold text-slate-900 hover:text-[#D80050] transition underline underline-offset-4 decoration-slate-300 cursor-pointer"
+                >
+                  {production.author}
+                </button>
+              ) : (
+                <span className="font-bold text-slate-900">
+                  {production.author}
+                </span>
+              )}
             </div>
 
             {/* Award Star Information Badge */}
