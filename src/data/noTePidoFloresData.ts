@@ -4,6 +4,11 @@ import { NO_TE_PIDO_FLORES_EPISODE_03_PAGES } from './noTePidoFloresEpisodes/epi
 import { NO_TE_PIDO_FLORES_EPISODE_04_PAGES } from './noTePidoFloresEpisodes/episode04';
 import { NO_TE_PIDO_FLORES_EPISODE_05_PAGES } from './noTePidoFloresEpisodes/episode05';
 import { NO_TE_PIDO_FLORES_EPISODE_06_PAGES } from './noTePidoFloresEpisodes/episode06';
+import { NO_TE_PIDO_FLORES_EPISODE_07_PAGES } from './noTePidoFloresEpisodes/episode07';
+import { NO_TE_PIDO_FLORES_EPISODE_08_PAGES } from './noTePidoFloresEpisodes/episode08';
+import { NO_TE_PIDO_FLORES_EPISODE_09_PAGES } from './noTePidoFloresEpisodes/episode09';
+import { NO_TE_PIDO_FLORES_EPISODE_10_PAGES } from './noTePidoFloresEpisodes/episode10';
+import { NO_TE_PIDO_FLORES_EPISODE_11_PAGES } from './noTePidoFloresEpisodes/episode11';
 import { ChapterEpisode } from '../types';
 
 export interface NoTePidoFloresEpisodeDef {
@@ -77,26 +82,59 @@ export const NO_TE_PIDO_FLORES_EPISODES_RAW: NoTePidoFloresEpisodeDef[] = [
     pages: NO_TE_PIDO_FLORES_EPISODE_06_PAGES,
     pdfUrl: '/assets/aistudio/NO_TE_PIDO_FLORES.EP06.docx_e4e2187a.pdf',
   },
+  {
+    number: 7,
+    label: 'Episódio 07',
+    slug: 'episodio-07',
+    title: 'Episódio 07',
+    summary:
+      'Esmeralda tem uma crise de ansiedade ao discutir com Roxana. Martin tenta seduzir Lupe, que fica sem reação. Lupita fantasia Esmeralda e foge com ela. Martin e Lupe têm uma noite romântica, assim como Lupita e Esmeralda, que saboreia a liberdade ao cantar num bar da cidade.',
+    pages: NO_TE_PIDO_FLORES_EPISODE_07_PAGES,
+    pdfUrl: '/assets/aistudio/NO_TE_PIDO_FLORES.EP07.docx_20488773.pdf',
+  },
+  {
+    number: 8,
+    label: 'Episódio 08',
+    slug: 'episodio-08',
+    title: 'Episódio 08',
+    summary:
+      'Esmeralda e Lupita tem uma noite de amor juntas. Lupe é surpreendido quando acorda e vê sua casa lotada de flores. Martin se mostra apaixonado por Lupe enquanto tenta fugir dos paparazzis junto de Esmeralda. Lupita recebe uma carta de aprovação de um curso em Paris. Lupe é surpreendido por um flashmob no meio da rua enviado por Martin. Roxana anuncia o casamento de Esmeralda e Martin, surpreendendo até mesmo os dois.',
+    pages: NO_TE_PIDO_FLORES_EPISODE_08_PAGES,
+    pdfUrl: '/assets/aistudio/NO_TE_PIDO_FLORES.EP08.docx_46937750.pdf',
+  },
+  {
+    number: 9,
+    label: 'Episódio 09',
+    slug: 'episodio-09',
+    title: 'Episódio 09',
+    summary:
+      'Lupe e Lupita desabafam sobre suas vidas amorosas. Esmeralda confronta Roxana, recusa o casamento falso e corta o cabelo para se libertar. Graziela provoca um incêndio criminoso na casa de Lupita. Martin surpreende Lupe com um carro de som na rua. Esmeralda salva Lupita das chamas antes da casa explodir. Martin e Lupe admitem seus sentimentos e se beijam no parque, mas são sequestrados.',
+    pages: NO_TE_PIDO_FLORES_EPISODE_09_PAGES,
+    pdfUrl: '/assets/aistudio/NO_TE_PIDO_FLORES.EP09.docx_a57f0313.pdf',
+  },
+  {
+    number: 10,
+    label: 'Episódio 10',
+    slug: 'episodio-10',
+    title: 'Episódio 10',
+    summary:
+      'Roxana sequestra Martin e exige que ele mantenha a farsa do casamento com Esmeralda. Esmeralda descobre que Lupita foi aceita em Paris e fica devastada com a iminente partida. Dois meses se passam e o casamento se aproxima. Lupita se despede de Lupe e o encoraja a lutar por Martin. Lupe percebe que ama Martin e pedala desesperadamente pelas ruas rumo à igreja para impedir o casamento.',
+    pages: NO_TE_PIDO_FLORES_EPISODE_10_PAGES,
+    pdfUrl: '/assets/aistudio/NO_TE_PIDO_FLORES.EP10.docx_3ff9c2f9.pdf',
+  },
+  {
+    number: 11,
+    label: 'Episódio 11',
+    slug: 'episodio-11',
+    title: 'Episódio 11 (Final)',
+    summary:
+      'Mulheres vestidas de noiva invadem a igreja e armam uma confusão generalizada. Lupe chega a tempo de impedir a cerimônia, e Esmeralda cancela o casamento para buscar sua liberdade. Martin e Lupe se casam ali mesmo no altar. Esmeralda corre ao aeroporto para uma emocionante despedida com Lupita. Graziela é recrutada para a Central Purple de Vilões. Um ano depois, Lupe e Martin celebram o amor cercados de amigos em uma grande festa.',
+    pages: NO_TE_PIDO_FLORES_EPISODE_11_PAGES,
+    pdfUrl: '/assets/aistudio/NO_TE_PIDO_FLORES.EP11.docx_4d6a84f7.pdf',
+  },
 ];
 
-// Remaining episodes 7-11
-const REMAINING_EPISODES: NoTePidoFloresEpisodeDef[] = Array.from({ length: 5 }, (_, i) => {
-  const num = i + 7;
-  const padded = String(num).padStart(2, '0');
-  return {
-    number: num,
-    label: `Episódio ${padded}`,
-    slug: `episodio-${padded}`,
-    title: `Episódio ${padded}`,
-    summary: `Roteiro original do episódio ${padded} de No Te Pido Flores, de Everton B Dutra.`,
-    pages: [],
-  };
-});
-
-export const ALL_NO_TE_PIDO_FLORES_EPISODES_RAW: NoTePidoFloresEpisodeDef[] = [
-  ...NO_TE_PIDO_FLORES_EPISODES_RAW,
-  ...REMAINING_EPISODES,
-];
+export const ALL_NO_TE_PIDO_FLORES_EPISODES_RAW: NoTePidoFloresEpisodeDef[] = NO_TE_PIDO_FLORES_EPISODES_RAW;
 
 export const NO_TE_PIDO_FLORES_EPISODES: ChapterEpisode[] = ALL_NO_TE_PIDO_FLORES_EPISODES_RAW.map((ep) => ({
   number: ep.number,
