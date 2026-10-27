@@ -16,6 +16,7 @@ import { UM_NOVO_REI_1_EPISODES } from './umNovoReiData';
 import { UM_NOVO_REI_2_EPISODES } from './umNovoRei2Data';
 import { NO_TE_PIDO_FLORES_EPISODES } from './noTePidoFloresData';
 import { AS_MINA_EPISODES } from './asMinaData';
+import { DESTINO_AO_CORACAO_EPISODES } from './destinoAoCoracaoData';
 
 function generateUnits(count: number, unitType: UnitType): ChapterEpisode[] {
   const prefix = unitType === 'capítulos' ? 'Capítulo' : 'Episódio';
@@ -355,7 +356,7 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     status: 'Finalizada',
     coverImage: 'https://static.wixstatic.com/media/cbfc82_4eded516fbfb41a3a884ea530520beb1~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_4eded516fbfb41a3a884ea530520beb1~mv2.png',
     synopsis: 'Thales fugiu de sua cidade natal para evitar seu amor de adolescência pelo rústico Joca, mas retorna à pitoresca cidade de Graçaville anos depois, no intuito de vender a fazenda de sua avó falecida para evitar seu declínio financeiro. Pensando que Joca é um heterossexual convicto, Thales mal sabe que seu amigo também guarda segredos profundos. Acontece que Joca secretamente é apaixonado por Thales, mas agora o odeia por tê-lo abandonado e aos velhos amigos.',
-    episodes: generateUnits(12, 'capítulos')
+    episodes: DESTINO_AO_CORACAO_EPISODES
   },
   {
     id: 'debora-e-rebeca',
