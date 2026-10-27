@@ -15,6 +15,7 @@ import { INFIDELIDADE_EPISODES } from './infidelidadeData';
 import { UM_NOVO_REI_1_EPISODES } from './umNovoReiData';
 import { UM_NOVO_REI_2_EPISODES } from './umNovoRei2Data';
 import { NO_TE_PIDO_FLORES_EPISODES } from './noTePidoFloresData';
+import { AS_MINA_EPISODES } from './asMinaData';
 
 function generateUnits(count: number, unitType: UnitType): ChapterEpisode[] {
   const prefix = unitType === 'capítulos' ? 'Capítulo' : 'Episódio';
@@ -380,7 +381,7 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     status: 'Finalizada',
     coverImage: 'https://static.wixstatic.com/media/cbfc82_cb5f1af4c8e7409d83964e1bb0644ac7~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_cb5f1af4c8e7409d83964e1bb0644ac7~mv2.png',
     synopsis: 'Carol é ginasta e tem o sonho de estudar fora do país para ter um melhor desempenho e participar de uma Olimpíada. Seu pai, Bruno, se empenha em conseguir um patrocínio para que Carol estude fora. Isadora é uma garota rica, mas não aceita as coisas que sua mãe, Aurora, impõe, então decide se matricular em um colégio público sem sua mãe saber e esconde de suas amigas quem realmente é. Já Tamara é uma menina esforçada e tem que lidar com o problema do alcoolismo de seu pai, Berto, que além de beber, passa dias fora de casa, e Tamara tem que se dobrar para cuidar também da sua irmã Eva. Essas três histórias se tornam uma só em As Mina.',
-    episodes: generateUnits(14, 'episódios')
+    episodes: AS_MINA_EPISODES
   },
   {
     id: 'acesso-1',
