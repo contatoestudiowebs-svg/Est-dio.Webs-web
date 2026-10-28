@@ -4,6 +4,12 @@ import { DESTINO_AO_CORACAO_EPISODE_03_PAGES } from './destinoAoCoracaoEpisodes/
 import { DESTINO_AO_CORACAO_EPISODE_04_PAGES } from './destinoAoCoracaoEpisodes/episode04';
 import { DESTINO_AO_CORACAO_EPISODE_05_PAGES } from './destinoAoCoracaoEpisodes/episode05';
 import { DESTINO_AO_CORACAO_EPISODE_06_PAGES } from './destinoAoCoracaoEpisodes/episode06';
+import { DESTINO_AO_CORACAO_EPISODE_07_PAGES } from './destinoAoCoracaoEpisodes/episode07';
+import { DESTINO_AO_CORACAO_EPISODE_08_PAGES } from './destinoAoCoracaoEpisodes/episode08';
+import { DESTINO_AO_CORACAO_EPISODE_09_PAGES } from './destinoAoCoracaoEpisodes/episode09';
+import { DESTINO_AO_CORACAO_EPISODE_10_PAGES } from './destinoAoCoracaoEpisodes/episode10';
+import { DESTINO_AO_CORACAO_EPISODE_11_PAGES } from './destinoAoCoracaoEpisodes/episode11';
+import { DESTINO_AO_CORACAO_EPISODE_12_PAGES } from './destinoAoCoracaoEpisodes/episode12';
 import { ChapterEpisode } from '../types';
 
 export interface DestinoAoCoracaoEpisodeDef {
@@ -77,26 +83,69 @@ export const DESTINO_AO_CORACAO_EPISODES_RAW: DestinoAoCoracaoEpisodeDef[] = [
     pages: DESTINO_AO_CORACAO_EPISODE_06_PAGES,
     pdfUrl: '/assets/aistudio/CAP06-DESTINO_AO_CORA__O_cb7d2cb8.pdf',
   },
+  {
+    number: 7,
+    label: 'Capítulo 07',
+    slug: 'capitulo-07',
+    title: 'Capítulo 07',
+    summary:
+      'Joca fica excitado ao ver Thales pelado e tem que disfarçar. Thales preocupa-se se Joca entendeu a situação de maneira equivocada. Mariane confronta Jones, que acaba lhe contando toda a verdade. Dudu e Joca bolam um plano para espantar Gisele e suas ameaças. Joca é aconselhado por Dudu a tentar mais uma vez conquistar Thales, desta vez mudando completamente seu estilo, para se parecer com os homens da cidade grande. Jones revela a Mariane que resolveu recomeçar sua vida em Graçaville após a rejeição da família em relação a sua identidade. Gisele manda uma mensagem provocativa para Cida, informando o lugar em que será corna. Joca aparece completamente mudado na porta de Thales. Dudu enrola Gisele, lhe dando um sonífero, mas terá de fugir do flagra de Cida.',
+    pages: DESTINO_AO_CORACAO_EPISODE_07_PAGES,
+    pdfUrl: '/assets/aistudio/CAP07-DESTINO_AO_CORA__O_d8c79bb7.pdf',
+  },
+  {
+    number: 8,
+    label: 'Capítulo 08',
+    slug: 'capitulo-08',
+    title: 'Capítulo 08',
+    summary:
+      'Dudu consegue escapar de Cida, mas é perseguido por um cão sedento e obrigado a fugir só de cueca pela cidade. Thales estranha a atitude de Joca com seu novo visual. Ao chegar em casa, Dudu é abordado por Cida, que ameaça cancelar o casamento. Encurralado, Dudu revela a verdade sobre Joca para Cida. Thales e Joca conversam sobre coisas que gostam já altos de vinho. Thales revela que não gosta do novo visual de Joca e o mesmo revela que também não. Thales dá um selinho em Joca espontaneamente e o homem reage com um beijo apaixonado e quente. Mariane convida Jones para um café da manhã no lago. Joca e Thales têm uma noite de amor.',
+    pages: DESTINO_AO_CORACAO_EPISODE_08_PAGES,
+    pdfUrl: '/assets/aistudio/CAP08-DESTINO_AO_CORA__O_fde44c43.pdf',
+  },
+  {
+    number: 9,
+    label: 'Capítulo 09',
+    slug: 'capitulo-09',
+    title: 'Capítulo 09',
+    summary:
+      'Thales e Joca acordam juntos na cama e são surpreendidos pela situação. Eles decidem conversar mais tarde, e Thales vai ao banheiro enquanto Joca se veste e sai do quarto. Mariane e Jones conversam no lago e o homem mente que não tem ninguém em seu coração. Cida confronta Gisele sobre seu comportamento e a acusa de ser falsa.Cida ameaça Gisele com uma fonte tirada no Motelzinho. Joca e Dudu discutem se o encontro foi real ou não e se houve algum sentimento envolvido. Joca também menciona que não enviou nenhuma mensagem depois. Thales, Mariane e Cida discutem as preocupações de Thales sobre Joca. Thales e Joca têm a oportunidade de se declararem. Gisele descobre que Cida não está grávida de verdade. Joca escuta uma conversa de Thales e o interpreta mal, pensando que ele não o ama. Thales se convence de que Joca talvez possa o amar. Jones vem ver Mariane na chuva e eles se beijam apaixonadamente.',
+    pages: DESTINO_AO_CORACAO_EPISODE_09_PAGES,
+    pdfUrl: '/assets/aistudio/CAP09-DESTINO_AO_CORA__O_92db0d5c.pdf',
+  },
+  {
+    number: 10,
+    label: 'Capítulo 10',
+    slug: 'capitulo-10',
+    title: 'Capítulo 10',
+    summary:
+      'Confira agora o antepenúltimo capítulo de Destino ao Coração e o encaminhar dos desfechos da história e seus personagens.',
+    pages: DESTINO_AO_CORACAO_EPISODE_10_PAGES,
+    pdfUrl: '/assets/aistudio/CAP10-DESTINO_AO_CORA__O_874ff129.pdf',
+  },
+  {
+    number: 11,
+    label: 'Capítulo 11',
+    slug: 'capitulo-11',
+    title: 'Capítulo 11',
+    summary:
+      'Confira agora o penúltimo capítulo de Destino ao Coração e o encaminhar dos desfechos da história e seus personagens.',
+    pages: DESTINO_AO_CORACAO_EPISODE_11_PAGES,
+    pdfUrl: '/assets/aistudio/CAP11-DESTINO_AO_CORA__O_8ece5d11.pdf',
+  },
+  {
+    number: 12,
+    label: 'Capítulo 12',
+    slug: 'capitulo-12',
+    title: 'Capítulo 12',
+    summary:
+      'Confira agora o último capítulo de Destino ao Coração e os desfechos da história e seus personagens.',
+    pages: DESTINO_AO_CORACAO_EPISODE_12_PAGES,
+    pdfUrl: '/assets/aistudio/CAP12-DESTINO_AO_CORA__O_f028d057.pdf',
+  },
 ];
 
-// Remaining chapters 7-12
-const REMAINING_EPISODES: DestinoAoCoracaoEpisodeDef[] = Array.from({ length: 6 }, (_, i) => {
-  const num = i + 7;
-  const padded = String(num).padStart(2, '0');
-  return {
-    number: num,
-    label: `Capítulo ${padded}`,
-    slug: `capitulo-${padded}`,
-    title: `Capítulo ${padded}`,
-    summary: `Roteiro original do capítulo ${padded} de Destino ao Coração, de Everton B Dutra.`,
-    pages: [],
-  };
-});
-
-export const ALL_DESTINO_AO_CORACAO_EPISODES_RAW: DestinoAoCoracaoEpisodeDef[] = [
-  ...DESTINO_AO_CORACAO_EPISODES_RAW,
-  ...REMAINING_EPISODES,
-];
+export const ALL_DESTINO_AO_CORACAO_EPISODES_RAW: DestinoAoCoracaoEpisodeDef[] = DESTINO_AO_CORACAO_EPISODES_RAW;
 
 export const DESTINO_AO_CORACAO_EPISODES: ChapterEpisode[] = ALL_DESTINO_AO_CORACAO_EPISODES_RAW.map((ep) => ({
   number: ep.number,
