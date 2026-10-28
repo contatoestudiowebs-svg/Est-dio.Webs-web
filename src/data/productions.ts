@@ -17,6 +17,7 @@ import { UM_NOVO_REI_2_EPISODES } from './umNovoRei2Data';
 import { NO_TE_PIDO_FLORES_EPISODES } from './noTePidoFloresData';
 import { AS_MINA_EPISODES } from './asMinaData';
 import { DESTINO_AO_CORACAO_EPISODES } from './destinoAoCoracaoData';
+import { DEBORA_E_REBECA_EPISODES } from './deboraERebecaData';
 
 function generateUnits(count: number, unitType: UnitType): ChapterEpisode[] {
   const prefix = unitType === 'capítulos' ? 'Capítulo' : 'Episódio';
@@ -365,11 +366,11 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     author: 'Fred Reids',
     category: 'Web novela',
     unitType: 'capítulos',
-    totalUnits: 15,
+    totalUnits: 16,
     status: 'Finalizada',
     coverImage: 'https://static.wixstatic.com/media/cbfc82_abde23eba1b647d7a3d370e1a6a304d2~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_abde23eba1b647d7a3d370e1a6a304d2~mv2.png',
     synopsis: 'Débora e Rebeca, esposas aparentemente convencionais em 1928, vivem em uma sociedade regida por normas estritas. Seu destino se entrelaça em um encontro secreto, desafiando as convenções sociais. À medida que compartilham segredos e desenvolvem uma conexão proibida, enfrentam o dilema doloroso de seguir seus corações sem destruir suas vidas. Débora e Rebeca é uma comovente história de amor proibido e coragem, uma jornada de autodescoberta e a luta por felicidade em um mundo que exige conformidade, desafiando normas e redefinindo coragem e lealdade.',
-    episodes: generateUnits(15, 'capítulos')
+    episodes: DEBORA_E_REBECA_EPISODES
   },
   {
     id: 'as-mina',
