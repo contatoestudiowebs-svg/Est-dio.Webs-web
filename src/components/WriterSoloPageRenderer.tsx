@@ -109,14 +109,14 @@ export function WriterSoloPageRenderer({
       </div>
 
       {/* Screenplay Content Body */}
-      <div className="space-y-0 text-[13px] sm:text-[14px] leading-[1.25]">
+      <div className="space-y-0 text-[13px] sm:text-[14px] leading-[1.3]">
         {parsed.elements.map((el, idx) => {
           switch (el.type) {
             case 'scene-heading':
               return (
                 <div
                   key={idx}
-                  className="font-bold uppercase tracking-wide text-black text-left pt-4 pb-2 border-b border-slate-100/60"
+                  className="font-bold uppercase tracking-wider text-black text-left pt-5 pb-2.5 border-b border-slate-200/80 mb-2 font-['Courier_Prime',Courier,monospace]"
                 >
                   {el.text}
                 </div>
@@ -126,7 +126,7 @@ export function WriterSoloPageRenderer({
               return (
                 <div
                   key={idx}
-                  className="font-bold uppercase text-black pt-3 pb-0.5 ml-[36%] text-left"
+                  className="font-bold uppercase text-black pt-3 pb-0.5 ml-[22%] sm:ml-[36%] text-left tracking-wide"
                 >
                   {el.text}
                 </div>
@@ -136,7 +136,7 @@ export function WriterSoloPageRenderer({
               return (
                 <div
                   key={idx}
-                  className="italic text-slate-800 ml-[30%] pb-0.5 max-w-[34ch] text-left"
+                  className="italic text-slate-800 ml-[18%] sm:ml-[30%] pb-0.5 max-w-[34ch] text-left"
                 >
                   {el.text}
                 </div>
@@ -146,7 +146,7 @@ export function WriterSoloPageRenderer({
               return (
                 <div
                   key={idx}
-                  className="text-black leading-[1.2] ml-[20%] mr-[14%] max-w-[42ch] pb-3 text-left"
+                  className="text-black leading-[1.3] ml-[10%] sm:ml-[20%] mr-[6%] sm:mr-[14%] max-w-[42ch] pb-3 text-left"
                 >
                   {el.text}
                 </div>
@@ -154,7 +154,7 @@ export function WriterSoloPageRenderer({
 
             case 'transition':
               return (
-                <div key={idx} className="font-bold uppercase text-right py-3 text-slate-900">
+                <div key={idx} className="font-bold uppercase text-right py-3.5 text-slate-900 tracking-wider">
                   {el.text}
                 </div>
               );
@@ -162,7 +162,7 @@ export function WriterSoloPageRenderer({
             case 'action':
             default:
               return (
-                <div key={idx} className="text-black text-left leading-[1.25] pb-2.5">
+                <div key={idx} className="text-black text-left leading-[1.35] pb-3">
                   {el.text}
                 </div>
               );

@@ -35,21 +35,47 @@ export interface ParsedScreenplayPage {
 /**
  * Checks if a line matches a scene heading (slugline)
  */
-export function isSceneHeading(line: string): boolean {
+/**
+ * Checks if a line matches a scene heading (slugline)
+ */
+export function isSceneHeading(line: string, nextLine?: string): boolean {
   const trimmed = line.trim();
-  if (!trimmed) return false;
+  if (!trimmed || trimmed.length > 120) return false;
 
-  // Strip leading scene numbers like "01. INT." or "1. EXT."
-  const clean = trimmed.replace(/^\d+[\.\)]\s*/, '');
+  // Strip leading scene numbers like "01.", "01", "1.", "1 -", "CENA 1 -"
+  const clean = trimmed.replace(/^\d+[\.\)\-]?\s*/, '').replace(/^CENA\s+\d+[\s\-\:]*/i, '');
 
   // Standard slugline prefixes
-  if (/^(INT\.|EXT\.|INT\/EXT\.|INT\.\/EXT\.|I\/E\.|EST\.|CENA\s+\d+)/i.test(clean)) {
+  if (/^(INT\.|EXT\.|INT\/EXT\.|INT\.\/EXT\.|I\/E\.|EST\.|CENA\b|SCENE\b)/i.test(clean)) {
     return true;
   }
 
   // Common Portuguese slugline patterns (e.g. "CONDOMÍNIO – CASA DE RÔMULO – VARANDA – NOITE.")
-  const timeEndings = /[-–—]\s*(DIA|NOITE|TARDE|MANHÃ|MADRUGADA|ENTARDECER|AMANHECER|CONT\.|CONTINUAÇÃO|FLASHBACK)[\.:]?$/i;
-  if (timeEndings.test(clean) && clean === clean.toUpperCase()) {
+  // or "02. CASA DE GENEBRA. SALA DE ESTAR. DIA" or "Casa de Berto. Sala de estar. Manhã."
+  const timeEndings = /[-–—一\.]\s*(DIA|NOITE|TARDE|MANHÃ|MADRUGADA|ENTARDECER|AMANHECER|CONT\.|CONTINUAÇÃO|FLASHBACK)[\.:]?$/i;
+  if (timeEndings.test(trimmed)) {
+    // Exclude full narrative action sentences
+    if (!/\b(está|estava|chegou|foram|disse|olhou|entrou|quando|depois)\b/i.test(trimmed)) {
+      return true;
+    }
+  }
+
+  // Numeric scene start with location: e.g. "01 CIDADE FICTÍCIA DE BOA ESPERANÇA. BIBLIOTECA."
+  if (/^\d+[\.\)\-]?\s+[A-ZÀ-Ú0-9\s\.\,\'\-]+$/.test(trimmed)) {
+    if (nextLine && /^(DIA|NOITE|TARDE|MANHÃ|MADRUGADA|CONTINUAÇÃO)[\.:]?$/i.test(nextLine.trim())) {
+      return true;
+    }
+    if (clean.includes('.') && clean === clean.toUpperCase() && !COMMON_ACTION_VERBS.test(clean)) {
+      return true;
+    }
+  }
+
+  // Standalone time jumps / scene markers
+  if (
+    /^(MESES DEPOIS|DOIS DIAS DEPOIS|ALGUMAS SEMANAS DEPOIS|UMA SEMANA DEPOIS|MINUTOS DEPOIS|HORAS MAIS TARDE|CAI A NOITE|ABERTURA|INTERVALO COMERCIAL|NOITE SEGUINTE|DIA SEGUINTE|TEMPO DEPOIS)[\.\…]*$/i.test(
+      trimmed
+    )
+  ) {
     return true;
   }
 
@@ -57,42 +83,243 @@ export function isSceneHeading(line: string): boolean {
 }
 
 /**
- * Checks if a line matches a transition (e.g. "CORTE PARA:", "FADE OUT.")
+ * Checks if a line matches a transition (e.g. "CORTE PARA:", "CORTA PARA:", "FADE OUT.")
  */
 export function isTransition(line: string): boolean {
   const trimmed = line.trim();
-  return /^(CORTE PARA|CORTA PARA|FADE IN|FADE OUT|DISSOLVE PARA|FIM DO EPISÓDIO|FIM DA CENA|FIM)[\.:]?$/i.test(
+  if (!trimmed) return false;
+  return /^(CORTE PARA|CORTA PARA|FADE IN|FADE OUT|DISSOLVE PARA|FIM DO CAPÍTULO|FIM DO EPISÓDIO|FIM DA CENA|FIM)[\.:;]?(\s.*)?$/i.test(
     trimmed
   );
 }
 
 /**
- * Checks if a line is a character cue in WriterSolo format (uppercase name on its own line)
- */
-export function isCharacterCue(line: string): boolean {
-  const trimmed = line.trim();
-  if (trimmed.length < 2 || trimmed.length > 40) return false;
-  if (trimmed.endsWith('.') || trimmed.endsWith(':') || trimmed.endsWith('!') || trimmed.endsWith('?')) {
-    // Only allow extensions like (V.O.), (O.S.), (CONT.)
-    if (!/\([A-Z0-9\.\s\']+\)$/i.test(trimmed)) return false;
-  }
-
-  // Matches ALL CAPS name with optional (V.O.) / (CONT.) / (TELEFONE)
-  const characterRegex = /^[A-ZÀ-Ú0-9\s\.\']+(?:\s*\([A-ZÀ-Ú0-9\.\s\']+\))?$/;
-  if (!characterRegex.test(trimmed)) return false;
-
-  // Exclude common slugline starts or keywords
-  if (/^(INT|EXT|EST|FADE|CORTE|CENA|CAPÍTULO|EPISÓDIO)/i.test(trimmed)) return false;
-
-  return true;
-}
-
-/**
- * Checks if a line is a parenthetical (e.g. "(baixo)", "(ao telefone)")
+ * Checks if a line is a parenthetical (e.g. "(baixo)", "(ao telefone)", "(surpresa)")
  */
 export function isParenthetical(line: string): boolean {
   const trimmed = line.trim();
-  return /^\([^)]{1,60}\)$/.test(trimmed);
+  return /^\([^)]{1,100}\)$/.test(trimmed);
+}
+
+/**
+ * Helper to check if a standalone word/phrase is an action verb in Portuguese
+ */
+const COMMON_ACTION_VERBS =
+  /\b(está|estava|vai|vão|entra|entram|sai|saem|caminha|caminham|corre|correm|senta|sentam|levanta|levantam|olha|olham|vira|viram|pega|pegam|puxa|puxam|coloca|colocam|chora|sorri|abraça|beija|observa|espera|continua|começa|percebe|respira|suspira|encara|aponta|mostra|entrega|guarda|fecha|abre|bate|desmaia|acorda|reage|bufa|escreve|sobe|desce|passa|arrasta|agarra|larga|sacode|solta|toca|liga|serve|bebe|assente|cata|esfrega|se |diz|fala|pergunta|responde)\b/i;
+
+/**
+ * Extracts character name and optional parenthetical from a character cue line
+ */
+export function extractCharacterCue(
+  line: string,
+  nextLine?: string
+): { name: string; parenthetical?: string } | null {
+  const trimmed = line.trim();
+  if (trimmed.length < 2 || trimmed.length > 45) return null;
+
+  // Exclude single time words (e.g. "DIA.", "NOITE.", "MANHÃ.")
+  if (/^(DIA|NOITE|TARDE|MANHÃ|MADRUGADA|CONTINUAÇÃO)[\.:]?$/i.test(trimmed)) {
+    return null;
+  }
+
+  // Exclude standalone chapter/episode headings
+  if (/^(CAPÍTULO|EPISÓDIO)\s+\d+[\.:]?$/i.test(trimmed)) {
+    return null;
+  }
+
+  // Exclude transitions, sluglines and common action starters
+  if (isSceneHeading(trimmed, nextLine) || isTransition(trimmed)) return null;
+  if (/^(INT|EXT|EST|FADE|CORTE|CORTA|CENA|CAPÍTULO|EPISÓDIO|SONOPLASTIA|DETALHE|PLANO|CAM|CÂMERA)/i.test(trimmed)) {
+    return null;
+  }
+
+  // 1. ALL CAPS character cue with optional parenthetical: e.g. "THALES", "THALES (nervoso)", "LYKA (V.O.)"
+  const allCapsMatch = trimmed.match(/^([A-ZÀ-Ú0-9\s\.\'\-]+?)(?:\s*\(([^)]+)\))?$/);
+  if (allCapsMatch) {
+    const rawName = allCapsMatch[1].trim();
+    const paren = allCapsMatch[2]?.trim();
+
+    // Check that rawName is all caps
+    if (rawName === rawName.toUpperCase() && rawName.length >= 2 && rawName.length <= 35) {
+      // Must not end in sentence punctuation
+      if (!/[,\!\?]$/.test(rawName)) {
+        return {
+          name: rawName,
+          parenthetical: paren,
+        };
+      }
+    }
+  }
+
+  // 2. Title Case character cue (standard in Brazilian TV scripts like "Tamara", "Dr. Guilherme", "Salete", "Berto")
+  const titleCaseMatch = trimmed.match(/^([A-ZÀ-Ú][a-zà-ú0-9\.\'\s\-]+?)(?:\s*\(([^)]+)\))?$/);
+  if (titleCaseMatch) {
+    const rawName = titleCaseMatch[1].trim();
+    const paren = titleCaseMatch[2]?.trim();
+
+    // Must be short (1 to 4 words), under 30 chars
+    const words = rawName.split(/\s+/);
+    if (words.length <= 4 && rawName.length <= 32) {
+      // Exclude lines ending with punctuation (. ! ? ; ,) except title abbrev like "Dr." or "Sr."
+      if (/[!?,;:]$/.test(rawName)) return null;
+      if (rawName.endsWith('.') && !/^(Dr|Sr|Sra|Dra)\.$/i.test(rawName)) return null;
+
+      // Exclude common preposition / article starters
+      if (/^(O|A|Os|As|Um|Uma|De|Do|Da|Em|No|Na|Depois|Quando|Enquanto|Logo|Mas|Com|Sem|Pelo|Pela)\b/i.test(rawName)) {
+        return null;
+      }
+
+      // Must not contain action verbs
+      if (COMMON_ACTION_VERBS.test(rawName)) {
+        return null;
+      }
+
+      // If it has an embedded parenthetical: e.g. "Dr. Guilherme (calmo)", "Tamara (surpresa)" -> 100% character cue
+      if (paren) {
+        return {
+          name: rawName,
+          parenthetical: paren,
+        };
+      }
+
+      // If followed by standalone parenthetical or direct spoken dialogue line:
+      if (nextLine) {
+        const nextTrim = nextLine.trim();
+        if (isParenthetical(nextTrim)) {
+          return { name: rawName };
+        }
+        // Direct spoken dialogue cues in next line
+        if (
+          nextTrim.length > 0 &&
+          !isSceneHeading(nextTrim) &&
+          !isTransition(nextTrim) &&
+          (/^[“\"\'\—\–\-]/.test(nextTrim) ||
+            /^(Mãe|Pai|Filha|Filho|Oi|Olá|Sim|Não|Mas|Por que|Como|Eu|Você|O que|Quem|Onde|Quando|Nem|Então|Pode|Deixa|Vai|Se|Olha|Ah|Ih|Ai|Dona|Doutor|Desculpe|Cê|Agora|É!)/i.test(
+              nextTrim
+            ) ||
+            /[!\?]$/.test(nextTrim))
+        ) {
+          return { name: rawName };
+        }
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Checks if a line is a character cue
+ */
+export function isCharacterCue(line: string, nextLine?: string): boolean {
+  return extractCharacterCue(line, nextLine) !== null;
+}
+
+/**
+ * Parses inline Brazilian TV drama dialogue format: "Character (Parenthetical) - Dialogue..."
+ * e.g. "Dorival – Yula Gurgel, grande autora..." or "Tamara - Deixa que eu atendo, pai."
+ * Excludes hyphenated words like "levanta-se" or "dar-lhe".
+ */
+export function parseInlineSpeech(line: string): {
+  characterName: string;
+  parenthetical?: string;
+  dialogueText: string;
+} | null {
+  const trimmed = line.trim();
+
+  // Match dialogue separator:
+  // - Em-dash (—) or En-dash (–) with optional spaces
+  // - Colon (:) followed by space
+  // - Hyphen with space before and after: \s+-\s+
+  // - Closing parenthesis followed by hyphen and space: \)\s*-\s+
+  // MUST NOT match enclitic hyphen inside words like "levanta-se" or "dar-lhe"
+  const match = trimmed.match(
+    /^([A-ZÀ-Úa-zà-ú0-9\s\.\'\-]+?)(?:\s*\(([^)]+)\))?\s*(?:[–—]|(?<=\s|\))-(?=\s)|:(?=\s))\s*(.+)$/
+  );
+  if (!match) return null;
+
+  const rawName = match[1].trim();
+  const parenthetical = match[2]?.trim();
+  const dialogueText = match[3]?.trim();
+
+  // Validate character name length and exclude scene action starters
+  if (rawName.length < 2 || rawName.length > 35) return null;
+  if (/^(INT|EXT|EST|CENA|CAPÍTULO|EPISÓDIO|SONOPLASTIA|DETALHE|PLANO|CAM|CÂMERA|CORTA|CORTE)/i.test(rawName)) {
+    return null;
+  }
+  if (/^(Depois|Quando|Enquanto|Condomínio|Casa|Quarto|Sala|Prédio|Rua|Avenida|Stock Shot)/i.test(rawName)) {
+    return null;
+  }
+  if (!dialogueText) return null;
+
+  return {
+    characterName: rawName.toUpperCase(),
+    parenthetical,
+    dialogueText,
+  };
+}
+
+/**
+ * Checks if a line following dialogue is an action/narration line (so dialogue shouldn't swallow it)
+ */
+export function isActionNarration(line: string, previousDialogueLines: string[]): boolean {
+  const trimmed = line.trim();
+  if (!trimmed) return false;
+
+  // 1. Any line starting with lowercase or punctuation is ALWAYS dialogue continuation
+  if (/^[a-zà-ú0-9,\.\:\;\!\?\"\'\”\’\-\–\—\)]/.test(trimmed)) {
+    return false;
+  }
+
+  // 2. Technical screenplay action cues are always action
+  if (
+    /^(SONOPLASTIA|DETALHE|PLANO|CAM|CÂMERA|A CÂMERA|CORTES RÁPIDOS|VEMOS|IMAGENS|A VOZ|A MÚSICA|MÚSICA)/i.test(
+      trimmed
+    )
+  ) {
+    return true;
+  }
+
+  // 3. Check if previous dialogue line finished a sentence
+  const prevLine = previousDialogueLines[previousDialogueLines.length - 1] || '';
+  const prevTrimmed = prevLine.trim();
+  const prevEndedSentence = /[\.\!\?\…\"”\/—–]$/.test(prevTrimmed) || prevTrimmed.endsWith('!');
+
+  // 4. Enclitic third-person verbs (e.g. senta-se, levanta-se, vira-se, aproxima-se, dá-lhe, sobressalta-se)
+  if (/\b[A-Za-zÀ-Úa-zà-ú]+-(se|lhe|o|a|os|as|nos)\b/i.test(trimmed)) {
+    return true;
+  }
+
+  // 5. Reflexive third-person actions (e.g. se levanta, se senta, se olham, se encaram, se desespera, se entristece)
+  if (
+    /\bse (levanta|levantam|senta|sentam|aproxima|aproximam|afasta|afastam|olham|encaram|abraçam|beijam|desespera|entristece|assusta|surpreende|vira|recosta|apruma|esconde|cala|emociona|incomoda|choca|despede)\b/i.test(
+      trimmed
+    )
+  ) {
+    return true;
+  }
+
+  // 6. Common 3rd person narration action verbs when preceded by completed sentence or subject
+  const actionVerbsRegex =
+    /\b(entra|entram|sai|saem|caminha|caminham|corre|correm|olha|olham|pega|pegam|puxa|puxam|coloca|colocam|tira|tiram|chora|choram|sorri|sorriem|abraça|abraçam|beija|beijam|observa|observam|continua|continuam|começa|começam|percebe|percebem|respira|respiram|suspira|suspiram|encara|encaram|aponta|apontam|mostra|mostram|mostrando|entregando|entrega|entregam|guarda|guardam|fecha|fecham|abre|abrem|bate|batem|ouve-se|escuta-se|desmaia|desmaiam|acorda|acordam|hesita|reage|bufa|escreve|sobe|desce|passa|passam|arrasta|agarra|agarrando|larga|largando|sacode|solta|toca|liga|serve|bebe|assente|cata|esfrega|limpa|arruma|aparece|surge)\b/i;
+
+  if (prevEndedSentence && actionVerbsRegex.test(trimmed)) {
+    // Exclude first-person / direct conversational speech
+    if (!/^(Eu|Você|Nós|Vocês|Tu|Pra mim|Por que|Mas eu|Se eu)\b/i.test(trimmed)) {
+      return true;
+    }
+  }
+
+  // 7. Third-person environmental narration
+  if (
+    /^(Uma?|O|A|Os|As|Dois|Duas|Alguns|Algumas)\s+(quarto|porta|sala|mesa|cadeira|cama|médico|música|som|tempo|luz|telefone|campainha|silêncio|expressão|olhar|lágrimas|carro|cão|relógio|homem|mulher|pessoa)\b/i.test(
+      trimmed
+    )
+  ) {
+    return true;
+  }
+
+  return false;
 }
 
 /**
@@ -101,13 +328,13 @@ export function isParenthetical(line: string): boolean {
 export function parseScreenplayPage(rawPageText: string, pageIndex: number): ParsedScreenplayPage {
   const lines = rawPageText.split('\n');
 
-  // Detect Title Page (usually page 0 or page 1 if it contains title and author without scene headings)
+  // Detect Title Page (page 0 or early page with title/author metadata and no scene headings)
   const isTitleCandidate =
-    pageIndex === 0 ||
-    (!rawPageText.includes('INT.') &&
-      !rawPageText.includes('EXT.') &&
-      lines.length <= 15 &&
-      /(EPISÓDIO|CAPÍTULO|DE\s+|POR\s+)/i.test(rawPageText));
+    pageIndex === 0 &&
+    !rawPageText.includes('INT.') &&
+    !rawPageText.includes('EXT.') &&
+    lines.length <= 20 &&
+    /(EPISÓDIO|CAPÍTULO|DE\s+|POR\s+|ESCRITA|AUTOR)/i.test(rawPageText);
 
   if (isTitleCandidate) {
     const cleanLines = lines.map((l) => l.trim()).filter(Boolean);
@@ -122,10 +349,10 @@ export function parseScreenplayPage(rawPageText: string, pageIndex: number): Par
         episode = line;
       } else if (/^["“']/.test(line)) {
         subtitle = line.replace(/["“']/g, '');
-      } else if (/^(DE|POR|ESCRITO POR|AUTOR|AUTORA)/i.test(line)) {
+      } else if (/^(DE|POR|ESCRITO POR|ESCRITA POR|AUTOR|AUTORA)/i.test(line)) {
         author = cleanLines[i + 1] || '';
         i++;
-      } else if (!author && i === cleanLines.length - 1) {
+      } else if (!author && i === cleanLines.length - 1 && !line.includes('@')) {
         author = line;
       }
     }
@@ -145,18 +372,26 @@ export function parseScreenplayPage(rawPageText: string, pageIndex: number): Par
 
   const elements: ScreenplayElement[] = [];
 
-  // Filter out raw pagination artifacts like "SENA EPISÓDIO 01 Pag.: 1" or "---------------------"
+  // Filter out raw pagination artifacts and top header metadata
   const filteredLines: string[] = [];
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const trimmed = line.trim();
 
-    // Skip top header artifacts
-    if (i < 4 && (trimmed.includes('Pag.:') || trimmed.includes('Pag:') || /^[-=_]{5,}$/.test(trimmed))) {
+    // Skip top header artifacts like "PRODUÇÃO CAPÍTULO 01 Pag.: 1", rule lines, or chapter labels
+    if (
+      i < 4 &&
+      (/^(CAPÍTULO|EPISÓDIO)\s+\d+[\.:]?$/i.test(trimmed) ||
+        trimmed.includes('Pag.:') ||
+        trimmed.includes('Pag:') ||
+        trimmed.includes('Pág.:') ||
+        /^[-=_~]{4,}$/.test(trimmed))
+    ) {
       continue;
     }
-    // Skip trailing page number indicator like "1." at very bottom
-    if (i > lines.length - 4 && /^\d+\.$/.test(trimmed)) {
+
+    // Skip standalone page number indicator at top or bottom (e.g. "2.", "3.", "14.")
+    if ((i < 3 || i > lines.length - 4) && /^\d+\.?$/.test(trimmed)) {
       continue;
     }
 
@@ -175,17 +410,40 @@ export function parseScreenplayPage(rawPageText: string, pageIndex: number): Par
     }
 
     // 1. Scene Heading (Slugline)
-    if (isSceneHeading(trimmed)) {
+    if (isSceneHeading(trimmed, filteredLines[i + 1]?.trim())) {
+      let headingText = trimmed.toUpperCase();
+
+      // Check if next line is a two-line slugline continuation (e.g. "DIA.", "NOITE.", "MANHÃ.")
+      if (i + 1 < filteredLines.length) {
+        const nextTrim = filteredLines[i + 1].trim();
+        if (/^(DIA|NOITE|TARDE|MANHÃ|MADRUGADA|CONTINUAÇÃO)[\.:]?$/i.test(nextTrim)) {
+          headingText = `${headingText} 一 ${nextTrim.toUpperCase()}`;
+          i++; // consume continuation line
+        }
+      }
+
       elements.push({
         type: 'scene-heading',
-        text: trimmed.toUpperCase(),
+        text: headingText,
       });
       i++;
       continue;
     }
 
-    // 2. Transition (e.g. CORTE PARA:)
+    // 2. Transition (e.g. "CORTE PARA:", "CORTA PARA;", "FIM DO CAPÍTULO")
     if (isTransition(trimmed)) {
+      // Check if transition has trailing scene heading on same line: e.g. "CORTA PARA; Quarto..."
+      const splitMatch = trimmed.match(/^(CORTE PARA|CORTA PARA|FADE IN|FADE OUT|DISSOLVE PARA)[\.:;]\s*(.+)$/i);
+      if (splitMatch && splitMatch[2]?.trim()) {
+        elements.push({
+          type: 'transition',
+          text: `${splitMatch[1].toUpperCase()}:`,
+        });
+        // Replace current line with remainder so it is processed in next step
+        filteredLines[i] = splitMatch[2].trim();
+        continue;
+      }
+
       elements.push({
         type: 'transition',
         text: trimmed.toUpperCase(),
@@ -194,75 +452,131 @@ export function parseScreenplayPage(rawPageText: string, pageIndex: number): Par
       continue;
     }
 
-    // 3. Brazilian / TV Drama dialogue format: "Character (Parenthetical) - Dialogue..."
-    // e.g. "Rômulo (Desesperado) - Entra! Entra! Pega a Denise..."
-    const speechMatch = trimmed.match(/^([A-ZÀ-Úa-zà-ú0-9\s\.\']+?)(?:\s*\(([^)]+)\))?\s*[-–—]\s*(.+)$/);
-    if (
-      speechMatch &&
-      speechMatch[1].length < 35 &&
-      !speechMatch[1].toLowerCase().includes('condomínio') &&
-      !speechMatch[1].toLowerCase().includes('quando') &&
-      !speechMatch[1].toLowerCase().includes('depois')
-    ) {
-      const charName = speechMatch[1].trim().toUpperCase();
-      const parenthetical = speechMatch[2]?.trim();
-      const dialogueText = speechMatch[3]?.trim();
-
+    // 3. Inline Brazilian / TV Drama dialogue format: "Character (Parenthetical) - Dialogue..."
+    const inlineSpeech = parseInlineSpeech(trimmed);
+    if (inlineSpeech) {
       elements.push({
         type: 'character',
-        text: charName,
-        characterName: charName,
+        text: inlineSpeech.characterName,
+        characterName: inlineSpeech.characterName,
       });
 
-      if (parenthetical) {
+      if (inlineSpeech.parenthetical) {
         elements.push({
           type: 'parenthetical',
-          text: `(${parenthetical})`,
-          parenthetical: `(${parenthetical})`,
+          text: `(${inlineSpeech.parenthetical})`,
+          parenthetical: `(${inlineSpeech.parenthetical})`,
         });
       }
 
-      if (dialogueText) {
-        elements.push({
-          type: 'dialogue',
-          text: dialogueText,
-          dialogue: dialogueText,
-        });
-      }
-
+      const dialogueLines: string[] = [inlineSpeech.dialogueText];
       i++;
+
+      // Collect multi-line continuation of this inline dialogue
+      while (i < filteredLines.length) {
+        const dLine = filteredLines[i].trim();
+        if (!dLine) {
+          i++;
+          break; // Empty line ends speech
+        }
+
+        if (
+          isSceneHeading(dLine) ||
+          isTransition(dLine) ||
+          parseInlineSpeech(dLine) ||
+          extractCharacterCue(dLine, filteredLines[i + 1]?.trim()) ||
+          isParenthetical(dLine)
+        ) {
+          break;
+        }
+
+        if (isActionNarration(dLine, dialogueLines)) {
+          break;
+        }
+
+        dialogueLines.push(dLine);
+        i++;
+      }
+
+      elements.push({
+        type: 'dialogue',
+        text: dialogueLines.join(' '),
+        dialogue: dialogueLines.join(' '),
+      });
+
       continue;
     }
 
-    // 4. WriterSolo Standard Character Cue on separate line
-    if (isCharacterCue(trimmed)) {
+    // 4. Standalone Character Cue on its own line (ALL CAPS or Title Case)
+    const charCueInfo = extractCharacterCue(trimmed, filteredLines[i + 1]?.trim());
+    if (charCueInfo) {
       elements.push({
         type: 'character',
-        text: trimmed.toUpperCase(),
-        characterName: trimmed.toUpperCase(),
+        text: charCueInfo.name.toUpperCase(),
+        characterName: charCueInfo.name.toUpperCase(),
       });
       i++;
 
-      // Check next line for parenthetical or dialogue
-      if (i < filteredLines.length) {
-        const nextTrimmed = filteredLines[i].trim();
-        if (isParenthetical(nextTrimmed)) {
-          elements.push({
-            type: 'parenthetical',
-            text: nextTrimmed,
-            parenthetical: nextTrimmed,
-          });
-          i++;
-        }
+      // If parenthetical was embedded on cue line (e.g. "THALES (nervoso)")
+      if (charCueInfo.parenthetical) {
+        elements.push({
+          type: 'parenthetical',
+          text: `(${charCueInfo.parenthetical})`,
+          parenthetical: `(${charCueInfo.parenthetical})`,
+        });
+      } else if (i < filteredLines.length && isParenthetical(filteredLines[i].trim())) {
+        // Next line is standalone parenthetical: e.g. "(surpresa)"
+        const parenLine = filteredLines[i].trim();
+        elements.push({
+          type: 'parenthetical',
+          text: parenLine,
+          parenthetical: parenLine,
+        });
+        i++;
       }
 
       // Collect consecutive dialogue lines
       const dialogueLines: string[] = [];
       while (i < filteredLines.length) {
         const dLine = filteredLines[i].trim();
-        if (!dLine || isSceneHeading(dLine) || isCharacterCue(dLine) || isTransition(dLine)) {
+        if (!dLine) {
+          i++;
           break;
         }
+
+        if (
+          isSceneHeading(dLine) ||
+          isTransition(dLine) ||
+          parseInlineSpeech(dLine) ||
+          extractCharacterCue(dLine, filteredLines[i + 1]?.trim())
+        ) {
+          break;
+        }
+
+        // Mid-dialogue parenthetical (e.g. (MORE) or (pausa))
+        if (isParenthetical(dLine)) {
+          if (dialogueLines.length > 0) {
+            elements.push({
+              type: 'dialogue',
+              text: dialogueLines.join(' '),
+              dialogue: dialogueLines.join(' '),
+            });
+            dialogueLines.length = 0;
+          }
+          elements.push({
+            type: 'parenthetical',
+            text: dLine,
+            parenthetical: dLine,
+          });
+          i++;
+          continue;
+        }
+
+        // Check if dLine is action narration describing scene/action
+        if (isActionNarration(dLine, dialogueLines)) {
+          break;
+        }
+
         dialogueLines.push(dLine);
         i++;
       }
@@ -294,12 +608,15 @@ export function parseScreenplayPage(rawPageText: string, pageIndex: number): Par
     i++;
     while (i < filteredLines.length) {
       const aLine = filteredLines[i].trim();
+      if (!aLine) {
+        i++;
+        break; // Empty line separates action paragraphs
+      }
       if (
-        !aLine ||
         isSceneHeading(aLine) ||
-        isCharacterCue(aLine) ||
         isTransition(aLine) ||
-        aLine.match(/^[A-ZÀ-Úa-zà-ú0-9\s\.\']+?\s*[-–—]\s*/)
+        parseInlineSpeech(aLine) ||
+        extractCharacterCue(aLine, filteredLines[i + 1]?.trim())
       ) {
         break;
       }

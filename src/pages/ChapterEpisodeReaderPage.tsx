@@ -20,13 +20,20 @@ import {
   Layers,
   Eye,
   MessageSquare,
-  FileCode2
+  FileCode2,
+  Clock
 } from 'lucide-react';
 import { getProductionBySlug } from '../data/productions';
+import { formatReadingTime } from '../utils/readingTime';
 import { SEOHead } from '../components/SEOHead';
 import { ChapterCommentsSection } from '../components/ChapterCommentsSection';
 import { WriterSoloPageRenderer } from '../components/WriterSoloPageRenderer';
-import { generateWriterSoloPrintHtml, exportToFountain } from '../utils/writerSoloFormatter';
+import {
+  generateWriterSoloPrintHtml,
+  exportToFountain,
+  parseScreenplayPage,
+  ScreenplayElement,
+} from '../utils/writerSoloFormatter';
 
 interface ChapterEpisodeReaderPageProps {
   productionSlug: string;
@@ -43,6 +50,7 @@ export function ChapterEpisodeReaderPage({
   const [fontSize, setFontSize] = useState<'normal' | 'large' | 'xlarge'>('normal');
   const [copied, setCopied] = useState(false);
   const [scriptFormat, setScriptFormat] = useState<'writersolo' | 'raw'>('writersolo');
+  const [continuousFormat, setContinuousFormat] = useState<'formatted' | 'raw'>('formatted');
 
   // Fallback 404
   if (!production) {
@@ -82,6 +90,20 @@ export function ChapterEpisodeReaderPage({
   const [activeTab, setActiveTab] = useState<'pdf' | 'text' | 'summary'>(hasPdf ? 'pdf' : 'text');
   const [currentPdfPage, setCurrentPdfPage] = useState<number>(0);
   const [pdfViewMode, setPdfViewMode] = useState<'all' | 'single'>('all');
+
+  const continuousElements = React.useMemo(() => {
+    if (!currentUnit?.pdfPages || currentUnit.pdfPages.length === 0) return [];
+    const elementsList: { pageIndex: number; element: ScreenplayElement }[] = [];
+    currentUnit.pdfPages.forEach((pageText, idx) => {
+      const parsed = parseScreenplayPage(pageText, idx);
+      if (!parsed.isTitlePage) {
+        parsed.elements.forEach((el) => {
+          elementsList.push({ pageIndex: idx, element: el });
+        });
+      }
+    });
+    return elementsList;
+  }, [currentUnit]);
 
   useEffect(() => {
     setCurrentPdfPage(0);
@@ -192,6 +214,10 @@ export function ChapterEpisodeReaderPage({
               <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200">
                 {production.status}
               </span>
+              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-amber-50 text-amber-900 border border-amber-200 flex items-center gap-1 shadow-2xs">
+                <Clock className="w-3 h-3 text-amber-600" />
+                <span>Tempo previsto de leitura: <strong>{currentUnit ? formatReadingTime(currentUnit, production.category) : '10 min'}</strong></span>
+              </span>
               {hasPdf && (
                 <span className="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded bg-rose-50 text-[#D80050] border border-rose-200 flex items-center gap-1">
                   <FileText className="w-3 h-3" />
@@ -270,7 +296,7 @@ export function ChapterEpisodeReaderPage({
               >
                 {production.episodes.map((ep) => (
                   <option key={ep.slug} value={ep.slug} className="bg-white text-slate-900">
-                    {ep.label}
+                    {ep.label} • {formatReadingTime(ep, production.category)}
                   </option>
                 ))}
               </select>
@@ -321,16 +347,22 @@ export function ChapterEpisodeReaderPage({
       {/* Official Summary Callout */}
       {currentUnit?.summary && (
         <div className="bg-white border-l-4 border-[#D80050] border-y border-r border-slate-200 rounded-xl p-5 mb-8 shadow-xs">
-          <div className="flex items-center justify-between gap-2 mb-2">
+          <div className="flex items-center justify-between gap-2 mb-2 flex-wrap">
             <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#D80050] flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5" />
               Resumo Oficial do {currentUnit.label}
             </span>
-            {hasPdf && (
-              <span className="text-[10px] text-slate-500 font-semibold">
-                Roteiro original de {production.author}
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-slate-700 font-semibold flex items-center gap-1.5 bg-slate-100 px-2.5 py-1 rounded-full border border-slate-200 shadow-2xs">
+                <Clock className="w-3.5 h-3.5 text-[#D80050]" />
+                <span>Tempo previsto de leitura: <strong>{formatReadingTime(currentUnit, production.category)}</strong></span>
               </span>
-            )}
+              {hasPdf && (
+                <span className="text-[10px] text-slate-500 font-semibold hidden md:inline">
+                  • Roteiro original de {production.author}
+                </span>
+              )}
+            </div>
           </div>
           <p className="text-sm text-slate-800 leading-relaxed font-sans font-medium">
             {currentUnit.summary}
@@ -383,34 +415,64 @@ export function ChapterEpisodeReaderPage({
           </button>
         </div>
 
-        {/* Font size toggles (for continuous text view) */}
+        {/* Continuous text controls */}
         {activeTab === 'text' && (
-          <div className="flex items-center gap-1 bg-white p-1 rounded-lg border border-slate-200 shadow-xs">
-            <Type className="w-3.5 h-3.5 text-slate-500 mx-1.5" />
-            <button
-              onClick={() => setFontSize('normal')}
-              className={`px-2 py-0.5 rounded text-[11px] font-bold ${
-                fontSize === 'normal' ? 'bg-[#D80050] text-white' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              A
-            </button>
-            <button
-              onClick={() => setFontSize('large')}
-              className={`px-2 py-0.5 rounded text-xs font-bold ${
-                fontSize === 'large' ? 'bg-[#D80050] text-white' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              A+
-            </button>
-            <button
-              onClick={() => setFontSize('xlarge')}
-              className={`px-2 py-0.5 rounded text-sm font-bold ${
-                fontSize === 'xlarge' ? 'bg-[#D80050] text-white' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              A++
-            </button>
+          <div className="flex items-center gap-2 flex-wrap">
+            {hasPdf && (
+              <div className="flex items-center bg-white border border-slate-200 rounded-lg p-0.5 shadow-xs text-xs font-bold text-slate-700">
+                <button
+                  onClick={() => setContinuousFormat('formatted')}
+                  className={`px-2.5 py-1 rounded flex items-center gap-1.5 transition ${
+                    continuousFormat === 'formatted'
+                      ? 'bg-[#D80050] text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                  title="Diálogos e cenas formatadas"
+                >
+                  <Sparkles className="w-3 h-3" />
+                  <span>Roteiro Formatado</span>
+                </button>
+                <button
+                  onClick={() => setContinuousFormat('raw')}
+                  className={`px-2.5 py-1 rounded transition ${
+                    continuousFormat === 'raw'
+                      ? 'bg-slate-900 text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                  title="Texto Bruto"
+                >
+                  Texto Bruto
+                </button>
+              </div>
+            )}
+
+            <div className="flex items-center gap-1 bg-white p-1 rounded-lg border border-slate-200 shadow-xs">
+              <Type className="w-3.5 h-3.5 text-slate-500 mx-1.5" />
+              <button
+                onClick={() => setFontSize('normal')}
+                className={`px-2 py-0.5 rounded text-[11px] font-bold ${
+                  fontSize === 'normal' ? 'bg-[#D80050] text-white' : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                A
+              </button>
+              <button
+                onClick={() => setFontSize('large')}
+                className={`px-2 py-0.5 rounded text-xs font-bold ${
+                  fontSize === 'large' ? 'bg-[#D80050] text-white' : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                A+
+              </button>
+              <button
+                onClick={() => setFontSize('xlarge')}
+                className={`px-2 py-0.5 rounded text-sm font-bold ${
+                  fontSize === 'xlarge' ? 'bg-[#D80050] text-white' : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                A++
+              </button>
+            </div>
           </div>
         )}
 
@@ -617,7 +679,64 @@ export function ChapterEpisodeReaderPage({
                 : 'text-xl leading-loose'
             }`}
           >
-            {currentUnit?.content ? (
+            {continuousFormat === 'formatted' && continuousElements.length > 0 ? (
+              <div className="font-['Courier_Prime',Courier,monospace] space-y-0 text-[13px] sm:text-[14px] leading-[1.3] text-black bg-white p-4 sm:p-8 rounded-xl border border-slate-200 shadow-xs">
+                {continuousElements.map((item, idx) => {
+                  const el = item.element;
+                  switch (el.type) {
+                    case 'scene-heading':
+                      return (
+                        <div
+                          key={idx}
+                          className="font-bold uppercase tracking-wider text-black text-left pt-6 pb-2.5 border-b border-slate-200 mb-2"
+                        >
+                          {el.text}
+                        </div>
+                      );
+                    case 'character':
+                      return (
+                        <div
+                          key={idx}
+                          className="font-bold uppercase text-black pt-3 pb-0.5 ml-[22%] sm:ml-[36%] text-left tracking-wide"
+                        >
+                          {el.text}
+                        </div>
+                      );
+                    case 'parenthetical':
+                      return (
+                        <div
+                          key={idx}
+                          className="italic text-slate-800 ml-[18%] sm:ml-[30%] pb-0.5 max-w-[34ch] text-left"
+                        >
+                          {el.text}
+                        </div>
+                      );
+                    case 'dialogue':
+                      return (
+                        <div
+                          key={idx}
+                          className="text-black leading-[1.3] ml-[10%] sm:ml-[20%] mr-[6%] sm:mr-[14%] max-w-[42ch] pb-3 text-left"
+                        >
+                          {el.text}
+                        </div>
+                      );
+                    case 'transition':
+                      return (
+                        <div key={idx} className="font-bold uppercase text-right py-3.5 text-slate-900 tracking-wider">
+                          {el.text}
+                        </div>
+                      );
+                    case 'action':
+                    default:
+                      return (
+                        <div key={idx} className="text-black text-left leading-[1.35] pb-3">
+                          {el.text}
+                        </div>
+                      );
+                  }
+                })}
+              </div>
+            ) : currentUnit?.content ? (
               <div className="font-mono text-sm leading-relaxed whitespace-pre-wrap bg-slate-50 p-6 rounded-xl border border-slate-200 text-slate-900">
                 {currentUnit.content}
               </div>

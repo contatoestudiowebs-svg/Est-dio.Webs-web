@@ -18,6 +18,7 @@ import { NO_TE_PIDO_FLORES_EPISODES } from './noTePidoFloresData';
 import { AS_MINA_EPISODES } from './asMinaData';
 import { DESTINO_AO_CORACAO_EPISODES } from './destinoAoCoracaoData';
 import { DEBORA_E_REBECA_EPISODES } from './deboraERebecaData';
+import { AS_MINA_PARTE_2_EPISODES } from './asMinaParte2Data';
 
 function generateUnits(count: number, unitType: UnitType): ChapterEpisode[] {
   const prefix = unitType === 'capítulos' ? 'Capítulo' : 'Episódio';
@@ -222,12 +223,12 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     slug: 'as-mina-parte-2',
     author: 'Liz Santos',
     category: 'Web novela',
-    unitType: 'episódios',
+    unitType: 'capítulos',
     totalUnits: 16,
     status: 'Finalizada',
     coverImage: 'https://static.wixstatic.com/media/cbfc82_cf3ab50200af4a9da3577418d1db1b25~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_cf3ab50200af4a9da3577418d1db1b25~mv2.png',
     synopsis: 'Carol, Isadora e Tamara estão de volta. Nessa segunda temporada, As Mina vão enfrentar problemas com suas respectivas mães. Carol terá que lidar com as cobranças de sua mãe Olga, que depois que descobre a traição de Bruno, passa a administrar a carreira da filha. Já Isadora passará por um momento delicado: sua mãe Aurora descobre um câncer. Isa ficará responsável por administrar os negócios da mãe. E Tamara terá que lidar com a volta de sua mãe Salete, que era dada como morta. E esse é o menor dos problemas. Salete passa a tomar o dinheiro que Tamara recebe como salário, trabalhando na lanchonete.',
-    episodes: generateUnits(16, 'episódios')
+    episodes: AS_MINA_PARTE_2_EPISODES
   },
   {
     id: 'medusa-a-maldicao-de-atena',

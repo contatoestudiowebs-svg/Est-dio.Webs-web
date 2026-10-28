@@ -14,9 +14,11 @@ import {
   FileText,
   FileDown,
   Star,
-  Trophy
+  Trophy,
+  Clock
 } from 'lucide-react';
 import { getProductionBySlug, PRODUCTIONS_DATA } from '../data/productions';
+import { formatReadingTime, calculateReadingTimeMinutes } from '../utils/readingTime';
 import { getAuthorBySlug } from '../data/authors';
 import { useProductionCover } from '../utils/imageManager';
 import { useManager } from '../utils/managerAuth';
@@ -224,6 +226,11 @@ export function ProductionDetailPage({ slug, onNavigate }: ProductionDetailPageP
                 {production.totalUnits} {production.unitType}
               </span>
 
+              <span className="text-xs font-semibold px-3 py-1 rounded-md bg-slate-100 text-slate-700 border border-slate-200 flex items-center gap-1.5" title="Tempo médio previsto de leitura por capítulo/episódio">
+                <Clock className="w-3.5 h-3.5 text-[#D80050]" />
+                <span>~{Math.round(production.episodes.reduce((acc, ep) => acc + calculateReadingTimeMinutes(ep, production.category), 0) / (production.episodes.length || 1))} min / {production.unitType === 'capítulos' ? 'cap.' : 'ep.'}</span>
+              </span>
+
               {production.episodes.some((e) => e.pdfPages && e.pdfPages.length > 0) && (
                 <span className="text-xs font-bold px-3 py-1 rounded-md bg-rose-50 text-[#D80050] border border-rose-200 flex items-center gap-1.5 shadow-xs">
                   <FileText className="w-3.5 h-3.5" />
@@ -402,6 +409,12 @@ export function ProductionDetailPage({ slug, onNavigate }: ProductionDetailPageP
                 <h4 className="text-sm font-bold text-slate-900 group-hover:text-[#D80050] transition line-clamp-1 mb-1.5">
                   {ep.title}
                 </h4>
+
+                <div className="flex items-center gap-1.5 text-[11px] text-slate-600 bg-slate-50 border border-slate-200/90 rounded-md px-2 py-1 mb-2.5 w-fit">
+                  <Clock className="w-3 h-3 text-[#D80050] shrink-0" />
+                  <span className="font-medium text-slate-500">Tempo previsto de leitura:</span>
+                  <strong className="text-slate-800 font-bold">{formatReadingTime(ep, production.category)}</strong>
+                </div>
 
                 <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed mb-3 font-reading">
                   {ep.summary}
