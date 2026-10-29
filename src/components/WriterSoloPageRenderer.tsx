@@ -126,7 +126,7 @@ export function WriterSoloPageRenderer({
               return (
                 <div
                   key={idx}
-                  className="font-bold uppercase text-black pt-3 pb-0.5 ml-[22%] sm:ml-[36%] text-left tracking-wide"
+                  className="font-bold uppercase text-black pt-4 pb-0.5 text-center tracking-wider"
                 >
                   {el.text}
                 </div>
@@ -136,7 +136,7 @@ export function WriterSoloPageRenderer({
               return (
                 <div
                   key={idx}
-                  className="italic text-slate-800 ml-[18%] sm:ml-[30%] pb-0.5 max-w-[34ch] text-left"
+                  className="italic text-slate-800 text-center pb-0.5 max-w-md mx-auto"
                 >
                   {el.text}
                 </div>
@@ -146,7 +146,7 @@ export function WriterSoloPageRenderer({
               return (
                 <div
                   key={idx}
-                  className="text-black leading-[1.3] ml-[10%] sm:ml-[20%] mr-[6%] sm:mr-[14%] max-w-[42ch] pb-3 text-left"
+                  className="text-black leading-relaxed pb-3 max-w-2xl mx-auto px-2 sm:px-6 text-left"
                 >
                   {el.text}
                 </div>
@@ -162,7 +162,7 @@ export function WriterSoloPageRenderer({
             case 'action':
             default:
               return (
-                <div key={idx} className="text-black text-left leading-[1.35] pb-3">
+                <div key={idx} className="text-black text-left w-full leading-relaxed pb-3.5">
                   {el.text}
                 </div>
               );

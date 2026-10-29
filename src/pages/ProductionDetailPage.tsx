@@ -15,7 +15,9 @@ import {
   FileDown,
   Star,
   Trophy,
-  Clock
+  Clock,
+  Headphones,
+  Accessibility
 } from 'lucide-react';
 import { getProductionBySlug, PRODUCTIONS_DATA } from '../data/productions';
 import { formatReadingTime, calculateReadingTimeMinutes } from '../utils/readingTime';
@@ -238,6 +240,11 @@ export function ProductionDetailPage({ slug, onNavigate }: ProductionDetailPageP
                 </span>
               )}
 
+              <span className="text-xs font-bold px-3 py-1 rounded-md bg-amber-50 text-amber-900 border border-amber-300 flex items-center gap-1.5 shadow-xs" title="Todos os capítulos disponíveis em formato de áudio narrado para acessibilidade PCD/PSD">
+                <Headphones className="w-3.5 h-3.5 text-amber-600" />
+                <span>Áudio Acessível PCD / PSD</span>
+              </span>
+
               <button
                 onClick={handleShare}
                 className="ml-auto text-xs px-3 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 border border-slate-200 flex items-center gap-1.5 transition shadow-xs"
@@ -426,7 +433,18 @@ export function ProductionDetailPage({ slug, onNavigate }: ProductionDetailPageP
                   <BookOpen className="w-3.5 h-3.5" />
                   <span>LEIA AGORA</span>
                 </span>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onNavigate(`/webs/${production.slug}/${ep.slug}?audio=true`);
+                    }}
+                    className="inline-flex items-center gap-1 text-[10px] font-black text-amber-950 bg-amber-100 hover:bg-amber-200 px-2 py-0.5 rounded border border-amber-300 transition cursor-pointer"
+                    title="Ouvir em áudio (Acessibilidade PCD / PSD)"
+                  >
+                    <Headphones className="w-3 h-3 text-amber-700" />
+                    <span>OUVIR</span>
+                  </button>
                   {ep.pdfUrl && (
                     <a
                       href={ep.pdfUrl}

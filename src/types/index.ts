@@ -14,6 +14,8 @@ export interface ChapterEpisode {
   pdfPages?: string[];
   pdfUrl?: string;
   videoUrl?: string;
+  audioUrl?: string;
+  audioDurationSeconds?: number;
   readingTimeMinutes?: number;
 }
 

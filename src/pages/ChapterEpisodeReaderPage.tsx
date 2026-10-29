@@ -21,17 +21,22 @@ import {
   Eye,
   MessageSquare,
   FileCode2,
-  Clock
+  Clock,
+  Headphones,
+  Volume2,
+  Accessibility
 } from 'lucide-react';
 import { getProductionBySlug } from '../data/productions';
 import { formatReadingTime } from '../utils/readingTime';
 import { SEOHead } from '../components/SEOHead';
 import { ChapterCommentsSection } from '../components/ChapterCommentsSection';
 import { WriterSoloPageRenderer } from '../components/WriterSoloPageRenderer';
+import { AccessibleAudioPlayer } from '../components/AccessibleAudioPlayer';
 import {
   generateWriterSoloPrintHtml,
   exportToFountain,
   parseScreenplayPage,
+  parseScreenplayPagesContinuous,
   ScreenplayElement,
 } from '../utils/writerSoloFormatter';
 
@@ -87,27 +92,23 @@ export function ChapterEpisodeReaderPage({
       : null;
 
   const hasPdf = Boolean(currentUnit?.pdfPages && currentUnit.pdfPages.length > 0);
-  const [activeTab, setActiveTab] = useState<'pdf' | 'text' | 'summary'>(hasPdf ? 'pdf' : 'text');
+  const [activeTab, setActiveTab] = useState<'pdf' | 'text' | 'summary' | 'audio'>(hasPdf ? 'pdf' : 'text');
   const [currentPdfPage, setCurrentPdfPage] = useState<number>(0);
   const [pdfViewMode, setPdfViewMode] = useState<'all' | 'single'>('all');
+  const [isAudioPlayerOpen, setIsAudioPlayerOpen] = useState<boolean>(false);
+  const [audioInitialMode, setAudioInitialMode] = useState<'summary' | 'full'>('full');
 
   const continuousElements = React.useMemo(() => {
     if (!currentUnit?.pdfPages || currentUnit.pdfPages.length === 0) return [];
-    const elementsList: { pageIndex: number; element: ScreenplayElement }[] = [];
-    currentUnit.pdfPages.forEach((pageText, idx) => {
-      const parsed = parseScreenplayPage(pageText, idx);
-      if (!parsed.isTitlePage) {
-        parsed.elements.forEach((el) => {
-          elementsList.push({ pageIndex: idx, element: el });
-        });
-      }
-    });
-    return elementsList;
+    return parseScreenplayPagesContinuous(currentUnit.pdfPages);
   }, [currentUnit]);
 
   useEffect(() => {
     setCurrentPdfPage(0);
-    if (hasPdf) {
+    if (typeof window !== 'undefined' && window.location.search.includes('audio=true')) {
+      setActiveTab('audio');
+      setIsAudioPlayerOpen(true);
+    } else if (hasPdf) {
       setActiveTab('pdf');
     }
   }, [chapterSlug, hasPdf]);
@@ -248,6 +249,20 @@ export function ChapterEpisodeReaderPage({
 
           {/* Quick Selector Dropdown & Actions */}
           <div className="flex items-center gap-2 flex-wrap">
+            {/* Audio narration button for PCD / PSD */}
+            <button
+              onClick={() => {
+                setAudioInitialMode('full');
+                setIsAudioPlayerOpen(true);
+              }}
+              className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black text-xs flex items-center gap-1.5 transition shadow-xs cursor-pointer border border-amber-400"
+              title="Ouvir este capítulo narrado em áudio para acessibilidade PCD / PSD"
+            >
+              <Headphones className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Ouvir Capítulo (Áudio PCD)</span>
+              <span className="sm:hidden">Áudio PCD</span>
+            </button>
+
             {hasPdf && (
               <>
                 <button
@@ -352,7 +367,19 @@ export function ChapterEpisodeReaderPage({
               <Sparkles className="w-3.5 h-3.5" />
               Resumo Oficial do {currentUnit.label}
             </span>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
+              <button
+                onClick={() => {
+                  setAudioInitialMode('summary');
+                  setIsAudioPlayerOpen(true);
+                }}
+                className="inline-flex items-center gap-1.5 text-xs text-amber-950 font-bold bg-amber-100 hover:bg-amber-200 px-3 py-1 rounded-full border border-amber-300 shadow-2xs transition cursor-pointer"
+                title="Ouvir o resumo oficial em áudio narrado"
+              >
+                <Headphones className="w-3.5 h-3.5 text-amber-800" />
+                <span>Ouvir Resumo</span>
+              </button>
+
               <span className="text-xs text-slate-700 font-semibold flex items-center gap-1.5 bg-slate-100 px-2.5 py-1 rounded-full border border-slate-200 shadow-2xs">
                 <Clock className="w-3.5 h-3.5 text-[#D80050]" />
                 <span>Tempo previsto de leitura: <strong>{formatReadingTime(currentUnit, production.category)}</strong></span>
@@ -370,9 +397,9 @@ export function ChapterEpisodeReaderPage({
         </div>
       )}
 
-      {/* Reader Tabs Toggles (PDF Visualizer, Text, Summary) */}
+      {/* Reader Tabs Toggles (PDF Visualizer, Text, Summary, Audio) */}
       <div className="flex items-center justify-between gap-3 mb-4 flex-wrap">
-        <div className="flex items-center p-1 bg-slate-200 rounded-xl border border-slate-300">
+        <div className="flex items-center p-1 bg-slate-200 rounded-xl border border-slate-300 flex-wrap gap-1">
           {hasPdf && (
             <button
               onClick={() => setActiveTab('pdf')}
@@ -412,6 +439,22 @@ export function ChapterEpisodeReaderPage({
           >
             <BookOpen className="w-3.5 h-3.5 text-emerald-600" />
             <span>Ficha & Resumo</span>
+          </button>
+
+          <button
+            onClick={() => {
+              setActiveTab('audio');
+              setIsAudioPlayerOpen(true);
+            }}
+            className={`px-4 py-2 rounded-lg text-xs font-extrabold uppercase tracking-wider flex items-center gap-2 transition ${
+              activeTab === 'audio'
+                ? 'bg-amber-400 text-slate-950 shadow-sm'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+            title="Formato de áudio para pessoas com dificuldade de leitura ou PCD / PSD"
+          >
+            <Headphones className="w-3.5 h-3.5 text-amber-700" />
+            <span>Áudio (Acessibilidade PCD)</span>
           </button>
         </div>
 
@@ -697,7 +740,7 @@ export function ChapterEpisodeReaderPage({
                       return (
                         <div
                           key={idx}
-                          className="font-bold uppercase text-black pt-3 pb-0.5 ml-[22%] sm:ml-[36%] text-left tracking-wide"
+                          className="font-bold uppercase text-black pt-4 pb-0.5 text-center tracking-wider"
                         >
                           {el.text}
                         </div>
@@ -706,7 +749,7 @@ export function ChapterEpisodeReaderPage({
                       return (
                         <div
                           key={idx}
-                          className="italic text-slate-800 ml-[18%] sm:ml-[30%] pb-0.5 max-w-[34ch] text-left"
+                          className="italic text-slate-800 text-center pb-0.5 max-w-md mx-auto"
                         >
                           {el.text}
                         </div>
@@ -715,7 +758,7 @@ export function ChapterEpisodeReaderPage({
                       return (
                         <div
                           key={idx}
-                          className="text-black leading-[1.3] ml-[10%] sm:ml-[20%] mr-[6%] sm:mr-[14%] max-w-[42ch] pb-3 text-left"
+                          className="text-black leading-relaxed pb-3 max-w-2xl mx-auto px-2 sm:px-6 text-left"
                         >
                           {el.text}
                         </div>
@@ -729,7 +772,7 @@ export function ChapterEpisodeReaderPage({
                     case 'action':
                     default:
                       return (
-                        <div key={idx} className="text-black text-left leading-[1.35] pb-3">
+                        <div key={idx} className="text-black text-left w-full leading-relaxed pb-3.5">
                           {el.text}
                         </div>
                       );
@@ -840,6 +883,110 @@ export function ChapterEpisodeReaderPage({
         </div>
       )}
 
+      {/* VIEW MODE 4: Audio Accessibility Hub Tab */}
+      {activeTab === 'audio' && (
+        <div className="bg-white border-2 border-amber-300 rounded-2xl p-6 sm:p-10 mb-8 shadow-sm">
+          <div className="flex items-center justify-between pb-4 mb-6 border-b border-amber-200 flex-wrap gap-3">
+            <div className="flex items-center gap-2.5">
+              <span className="p-2 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center">
+                <Accessibility className="w-5 h-5" />
+              </span>
+              <div>
+                <span className="text-[10px] font-black uppercase tracking-widest text-amber-900">
+                  Acessibilidade e Inclusão Estúdio Webs
+                </span>
+                <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 font-brand">
+                  OUVIR {currentUnit?.label.toUpperCase()} EM ÁUDIO
+                </h3>
+              </div>
+            </div>
+
+            <span className="px-3 py-1 rounded-full text-xs font-black bg-amber-100 text-amber-900 border border-amber-300">
+              Formato PCD / PSD e Dificuldade de Leitura
+            </span>
+          </div>
+
+          <div className="space-y-6">
+            <div className="p-6 rounded-2xl bg-gradient-to-br from-amber-50 via-rose-50/50 to-amber-50 border border-amber-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+              <div className="max-w-xl">
+                <h4 className="text-base font-black text-slate-900 mb-2 flex items-center gap-2">
+                  <Headphones className="w-5 h-5 text-[#D80050]" />
+                  <span>Narração em Áudio Fluida em Português do Brasil</span>
+                </h4>
+                <p className="text-sm text-slate-700 leading-relaxed font-sans mb-3">
+                  Desenvolvido especialmente para pessoas com deficiência visual, baixa visão, dislexia, TDAH, pessoas com dificuldades de leitura e todos que preferem acompanhar as obras através de áudio narrado com falas dos personagens.
+                </p>
+                <div className="flex items-center gap-3 text-xs font-bold text-slate-600 flex-wrap">
+                  <span className="flex items-center gap-1">
+                    <Check className="w-4 h-4 text-emerald-600" />
+                    Velocidade ajustável (0.75x a 2.0x)
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Check className="w-4 h-4 text-emerald-600" />
+                    Acompanhamento visual sincronizado
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Check className="w-4 h-4 text-emerald-600" />
+                    Personagens e falas dramatizadas
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row md:flex-col gap-2.5 w-full md:w-auto shrink-0">
+                <button
+                  onClick={() => {
+                    setAudioInitialMode('full');
+                    setIsAudioPlayerOpen(true);
+                  }}
+                  className="px-6 py-3.5 rounded-xl bg-[#D80050] hover:bg-[#be0044] text-white font-black text-xs uppercase tracking-wider transition shadow-md shadow-[#D80050]/20 flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Headphones className="w-4 h-4" />
+                  <span>Ouvir Capítulo Completo</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    setAudioInitialMode('summary');
+                    setIsAudioPlayerOpen(true);
+                  }}
+                  className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Sparkles className="w-4 h-4 text-amber-400" />
+                  <span>Ouvir Apenas Resumo</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Atributos e Ajuda Acessível */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <strong className="block text-slate-900 font-bold mb-1">Teclas de Atalho:</strong>
+                <ul className="text-slate-600 space-y-1">
+                  <li>• <strong>Espaço</strong>: Pausar / Continuar</li>
+                  <li>• <strong>Seta Direita</strong>: Avançar 10s</li>
+                  <li>• <strong>Seta Esquerda</strong>: Voltar 10s</li>
+                  <li>• <strong>Esc</strong>: Fechar reprodutor de áudio</li>
+                </ul>
+              </div>
+
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <strong className="block text-slate-900 font-bold mb-1">Modos de Narração:</strong>
+                <p className="text-slate-600 leading-relaxed">
+                  Você pode alternar entre ouvir o roteiro completo detalhado (com falas dos personagens) ou o resumo oficial conciso.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <strong className="block text-slate-900 font-bold mb-1">Acompanhamento Visual:</strong>
+                <p className="text-slate-600 leading-relaxed">
+                  O reprodutor destaca o trecho sendo lido em tempo real, permitindo leitura guiada para pessoas com dificuldades de concentração ou leitura.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Reader Comments Section */}
       <ChapterCommentsSection
         productionTitle={production.title}
@@ -877,6 +1024,15 @@ export function ChapterEpisodeReaderPage({
           <ChevronRight className="w-4 h-4" />
         </button>
       </div>
+
+      {/* Floating / Docked Accessible Audio Player Component */}
+      <AccessibleAudioPlayer
+        production={production}
+        chapter={currentUnit}
+        isOpen={isAudioPlayerOpen}
+        onClose={() => setIsAudioPlayerOpen(false)}
+        initialMode={audioInitialMode}
+      />
     </div>
   );
 }

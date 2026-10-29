@@ -60,6 +60,24 @@ export function isSceneHeading(line: string, nextLine?: string): boolean {
     }
   }
 
+  // Act headers & Flashbacks
+  if (
+    /^(ATO\s+[IVX0-9]+|(PRIMEIRO|SEGUNDO|TERCEIRO|QUARTO|QUINTO)\s+ATO|(INÍCIO|FIM)\s+DO\s+FLASHBACK|FLASHBACK)[\.\:\…]*$/i.test(
+      trimmed
+    )
+  ) {
+    return true;
+  }
+
+  // Standalone rooms or single locations with period (e.g. "SALA.", "QUARTO.", "CORREDOR.")
+  if (
+    /^(SALA|SALA DE ESTAR|QUARTO|QUARTO DO CASAL|COZINHA|BANHEIRO|CORREDOR|ESCRITÓRIO|CONSULTÓRIO|BIBLIOTECA|PORTA|SACADA|VARANDA|RECEPCÃO|PORTARIA)[\.:]?$/i.test(
+      trimmed
+    )
+  ) {
+    return true;
+  }
+
   // Numeric scene start with location: e.g. "01 CIDADE FICTÍCIA DE BOA ESPERANÇA. BIBLIOTECA."
   if (/^\d+[\.\)\-]?\s+[A-ZÀ-Ú0-9\s\.\,\'\-]+$/.test(trimmed)) {
     if (nextLine && /^(DIA|NOITE|TARDE|MANHÃ|MADRUGADA|CONTINUAÇÃO)[\.:]?$/i.test(nextLine.trim())) {
@@ -72,7 +90,7 @@ export function isSceneHeading(line: string, nextLine?: string): boolean {
 
   // Standalone time jumps / scene markers
   if (
-    /^(MESES DEPOIS|DOIS DIAS DEPOIS|ALGUMAS SEMANAS DEPOIS|UMA SEMANA DEPOIS|MINUTOS DEPOIS|HORAS MAIS TARDE|CAI A NOITE|ABERTURA|INTERVALO COMERCIAL|NOITE SEGUINTE|DIA SEGUINTE|TEMPO DEPOIS)[\.\…]*$/i.test(
+    /^((UM|DOIS|TRÊS|QUATRO|CINCO|ALGUNS|ALGUMAS)?\s*(MÊS|MESES|DIA|DIAS|SEMANA|SEMANAS|MINUTO|MINUTOS|HORA|HORAS|ANO|ANOS|TEMPO)\s+DEPOIS|(HORAS|MINUTOS|DIAS|MESES)\s+MAIS\s+TARDE|CAI\s+À?\s*NOITE|À\s+TARDE|À\s+NOITE|DE\s+MANHÃ|NOITE|DIA|MADRUGADA|AMANHECER|ENTARDECER|ABERTURA|INTERVALO\s+COMERCIAL|NOITE\s+SEGUINTE|DIA\s+SEGUINTE|DIA\s+DA\s+ELEIÇÃO)[\.\…]*$/i.test(
       trimmed
     )
   ) {
@@ -115,21 +133,31 @@ export function extractCharacterCue(
   nextLine?: string
 ): { name: string; parenthetical?: string } | null {
   const trimmed = line.trim();
-  if (trimmed.length < 2 || trimmed.length > 45) return null;
+  if (trimmed.length < 2 || trimmed.length > 40) return null;
 
-  // Exclude single time words (e.g. "DIA.", "NOITE.", "MANHÃ.")
-  if (/^(DIA|NOITE|TARDE|MANHÃ|MADRUGADA|CONTINUAÇÃO)[\.:]?$/i.test(trimmed)) {
+  // Exclude single time words (e.g. "DIA.", "NOITE.", "MANHÃ.", "NOITE...")
+  if (/^(DIA|NOITE|TARDE|MANHÃ|MADRUGADA|CONTINUAÇÃO|À TARDE|À NOITE)[\.:\…]*$/i.test(trimmed)) {
     return null;
   }
 
-  // Exclude standalone chapter/episode headings
-  if (/^(CAPÍTULO|EPISÓDIO)\s+\d+[\.:]?$/i.test(trimmed)) {
+  // Exclude standalone chapter/episode headings or acts
+  if (/^(CAPÍTULO|EPISÓDIO|ATO)\s+[A-Z0-9\.\:\…]*$/i.test(trimmed)) {
     return null;
   }
 
   // Exclude transitions, sluglines and common action starters
   if (isSceneHeading(trimmed, nextLine) || isTransition(trimmed)) return null;
-  if (/^(INT|EXT|EST|FADE|CORTE|CORTA|CENA|CAPÍTULO|EPISÓDIO|SONOPLASTIA|DETALHE|PLANO|CAM|CÂMERA)/i.test(trimmed)) {
+  if (/^(INT|EXT|EST|FADE|CORTE|CORTA|CENA|CAPÍTULO|EPISÓDIO|SONOPLASTIA|DETALHE|PLANO|CAM|CÂMERA|ATO|FLASHBACK)/i.test(trimmed)) {
+    return null;
+  }
+
+  // Exclude lines ending with punctuation except title abbrevs like "Dr." or "Sr."
+  if (/[,\!\?;:\.]$/.test(trimmed) && !/^(Dr|Sr|Sra|Dra|DR|SR|SRA|DRA)\.$/i.test(trimmed)) {
+    return null;
+  }
+
+  // Exclude words that are locations or scene time markers
+  if (/^(SALA|QUARTO|COZINHA|PRAIA|CORREDOR|BANHEIRO|BIBLIOTECA|GINÁSIO|CASA|RUA|PRÉDIO|HOSPITAL|CONSULTÓRIO|DEPOIS|QUANDO|ENQUANTO|CAI|UM MÊS|DOIS DIAS|TRÊS DIAS|DIAS|SEMANAS|MESES|HORAS|MINUTOS|ANOS|TEMPO)\b/i.test(trimmed)) {
     return null;
   }
 
@@ -140,41 +168,42 @@ export function extractCharacterCue(
     const paren = allCapsMatch[2]?.trim();
 
     // Check that rawName is all caps
-    if (rawName === rawName.toUpperCase() && rawName.length >= 2 && rawName.length <= 35) {
-      // Must not end in sentence punctuation
-      if (!/[,\!\?]$/.test(rawName)) {
-        return {
-          name: rawName,
-          parenthetical: paren,
-        };
+    if (rawName === rawName.toUpperCase() && rawName.length >= 2 && rawName.length <= 32) {
+      if (!/[,\!\?;\:\.]$/.test(rawName) || /^(DR|SR|SRA|DRA)\.$/i.test(rawName)) {
+        if (!COMMON_ACTION_VERBS.test(rawName)) {
+          return {
+            name: rawName,
+            parenthetical: paren,
+          };
+        }
       }
     }
   }
 
-  // 2. Title Case character cue (standard in Brazilian TV scripts like "Tamara", "Dr. Guilherme", "Salete", "Berto")
+  // 2. Title Case character cue (e.g. "Tamara", "Dr. Guilherme", "Salete", "Berto")
   const titleCaseMatch = trimmed.match(/^([A-ZÀ-Ú][a-zà-ú0-9\.\'\s\-]+?)(?:\s*\(([^)]+)\))?$/);
   if (titleCaseMatch) {
     const rawName = titleCaseMatch[1].trim();
     const paren = titleCaseMatch[2]?.trim();
 
-    // Must be short (1 to 4 words), under 30 chars
     const words = rawName.split(/\s+/);
-    if (words.length <= 4 && rawName.length <= 32) {
-      // Exclude lines ending with punctuation (. ! ? ; ,) except title abbrev like "Dr." or "Sr."
-      if (/[!?,;:]$/.test(rawName)) return null;
-      if (rawName.endsWith('.') && !/^(Dr|Sr|Sra|Dra)\.$/i.test(rawName)) return null;
-
-      // Exclude common preposition / article starters
-      if (/^(O|A|Os|As|Um|Uma|De|Do|Da|Em|No|Na|Depois|Quando|Enquanto|Logo|Mas|Com|Sem|Pelo|Pela)\b/i.test(rawName)) {
+    if (words.length <= 3 && rawName.length <= 25) {
+      // Must not end with prepositions or conjunctions
+      if (/\b(com|de|do|da|dos|das|em|no|na|nos|nas|para|pra|por|pelo|pela|que|se|e|mas|ou|a|o|os|as|um|uma|ao|aos|à|às)$/i.test(rawName)) {
         return null;
       }
 
-      // Must not contain action verbs
+      // Exclude conversational or modal verbs
+      if (/\b(deve|devia|devíamos|devêssemos|pode|podia|quer|queria|vai|ia|tem|tinha|tava|sou|era|estou|estava|sei|sabia|acho|achava|falou|disse)\b/i.test(rawName)) {
+        return null;
+      }
+
+      // Exclude action verbs
       if (COMMON_ACTION_VERBS.test(rawName)) {
         return null;
       }
 
-      // If it has an embedded parenthetical: e.g. "Dr. Guilherme (calmo)", "Tamara (surpresa)" -> 100% character cue
+      // If it has an embedded parenthetical: e.g. "Dr. Guilherme (calmo)", "Tamara (surpresa)" -> character cue
       if (paren) {
         return {
           name: rawName,
@@ -194,7 +223,7 @@ export function extractCharacterCue(
           !isSceneHeading(nextTrim) &&
           !isTransition(nextTrim) &&
           (/^[“\"\'\—\–\-]/.test(nextTrim) ||
-            /^(Mãe|Pai|Filha|Filho|Oi|Olá|Sim|Não|Mas|Por que|Como|Eu|Você|O que|Quem|Onde|Quando|Nem|Então|Pode|Deixa|Vai|Se|Olha|Ah|Ih|Ai|Dona|Doutor|Desculpe|Cê|Agora|É!)/i.test(
+            /^(Mãe|Pai|Filha|Filho|Oi|Olá|Sim|Não|Mas|Por que|Como|Eu|Você|O que|Quem|Onde|Quando|Nem|Então|Pode|Deixa|Vai|Se|Olha|Ah|Ih|Ai|Dona|Doutor|Desculpe|Cê|Agora|É!|Tudo bem|Calma)/i.test(
               nextTrim
             ) ||
             /[!\?]$/.test(nextTrim))
@@ -232,7 +261,6 @@ export function parseInlineSpeech(line: string): {
   // - Colon (:) followed by space
   // - Hyphen with space before and after: \s+-\s+
   // - Closing parenthesis followed by hyphen and space: \)\s*-\s+
-  // MUST NOT match enclitic hyphen inside words like "levanta-se" or "dar-lhe"
   const match = trimmed.match(
     /^([A-ZÀ-Úa-zà-ú0-9\s\.\'\-]+?)(?:\s*\(([^)]+)\))?\s*(?:[–—]|(?<=\s|\))-(?=\s)|:(?=\s))\s*(.+)$/
   );
@@ -244,12 +272,24 @@ export function parseInlineSpeech(line: string): {
 
   // Validate character name length and exclude scene action starters
   if (rawName.length < 2 || rawName.length > 35) return null;
-  if (/^(INT|EXT|EST|CENA|CAPÍTULO|EPISÓDIO|SONOPLASTIA|DETALHE|PLANO|CAM|CÂMERA|CORTA|CORTE)/i.test(rawName)) {
+  if (/^(INT|EXT|EST|CENA|CAPÍTULO|EPISÓDIO|SONOPLASTIA|DETALHE|PLANO|CAM|CÂMERA|CORTA|CORTE|ATO)/i.test(rawName)) {
     return null;
   }
-  if (/^(Depois|Quando|Enquanto|Condomínio|Casa|Quarto|Sala|Prédio|Rua|Avenida|Stock Shot)/i.test(rawName)) {
+  if (/^(Depois|Quando|Enquanto|Condomínio|Casa|Quarto|Sala|Prédio|Rua|Avenida|Stock Shot|Praia|Cozinha|Hospital|Biblioteca|Lanchonete|Ginásio)/i.test(rawName)) {
     return null;
   }
+  if (/\b(DEPOIS|DIAS|MESES|HORAS|MINUTOS|SEMANAS|TEMPO)\b/i.test(rawName)) {
+    return null;
+  }
+
+  // If dialogueText is actually a scene time of day or location
+  if (/^(Fim de Tarde|Dia|Noite|Tarde|Manhã|Madrugada|Amanhecer|Entardecer|Exterior|Interior|Continuação)[\.\…]*$/i.test(dialogueText)) {
+    return null;
+  }
+  if (/^(SALÃO|SALA|QUARTO|COZINHA|CASA|PRAIA|CORREDOR|BANHEIRO|BIBLIOTECA|GINÁSIO|RUA|PRÉDIO|HOSPITAL|CLÍNICA)\b/i.test(dialogueText)) {
+    return null;
+  }
+
   if (!dialogueText) return null;
 
   return {
@@ -265,6 +305,15 @@ export function parseInlineSpeech(line: string): {
 export function isActionNarration(line: string, previousDialogueLines: string[]): boolean {
   const trimmed = line.trim();
   if (!trimmed) return false;
+
+  // If this is the FIRST line of dialogue after a character cue (previousDialogueLines.length === 0):
+  // It is the character's speech, UNLESS it is explicitly a technical camera cue
+  if (previousDialogueLines.length === 0) {
+    if (/^(SONOPLASTIA|DETALHE|PLANO|CAM|CÂMERA|A CÂMERA|CORTES RÁPIDOS|VEMOS|IMAGENS)[\.\:]/i.test(trimmed)) {
+      return true;
+    }
+    return false;
+  }
 
   // 1. Any line starting with lowercase or punctuation is ALWAYS dialogue continuation
   if (/^[a-zà-ú0-9,\.\:\;\!\?\"\'\”\’\-\–\—\)]/.test(trimmed)) {
@@ -285,14 +334,15 @@ export function isActionNarration(line: string, previousDialogueLines: string[])
   const prevTrimmed = prevLine.trim();
   const prevEndedSentence = /[\.\!\?\…\"”\/—–]$/.test(prevTrimmed) || prevTrimmed.endsWith('!');
 
-  // 4. Enclitic third-person verbs (e.g. senta-se, levanta-se, vira-se, aproxima-se, dá-lhe, sobressalta-se)
-  if (/\b[A-Za-zÀ-Úa-zà-ú]+-(se|lhe|o|a|os|as|nos)\b/i.test(trimmed)) {
+  // 4. Enclitic third-person verbs (e.g. senta-se, levanta-se, vira-se, aproxima-se, sobressalta-se)
+  if (prevEndedSentence && /\b(senta-se|levantam?-se|vira-se|olham?-se|aproximam?-se|afastam?-se|abraçam?-se|beijam?-se|sobressaltam?-se)\b/i.test(trimmed)) {
     return true;
   }
 
-  // 5. Reflexive third-person actions (e.g. se levanta, se senta, se olham, se encaram, se desespera, se entristece)
+  // 5. Reflexive third-person actions (e.g. se levanta, se senta, se olham, se encaram)
   if (
-    /\bse (levanta|levantam|senta|sentam|aproxima|aproximam|afasta|afastam|olham|encaram|abraçam|beijam|desespera|entristece|assusta|surpreende|vira|recosta|apruma|esconde|cala|emociona|incomoda|choca|despede)\b/i.test(
+    prevEndedSentence &&
+    /\bse (levanta|levantam|senta|sentam|aproxima|aproximam|afasta|afastam|olham|encaram|abraçam|beijam|desespera|entristece|assusta|surpreende|vira|recosta)\b/i.test(
       trimmed
     )
   ) {
@@ -305,13 +355,14 @@ export function isActionNarration(line: string, previousDialogueLines: string[])
 
   if (prevEndedSentence && actionVerbsRegex.test(trimmed)) {
     // Exclude first-person / direct conversational speech
-    if (!/^(Eu|Você|Nós|Vocês|Tu|Pra mim|Por que|Mas eu|Se eu)\b/i.test(trimmed)) {
+    if (!/^(Eu|Você|Nós|Vocês|Tu|Pra mim|Por que|Mas eu|Se eu|Não|Sim|Mas|Olha|Ah|O que)\b/i.test(trimmed)) {
       return true;
     }
   }
 
   // 7. Third-person environmental narration
   if (
+    prevEndedSentence &&
     /^(Uma?|O|A|Os|As|Dois|Duas|Alguns|Algumas)\s+(quarto|porta|sala|mesa|cadeira|cama|médico|música|som|tempo|luz|telefone|campainha|silêncio|expressão|olhar|lágrimas|carro|cão|relógio|homem|mulher|pessoa)\b/i.test(
       trimmed
     )
@@ -510,37 +561,23 @@ export function parseScreenplayPage(rawPageText: string, pageIndex: number): Par
     // 4. Standalone Character Cue on its own line (ALL CAPS or Title Case)
     const charCueInfo = extractCharacterCue(trimmed, filteredLines[i + 1]?.trim());
     if (charCueInfo) {
-      elements.push({
-        type: 'character',
-        text: charCueInfo.name.toUpperCase(),
-        characterName: charCueInfo.name.toUpperCase(),
-      });
-      i++;
+      let cueParenthetical: string | undefined = charCueInfo.parenthetical;
+      let nextIdx = i + 1;
 
-      // If parenthetical was embedded on cue line (e.g. "THALES (nervoso)")
-      if (charCueInfo.parenthetical) {
-        elements.push({
-          type: 'parenthetical',
-          text: `(${charCueInfo.parenthetical})`,
-          parenthetical: `(${charCueInfo.parenthetical})`,
-        });
-      } else if (i < filteredLines.length && isParenthetical(filteredLines[i].trim())) {
-        // Next line is standalone parenthetical: e.g. "(surpresa)"
-        const parenLine = filteredLines[i].trim();
-        elements.push({
-          type: 'parenthetical',
-          text: parenLine,
-          parenthetical: parenLine,
-        });
-        i++;
+      if (!cueParenthetical && nextIdx < filteredLines.length && isParenthetical(filteredLines[nextIdx].trim())) {
+        cueParenthetical = filteredLines[nextIdx].trim();
+        nextIdx++;
       }
 
       // Collect consecutive dialogue lines
       const dialogueLines: string[] = [];
-      while (i < filteredLines.length) {
-        const dLine = filteredLines[i].trim();
+      const midParentheticals: { text: string }[] = [];
+      let cur = nextIdx;
+
+      while (cur < filteredLines.length) {
+        const dLine = filteredLines[cur].trim();
         if (!dLine) {
-          i++;
+          cur++;
           break;
         }
 
@@ -548,7 +585,7 @@ export function parseScreenplayPage(rawPageText: string, pageIndex: number): Par
           isSceneHeading(dLine) ||
           isTransition(dLine) ||
           parseInlineSpeech(dLine) ||
-          extractCharacterCue(dLine, filteredLines[i + 1]?.trim())
+          extractCharacterCue(dLine, filteredLines[cur + 1]?.trim())
         ) {
           break;
         }
@@ -556,20 +593,10 @@ export function parseScreenplayPage(rawPageText: string, pageIndex: number): Par
         // Mid-dialogue parenthetical (e.g. (MORE) or (pausa))
         if (isParenthetical(dLine)) {
           if (dialogueLines.length > 0) {
-            elements.push({
-              type: 'dialogue',
-              text: dialogueLines.join(' '),
-              dialogue: dialogueLines.join(' '),
-            });
-            dialogueLines.length = 0;
+            midParentheticals.push({ text: dLine });
+            cur++;
+            continue;
           }
-          elements.push({
-            type: 'parenthetical',
-            text: dLine,
-            parenthetical: dLine,
-          });
-          i++;
-          continue;
         }
 
         // Check if dLine is action narration describing scene/action
@@ -578,7 +605,40 @@ export function parseScreenplayPage(rawPageText: string, pageIndex: number): Par
         }
 
         dialogueLines.push(dLine);
+        cur++;
+      }
+
+      // Verify: does this candidate ACTUALLY have speech lines?
+      // A character cue MUST only be created if the character actually speaks (or parenthetical at page end).
+      const hasSpeech = dialogueLines.length > 0;
+      const isAtEndOfPage = cur >= filteredLines.length && cueParenthetical !== undefined;
+
+      if (!hasSpeech && !isAtEndOfPage) {
+        // "se o nome dele estiver na discrição, não centralize mantenha a discrição a esquerda como está."
+        // NOT a character speaking! It's a scene description / action paragraph!
+        // Treat as action and advance i to consume this action line.
+        elements.push({
+          type: 'action',
+          text: trimmed,
+        });
         i++;
+        continue;
+      }
+
+      // Valid character cue with dialogue!
+      elements.push({
+        type: 'character',
+        text: charCueInfo.name.toUpperCase(),
+        characterName: charCueInfo.name.toUpperCase(),
+      });
+
+      if (cueParenthetical) {
+        const parenText = cueParenthetical.startsWith('(') ? cueParenthetical : `(${cueParenthetical})`;
+        elements.push({
+          type: 'parenthetical',
+          text: parenText,
+          parenthetical: parenText,
+        });
       }
 
       if (dialogueLines.length > 0) {
@@ -589,6 +649,7 @@ export function parseScreenplayPage(rawPageText: string, pageIndex: number): Par
         });
       }
 
+      i = cur;
       continue;
     }
 
@@ -879,26 +940,25 @@ export function generateWriterSoloPrintHtml(
       font-weight: 700;
       text-transform: uppercase;
       margin-top: 13pt;
-      margin-bottom: 1pt;
-      margin-left: 37%;
-      text-align: left;
+      margin-bottom: 2pt;
+      text-align: center;
+      letter-spacing: 0.5px;
     }
 
     .ws-parenthetical {
-      margin-left: 31%;
+      text-align: center;
       margin-top: 0;
-      margin-bottom: 1pt;
+      margin-bottom: 2pt;
       font-style: italic;
-      max-width: 35ch;
     }
 
     .ws-dialogue {
-      margin-left: 20%;
-      margin-right: 15%;
-      max-width: 42ch;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 68ch;
       margin-top: 0;
       margin-bottom: 11pt;
-      line-height: 1.2;
+      line-height: 1.25;
       text-align: left;
     }
 
@@ -998,3 +1058,49 @@ function escapeHtml(text: string): string {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
 }
+
+/**
+ * Parses all screenplay pages of an episode continuously, reconciling page-turn boundaries
+ */
+export function parseScreenplayPagesContinuous(
+  pages: string[]
+): { pageIndex: number; element: ScreenplayElement }[] {
+  const result: { pageIndex: number; element: ScreenplayElement }[] = [];
+
+  pages.forEach((pageText, idx) => {
+    const parsed = parseScreenplayPage(pageText, idx);
+    if (!parsed.isTitlePage) {
+      parsed.elements.forEach((el) => {
+        result.push({ pageIndex: idx, element: el });
+      });
+    }
+  });
+
+  // Reconcile page breaks where a character cue was at the bottom of page N and their dialogue started at top of page N+1
+  for (let j = 0; j < result.length - 1; j++) {
+    const item = result[j];
+    const nextItem = result[j + 1];
+
+    if (item.element.type === 'character' || item.element.type === 'parenthetical') {
+      let hasDialogue = false;
+      let check = j + 1;
+      while (check < result.length && check <= j + 2) {
+        if (result[check].element.type === 'dialogue') {
+          hasDialogue = true;
+          break;
+        }
+        check++;
+      }
+
+      if (!hasDialogue && nextItem && nextItem.element.type === 'action') {
+        if (nextItem.pageIndex > item.pageIndex) {
+          nextItem.element.type = 'dialogue';
+          nextItem.element.dialogue = nextItem.element.text;
+        }
+      }
+    }
+  }
+
+  return result;
+}
+
