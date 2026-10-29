@@ -9,6 +9,11 @@ import { AS_MINA_PARTE_2_EPISODE_08_PAGES } from './asMinaParte2Episodes/episode
 import { AS_MINA_PARTE_2_EPISODE_09_PAGES } from './asMinaParte2Episodes/episode09';
 import { AS_MINA_PARTE_2_EPISODE_10_PAGES } from './asMinaParte2Episodes/episode10';
 import { AS_MINA_PARTE_2_EPISODE_11_PAGES } from './asMinaParte2Episodes/episode11';
+import { AS_MINA_PARTE_2_EPISODE_12_PAGES } from './asMinaParte2Episodes/episode12';
+import { AS_MINA_PARTE_2_EPISODE_13_PAGES } from './asMinaParte2Episodes/episode13';
+import { AS_MINA_PARTE_2_EPISODE_14_PAGES } from './asMinaParte2Episodes/episode14';
+import { AS_MINA_PARTE_2_EPISODE_15_PAGES } from './asMinaParte2Episodes/episode15';
+import { AS_MINA_PARTE_2_EPISODE_16_PAGES } from './asMinaParte2Episodes/episode16';
 import { ChapterEpisode } from '../types';
 
 export interface AsMinaParte2EpisodeDef {
@@ -132,26 +137,59 @@ export const AS_MINA_PARTE_2_EPISODES_RAW: AsMinaParte2EpisodeDef[] = [
     pages: AS_MINA_PARTE_2_EPISODE_11_PAGES,
     pdfUrl: '/assets/aistudio/As_Minas_-_Parte_2.Cap_tulo11.docx_2c7f8f3c.pdf',
   },
+  {
+    number: 12,
+    label: 'Capítulo 12',
+    slug: 'capitulo-12',
+    title: 'Capítulo 12',
+    summary:
+      'Tamara descobre que Salete roubou seu dinheiro. Renata conta a Alex que Olga descobriu que ela e Carol estão namorando. Olga impõe que Carol se dedique nos treinos e a proíbe de se encontrar com Renata. Tamara confronta Salete que assume ter roubado seu dinheiro. Tamara coloca Salete para fora de casa.',
+    pages: AS_MINA_PARTE_2_EPISODE_12_PAGES,
+    pdfUrl: '/assets/aistudio/As_Minas_-_Parte_2.Cap_tulo12.docx_5716852e.pdf',
+  },
+  {
+    number: 13,
+    label: 'Capítulo 13',
+    slug: 'capitulo-13',
+    title: 'Capítulo 13',
+    summary:
+      'Carol, Isa e Tamara se encontram, em seguida, Alex e Renata também chegam. Salete procura por Berto e pede para ele conversar com Tamara. Nestor procura Aurora e pede desculpas a ela, e promete ajudar Isa. Carol conta a Renata que está proibida de encontrá-la. Berto liga para Tamara, e conta a ela que Salete o procurou. Berto diz que vai voltar para casa com Eva.',
+    pages: AS_MINA_PARTE_2_EPISODE_13_PAGES,
+    pdfUrl: '/assets/aistudio/As_Minas_-_Parte_2.Cap_tulo13.docx_b52d5d1a.pdf',
+  },
+  {
+    number: 14,
+    label: 'Capítulo 14',
+    slug: 'capitulo-14',
+    title: 'Capítulo 14',
+    summary:
+      'Isa chega em casa e encontra seu pai conversando com Aurora. Ele conta que vai ajudar Isa. Ao chegar em casa, Tamara encontra Salete e as duas discutem. Tamara conta que Berto vai voltar para casa com Eva. Carol chega em casa acompanhada de Renata que enfrenta Olga e diz que ama Carol.',
+    pages: AS_MINA_PARTE_2_EPISODE_14_PAGES,
+    pdfUrl: '/assets/aistudio/As_Minas_-_Parte_2.Cap_tulo14.docx_2306ed20.pdf',
+  },
+  {
+    number: 15,
+    label: 'Capítulo 15',
+    slug: 'capitulo-15',
+    title: 'Capítulo 15',
+    summary:
+      'Carol enfrenta Olga sobre ela nunca ter feito nada pela filha e agora querer fazer. Berto encontra Salete na rua e exige que ela suma da vida de Tamara e que a deixe em paz. Isa conversa com Aurora e com Nestor e vê a possibilidade de voltar a patrocinar Carol. Alex, Tamara, Renata e Carol saem para um jantar de casais. Aurora recebe a notícia de que o câncer está controlado. Começa o julgamento de Renata sobre a questão do doping.',
+    pages: AS_MINA_PARTE_2_EPISODE_15_PAGES,
+    pdfUrl: '/assets/aistudio/As_Minas_-_Parte_2.Cap_tulo15.docx_365070f6.pdf',
+  },
+  {
+    number: 16,
+    label: 'Capítulo 16',
+    slug: 'capitulo-16',
+    title: 'Capítulo 16',
+    summary:
+      'Renata é absolvida no caso do doping e liberada para voltar a competir. Salete decide ir embora e deixar Tamara em paz. Olga chama Renata e Carol para conversar e diz que não vai mais atrapalhar elas duas. Nestor se oferece para ser o empresário de Carol. Carol procura Bruno e perdoa o pai, mas pede pra que ele se mantenha distante. Carol, Isa, Tamara, Renata, Alex e Aurora viajam juntos para a casa de praia de Aurora.',
+    pages: AS_MINA_PARTE_2_EPISODE_16_PAGES,
+    pdfUrl: '/assets/aistudio/As_Minas_-_Parte_2.Cap_tulo16.docx_eabf40e4.pdf',
+  },
 ];
 
-// Remaining chapters 12-16
-const REMAINING_EPISODES: AsMinaParte2EpisodeDef[] = Array.from({ length: 5 }, (_, i) => {
-  const num = i + 12;
-  const padded = String(num).padStart(2, '0');
-  return {
-    number: num,
-    label: `Capítulo ${padded}`,
-    slug: `capitulo-${padded}`,
-    title: `Capítulo ${padded}`,
-    summary: `Roteiro original do capítulo ${padded} de As Mina — Parte 2.`,
-    pages: [],
-  };
-});
-
-export const ALL_AS_MINA_PARTE_2_EPISODES_RAW: AsMinaParte2EpisodeDef[] = [
-  ...AS_MINA_PARTE_2_EPISODES_RAW,
-  ...REMAINING_EPISODES,
-];
+export const ALL_AS_MINA_PARTE_2_EPISODES_RAW: AsMinaParte2EpisodeDef[] = AS_MINA_PARTE_2_EPISODES_RAW;
 
 export const AS_MINA_PARTE_2_EPISODES: ChapterEpisode[] = ALL_AS_MINA_PARTE_2_EPISODES_RAW.map((ep) => ({
   number: ep.number,
