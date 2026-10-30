@@ -20,6 +20,7 @@ import { DESTINO_AO_CORACAO_EPISODES } from './destinoAoCoracaoData';
 import { DEBORA_E_REBECA_EPISODES } from './deboraERebecaData';
 import { AS_MINA_PARTE_2_EPISODES } from './asMinaParte2Data';
 import { CORACOES_DE_ACUCAR_EPISODES } from './coracoesDeAcucarData';
+import { TERRA_DE_BRAVOS_EPISODES } from './terraDeBravosData';
 
 function generateUnits(count: number, unitType: UnitType): ChapterEpisode[] {
   const prefix = unitType === 'capítulos' ? 'Capítulo' : 'Episódio';
@@ -177,7 +178,7 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     highlightOrder: 6,
     coverImage: 'https://static.wixstatic.com/media/cbfc82_451c396f6dad4600a4d7fd75c97beaab~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_451c396f6dad4600a4d7fd75c97beaab~mv2.png',
     synopsis: 'Na Fazenda do Brejo, duas famílias rivais – os Monteiro e os Ferraz – disputam há décadas a posse da rica Fazenda, uma terra fértil e cheia de água em meio à seca. Com a morte misteriosa do patriarca Joaquim Monteiro, o retorno de seu neto Miguel de São Paulo reacende o conflito. Enquanto isso, amores proibidos, segredos antigos e alianças improváveis surgem em meio ao solo rachado e às tempestades da alma.',
-    episodes: generateUnits(16, 'capítulos')
+    episodes: TERRA_DE_BRAVOS_EPISODES
   },
   {
     id: 'infidelidade',
