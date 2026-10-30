@@ -4,6 +4,7 @@ import { WebProduction } from '../types';
 import { useProductionCover } from '../utils/imageManager';
 import { useManager } from '../utils/managerAuth';
 import { ImageUploadModal } from './ImageUploadModal';
+import { AgeRatingBadgeButton } from './AgeRatingBadgeButton';
 
 interface HeroDestaqueProps {
   productions: WebProduction[];
@@ -150,6 +151,14 @@ export function HeroDestaque({ productions, onNavigate }: HeroDestaqueProps) {
                 >
                   {current.category}
                 </span>
+
+                <AgeRatingBadgeButton
+                  productionSlug={current.slug}
+                  productionTitle={current.title}
+                  productionCategory={current.category}
+                  variant="full"
+                  showDescriptors={true}
+                />
 
                 <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 shadow-xs flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />

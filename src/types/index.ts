@@ -34,6 +34,8 @@ export interface WebProduction {
   highlightOrder?: number;
   episodes: ChapterEpisode[];
   releaseYear?: string;
+  ageRating?: 'L' | '10' | '12' | '14' | '16' | '18';
+  ratingDescriptors?: string[];
 }
 
 export interface Author {

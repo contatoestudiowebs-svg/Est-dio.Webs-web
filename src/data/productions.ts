@@ -19,6 +19,7 @@ import { AS_MINA_EPISODES } from './asMinaData';
 import { DESTINO_AO_CORACAO_EPISODES } from './destinoAoCoracaoData';
 import { DEBORA_E_REBECA_EPISODES } from './deboraERebecaData';
 import { AS_MINA_PARTE_2_EPISODES } from './asMinaParte2Data';
+import { CORACOES_DE_ACUCAR_EPISODES } from './coracoesDeAcucarData';
 
 function generateUnits(count: number, unitType: UnitType): ChapterEpisode[] {
   const prefix = unitType === 'capítulos' ? 'Capítulo' : 'Episódio';
@@ -202,7 +203,7 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     status: 'Finalizada',
     coverImage: 'https://static.wixstatic.com/media/cbfc82_326fcfe93cc7437b8ab7d385cc46b378~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_326fcfe93cc7437b8ab7d385cc46b378~mv2.png',
     synopsis: 'Bás Avelar, herdeiro de uma família rica, sempre obteve tudo o que desejou, exceto um amor genuíno. Sua relação com Alesso, um homem intenso, controlador e sedutor, revela-se sua maior contradição. Alesso, por sua vez, não ama Bás, vendo-o apenas como um meio de manter seu estilo de vida luxuoso após a ruína financeira de seu pai, Bonjo. O casamento com Bás surge como a solução para escapar da miséria. Seguro da dependência emocional de Bás, Alesso o manipula e trai constantemente, certo de que o noivo sempre retornará. Em paralelo, Cássian, um jovem sonhador, gentil e ingênuo, observa a vida alheia na sapataria onde trabalha com sua amiga Lana. Ele se encanta por Bás, idealizando-o como um “príncipe encantado dos sapatos de couro ecológico”. Surpreendentemente, Bás o convida para sair, um gesto que Cássian desconhece ser apenas uma tentativa de despertar ciúmes em Alesso, sem intenção real de um encontro. Logo, Cássian percebe a ilusão em que se envolveu.',
-    episodes: generateUnits(16, 'capítulos')
+    episodes: CORACOES_DE_ACUCAR_EPISODES
   },
   {
     id: 'pandorum-2',

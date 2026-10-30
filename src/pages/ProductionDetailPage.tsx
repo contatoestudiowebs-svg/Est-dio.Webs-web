@@ -29,6 +29,7 @@ import { AwardedWebsModal } from '../components/AwardedWebsModal';
 import { getProductionAward } from '../data/awardsData';
 import { WebCard } from '../components/WebCard';
 import { SEOHead } from '../components/SEOHead';
+import { AgeRatingBadgeButton } from '../components/AgeRatingBadgeButton';
 
 interface ProductionDetailPageProps {
   slug: string;
@@ -208,6 +209,15 @@ export function ProductionDetailPage({ slug, onNavigate }: ProductionDetailPageP
               >
                 {production.category}
               </span>
+
+              {/* Botão Oficial de Classificação Indicativa */}
+              <AgeRatingBadgeButton
+                productionSlug={production.slug}
+                productionTitle={production.title}
+                productionCategory={production.category}
+                variant="full"
+                showDescriptors={true}
+              />
 
               <span
                 className={`text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-md shadow-xs flex items-center gap-1.5 ${

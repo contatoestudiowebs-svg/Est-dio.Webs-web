@@ -4,6 +4,7 @@ import { WebProduction } from '../types';
 import { useProductionCover } from '../utils/imageManager';
 import { useManager } from '../utils/managerAuth';
 import { ImageUploadModal } from './ImageUploadModal';
+import { AgeRatingBadgeButton } from './AgeRatingBadgeButton';
 
 interface WebCardProps {
   production: WebProduction;
@@ -100,9 +101,15 @@ export function WebCard({ production, onNavigate, compact = false }: WebCardProp
             </span>
           </div>
 
-          <div className="absolute top-2 right-2 z-10 pointer-events-none">
+          <div className="absolute top-2 right-2 z-10 flex items-center gap-1.5">
+            <AgeRatingBadgeButton
+              productionSlug={production.slug}
+              productionTitle={production.title}
+              productionCategory={production.category}
+              variant="compact"
+            />
             <span
-              className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded shadow-xs ${
+              className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded shadow-xs pointer-events-none ${
                 production.status === 'Finalizada'
                   ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
                   : 'bg-amber-400 text-slate-950 border border-amber-300 font-black'
@@ -148,11 +155,17 @@ export function WebCard({ production, onNavigate, compact = false }: WebCardProp
           <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
             <button
               onClick={() => onNavigate(`/webs/${production.slug}`)}
-              className="w-full py-2 px-3 rounded-lg bg-slate-100 hover:bg-[#D80050] text-slate-800 hover:text-white text-xs font-bold transition flex items-center justify-center gap-1.5 border border-slate-200 hover:border-[#D80050]"
+              className="flex-1 py-2 px-3 rounded-lg bg-slate-100 hover:bg-[#D80050] text-slate-800 hover:text-white text-xs font-bold transition flex items-center justify-center gap-1.5 border border-slate-200 hover:border-[#D80050]"
             >
               <span>VER OBRA</span>
               <span className="text-[#D80050] group-hover:text-white transition">→</span>
             </button>
+            <AgeRatingBadgeButton
+              productionSlug={production.slug}
+              productionTitle={production.title}
+              productionCategory={production.category}
+              variant="badge"
+            />
           </div>
         </div>
       </div>

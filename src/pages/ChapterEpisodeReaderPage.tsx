@@ -32,6 +32,7 @@ import { SEOHead } from '../components/SEOHead';
 import { ChapterCommentsSection } from '../components/ChapterCommentsSection';
 import { WriterSoloPageRenderer } from '../components/WriterSoloPageRenderer';
 import { AccessibleAudioPlayer } from '../components/AccessibleAudioPlayer';
+import { AgeRatingBadgeButton } from '../components/AgeRatingBadgeButton';
 import {
   generateWriterSoloPrintHtml,
   exportToFountain,
@@ -215,6 +216,12 @@ export function ChapterEpisodeReaderPage({
               <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200">
                 {production.status}
               </span>
+              <AgeRatingBadgeButton
+                productionSlug={production.slug}
+                productionTitle={production.title}
+                productionCategory={production.category}
+                variant="badge"
+              />
               <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-amber-50 text-amber-900 border border-amber-200 flex items-center gap-1 shadow-2xs">
                 <Clock className="w-3 h-3 text-amber-600" />
                 <span>Tempo previsto de leitura: <strong>{currentUnit ? formatReadingTime(currentUnit, production.category) : '10 min'}</strong></span>

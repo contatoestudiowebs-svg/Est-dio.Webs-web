@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, Film, BookOpen, Calendar, Sparkles } from 'l
 import { PRODUCTIONS_DATA } from '../data/productions';
 import { WebProduction, ProductionStatus } from '../types';
 import { useProductionCover } from '../utils/imageManager';
+import { AgeRatingBadgeButton } from './AgeRatingBadgeButton';
 
 interface FeaturedProgrammingCarouselProps {
   onNavigate: (path: string) => void;
@@ -133,6 +134,16 @@ function ProductionCardItem({
           <div className="absolute inset-0 bg-slate-950/35 group-hover:bg-slate-950/15 transition-colors duration-300" />
         )}
 
+        {/* Top right age rating button */}
+        <div className="absolute top-2.5 right-2.5 z-20">
+          <AgeRatingBadgeButton
+            productionSlug={production.slug}
+            productionTitle={production.title}
+            productionCategory={production.category}
+            variant="compact"
+          />
+        </div>
+
         {/* Minimal scrim gradient strictly at the bottom edge so the artwork remains completely visible */}
         {isCenter && (
           <div className="absolute bottom-0 inset-x-0 h-28 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
@@ -142,7 +153,7 @@ function ProductionCardItem({
         {isCenter ? (
           <div className="relative z-10 p-3 sm:p-4 flex flex-col items-center text-center">
             {/* Category / Premiere Badge */}
-            <div className="mb-1.5">
+            <div className="mb-1.5 flex items-center justify-center gap-1.5 flex-wrap">
               {isAmoresFeridos ? (
                 <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] sm:text-[11px] font-black uppercase tracking-wider bg-[#D80050] text-white shadow-md animate-pulse">
                   <Calendar className="w-3 h-3" />
