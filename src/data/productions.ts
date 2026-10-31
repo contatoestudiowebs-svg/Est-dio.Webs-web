@@ -21,6 +21,8 @@ import { DEBORA_E_REBECA_EPISODES } from './deboraERebecaData';
 import { AS_MINA_PARTE_2_EPISODES } from './asMinaParte2Data';
 import { CORACOES_DE_ACUCAR_EPISODES } from './coracoesDeAcucarData';
 import { TERRA_DE_BRAVOS_EPISODES } from './terraDeBravosData';
+import { EU_SOU_PIAF_EPISODES } from './euSouPiafData';
+import { RUTE_EPISODES } from './ruteData';
 
 function generateUnits(count: number, unitType: UnitType): ChapterEpisode[] {
   const prefix = unitType === 'capítulos' ? 'Capítulo' : 'Episódio';
@@ -163,7 +165,7 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     status: 'Finalizada',
     coverImage: 'https://static.wixstatic.com/media/cbfc82_8abfe7f8146048788a481427bfb9c63b~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_8abfe7f8146048788a481427bfb9c63b~mv2.png',
     synopsis: 'Marcelo é um jovem sonhador. Cresceu vendo sua mãe ouvir Edith Piaf e acabou se tornando um grande fã da cantora. E hoje ele divide seu tempo entre trabalho, como lavador de pratos, e pequenas apresentações nas noites, onde interpreta as músicas de Edith Piaf. Seus pais descobrem o que ele faz nas noites e expulsam Marcelo de casa. Marcelo vê uma oportunidade de mudar de vida e viver seu sonho quando abrem inscrições para uma seleção de talentos para um grande teatro da cidade. Marcelo é inscrito por sua amiga. No dia de sua apresentação, Marcelo dá um show como Edith Piaf, todos se encantam com a incrível apresentação.',
-    episodes: generateUnits(16, 'capítulos')
+    episodes: EU_SOU_PIAF_EPISODES
   },
   {
     id: 'terra-de-bravos',
@@ -295,7 +297,7 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     status: 'Finalizada',
     coverImage: 'https://static.wixstatic.com/media/cbfc82_6fc924ffddf24c0b846d2d6472f8299a~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_6fc924ffddf24c0b846d2d6472f8299a~mv2.png',
     synopsis: 'Em busca de uma vida melhor, após enfrentar dificuldades em Belém de Judá, Elimeleque decide se mudar com sua esposa Noemi e seus filhos, Malom e Quiliom para Moabe. Na terra estrangeira, Noemi e seus filhos sofrem a perda de Elimeleque. É quando Rute entra na vida de Noemi. Ela começa a se encontrar com Malom, e Quiliom com Orfa. Entre idas e vindas, eles se casam. E Noemi tem mais um momento difícil em sua vida quando perde seus dois filhos. Rute e Orfa acabam ficando viúvas. É quando Noemi decide voltar para Belém. Com uma profunda devoção, Rute declara: “Onde você for, irei; onde você ficar, ficarei.” Em Belém, ela trabalha arduamente para sustentar ambas, colhendo espigas em campos. Sua dedicação chama a atenção de Boaz, um parente rico de Noemi, que se torna seu protetor e eventual redentor.',
-    episodes: generateUnits(18, 'capítulos')
+    episodes: RUTE_EPISODES
   },
   {
     id: 'pandorum',

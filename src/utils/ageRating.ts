@@ -259,10 +259,10 @@ export const PRODUCTION_AGE_RATINGS: Record<string, ProductionAdvisory> = {
   },
   // Rute
   rute: {
-    ageRating: 'L',
-    descriptors: ['Livre para todos os públicos'],
+    ageRating: '12',
+    descriptors: ['Violência', 'Temas Sensíveis', 'Morte'],
     advisoryNote:
-      'Adaptação dramática de época com mensagem de amor, companheirismo e fidelidade familiar.',
+      'Drama bíblico de época com cenas de agressão física, morte violenta, perda gestacional e conflitos conjugais e familiares.',
   },
   // Destino ao Coração
   'destino-ao-coracao': {
