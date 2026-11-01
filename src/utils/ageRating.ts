@@ -281,9 +281,9 @@ export const PRODUCTION_AGE_RATINGS: Record<string, ProductionAdvisory> = {
   // ACESSO 1
   'acesso-1': {
     ageRating: '12',
-    descriptors: ['Intrigas Profissionais', 'Linguagem Informal'],
+    descriptors: ['Conflitos Juvenis', 'Linguagem Imprópria Leve', 'Insinuação Sexual Leve'],
     advisoryNote:
-      'Bastidores de um canal de televisão com competição agressiva por audiência e vaidades pessoais.',
+      'Drama juvenil e escolar no Colégio Acesso abordando romances, rivalidades entre adolescentes e busca pelas origens familiares.',
   },
   // Topázio
   topazio: {

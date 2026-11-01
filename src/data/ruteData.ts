@@ -14,6 +14,8 @@ import { RUTE_EPISODE_13_PAGES } from './ruteEpisodes/episode13';
 import { RUTE_EPISODE_14_PAGES } from './ruteEpisodes/episode14';
 import { RUTE_EPISODE_15_PAGES } from './ruteEpisodes/episode15';
 import { RUTE_EPISODE_16_PAGES } from './ruteEpisodes/episode16';
+import { RUTE_EPISODE_17_PAGES } from './ruteEpisodes/episode17';
+import { RUTE_EPISODE_18_PAGES } from './ruteEpisodes/episode18';
 import { ChapterEpisode } from '../types';
 
 export interface RuteEpisodeDef {
@@ -187,33 +189,35 @@ export const RUTE_EPISODES_RAW: RuteEpisodeDef[] = [
     pages: RUTE_EPISODE_16_PAGES,
     pdfUrl: '/assets/aistudio/RUTE.Cap_tulo16.docx_c2d8452d.pdf',
   },
+  {
+    number: 17,
+    label: 'Capítulo 17',
+    slug: 'capitulo-17',
+    title: 'Capítulo 17',
+    summary:
+      'Noemi faz um bolo para Boaz. Bina pergunta a Boaz sobre Rute. Lis conta a Rute sobre a festa das semanas. Rute conta a Noemi como se sente perto de Boaz. Boaz sente falta de Rute na festa das semanas. Noemi briga com Rute. Tadeu é questionado sobre a remissão de Rute. Boaz desfaz sociedade com Tadeu e Chaim.',
+    pages: RUTE_EPISODE_17_PAGES,
+    pdfUrl: '/assets/aistudio/RUTE.Cap_tulo17.docx_53642758.pdf',
+  },
+  {
+    number: 18,
+    label: 'Capítulo 18',
+    slug: 'capitulo-18',
+    title: 'Capítulo 18',
+    summary:
+      'Joana conversa com Noemi. Joana faz fofocas sobre Noemi para Tadeu. Bina tenta convencer Boaz a revelar seus sentimentos por Rute. Boaz descobre as armações de Tadeu e recebe o direito de redimir a Rute. Boaz pede Rute em casamento.',
+    pages: RUTE_EPISODE_18_PAGES,
+    pdfUrl: '/assets/aistudio/RUTE.Cap_tulo18.docx_0460bddf.pdf',
+  },
 ];
 
-// Remaining chapters 17 to 18 placeholders
-const REMAINING_RUTE_EPISODES: ChapterEpisode[] = Array.from({ length: 2 }, (_, i) => {
-  const num = i + 17;
-  const pad = String(num).padStart(2, '0');
-  return {
-    number: num,
-    label: `Capítulo ${pad}`,
-    slug: `capitulo-${pad}`,
-    title: `Capítulo ${pad}`,
-    summary: `Espaço oficial preparado para o capítulo ${pad} da web novela Rute. Em breve.`,
-    content: '',
-    pdfPages: [],
-  };
-});
-
-export const RUTE_EPISODES: ChapterEpisode[] = [
-  ...RUTE_EPISODES_RAW.map((ep) => ({
-    number: ep.number,
-    label: ep.label,
-    slug: ep.slug,
-    title: ep.title,
-    summary: ep.summary,
-    content: ep.pages.length > 0 ? ep.pages.join('\n\n--- PÁGINA SEGUINTE ---\n\n') : '',
-    pdfPages: ep.pages,
-    pdfUrl: ep.pdfUrl,
-  })),
-  ...REMAINING_RUTE_EPISODES,
-];
+export const RUTE_EPISODES: ChapterEpisode[] = RUTE_EPISODES_RAW.map((ep) => ({
+  number: ep.number,
+  label: ep.label,
+  slug: ep.slug,
+  title: ep.title,
+  summary: ep.summary,
+  content: ep.pages.length > 0 ? ep.pages.join('\n\n--- PÁGINA SEGUINTE ---\n\n') : '',
+  pdfPages: ep.pages,
+  pdfUrl: ep.pdfUrl,
+}));

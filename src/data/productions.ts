@@ -23,6 +23,7 @@ import { CORACOES_DE_ACUCAR_EPISODES } from './coracoesDeAcucarData';
 import { TERRA_DE_BRAVOS_EPISODES } from './terraDeBravosData';
 import { EU_SOU_PIAF_EPISODES } from './euSouPiafData';
 import { RUTE_EPISODES } from './ruteData';
+import { ACESSO_1_EPISODES } from './acesso1Data';
 
 function generateUnits(count: number, unitType: UnitType): ChapterEpisode[] {
   const prefix = unitType === 'capítulos' ? 'Capítulo' : 'Episódio';
@@ -401,7 +402,7 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     status: 'Finalizada',
     coverImage: 'https://static.wixstatic.com/media/cbfc82_d43f0a0c15674fc797184d3c03eb81da~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_d43f0a0c15674fc797184d3c03eb81da~mv2.png',
     synopsis: 'Amélia sempre foi uma jovem esforçada. Ela decide se mudar para a capital do Rio de Janeiro com seu pai, Alberto, em busca de encontrar sua mãe. Só que ela conhece Samuel. Nos primeiros encontros, ela o destratará, mas ele não desistirá assim tão fácil dela. O maior problema é que ele tem um namoro mal resolvido com Rafaela, a garota popular do colégio ACESSO onde eles estudam. Para deixar esse conflito ainda mais interessante, Amélia passa a trabalhar na casa de Rafaela.',
-    episodes: generateUnits(20, 'capítulos')
+    episodes: ACESSO_1_EPISODES
   },
   {
     id: 'topazio',
