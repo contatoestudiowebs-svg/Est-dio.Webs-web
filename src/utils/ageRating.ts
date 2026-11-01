@@ -276,7 +276,7 @@ export const PRODUCTION_AGE_RATINGS: Record<string, ProductionAdvisory> = {
     ageRating: '14',
     descriptors: ['Violência', 'Rivalidade Familiar', 'Ameaças'],
     advisoryNote:
-      'Conflitos entre duas linhagens com ameaças de violência patrimonial e chantagens destrutivas.',
+      'Trama dramática com tentativa de abuso, morte, tráfico de recém-nascido, sequestro, chantagem e vingança obsessiva.',
   },
   // ACESSO 1
   'acesso-1': {

@@ -24,6 +24,7 @@ import { TERRA_DE_BRAVOS_EPISODES } from './terraDeBravosData';
 import { EU_SOU_PIAF_EPISODES } from './euSouPiafData';
 import { RUTE_EPISODES } from './ruteData';
 import { ACESSO_1_EPISODES } from './acesso1Data';
+import { SANGUE_CRUZADO_EPISODES } from './sangueCruzadoData';
 
 function generateUnits(count: number, unitType: UnitType): ChapterEpisode[] {
   const prefix = unitType === 'capítulos' ? 'Capítulo' : 'Episódio';
@@ -350,7 +351,7 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     status: 'Finalizada',
     coverImage: 'https://static.wixstatic.com/media/cbfc82_76db79f328ee4d27809aab184860b4ba~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_76db79f328ee4d27809aab184860b4ba~mv2.png',
     synopsis: 'O que leva alguém a querer se vingar? Elizabeth culpa sua irmã Cristina por tudo o que deu errado em sua vida. E para se vingar da irmã, Elizabeth vai se envolver com seu sobrinho, Pedro, para tomar tudo o que é dele e ter sua vingança. Com a ajuda de Maurílio, Elizabeth colocará seu plano em prática, mas o destino prepara situações que podem atrapalhar Elizabeth de realizar sua vingança. Remake da história original exibida em 2015 no ADNTV.',
-    episodes: generateUnits(20, 'capítulos')
+    episodes: SANGUE_CRUZADO_EPISODES
   },
   {
     id: 'destino-ao-coracao',
