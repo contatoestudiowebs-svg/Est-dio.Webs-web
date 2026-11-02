@@ -14,6 +14,10 @@ import { SANGUE_CRUZADO_EPISODE_13_PAGES } from './sangueCruzadoEpisodes/episode
 import { SANGUE_CRUZADO_EPISODE_14_PAGES } from './sangueCruzadoEpisodes/episode14';
 import { SANGUE_CRUZADO_EPISODE_15_PAGES } from './sangueCruzadoEpisodes/episode15';
 import { SANGUE_CRUZADO_EPISODE_16_PAGES } from './sangueCruzadoEpisodes/episode16';
+import { SANGUE_CRUZADO_EPISODE_17_PAGES } from './sangueCruzadoEpisodes/episode17';
+import { SANGUE_CRUZADO_EPISODE_18_PAGES } from './sangueCruzadoEpisodes/episode18';
+import { SANGUE_CRUZADO_EPISODE_19_PAGES } from './sangueCruzadoEpisodes/episode19';
+import { SANGUE_CRUZADO_EPISODE_20_PAGES } from './sangueCruzadoEpisodes/episode20';
 import { ChapterEpisode } from '../types';
 
 export interface SangueCruzadoEpisodeDef {
@@ -187,33 +191,55 @@ export const SANGUE_CRUZADO_EPISODES_RAW: SangueCruzadoEpisodeDef[] = [
     pages: SANGUE_CRUZADO_EPISODE_16_PAGES,
     pdfUrl: '/assets/aistudio/remake-SC-cap.16.docx_5ddd571b.pdf',
   },
+  {
+    number: 17,
+    label: 'Capítulo 17',
+    slug: 'capitulo-17',
+    title: 'Capítulo 17',
+    summary:
+      'Maurílio descobre que o irmão de Ivone, Silvino, está preso e Elizabeth planeja usar a soltura dele para chantagear a empregada. Elizabeth conta que Berenice sobreviveu aos tiros por usar colete. Maurílio encontra Berenice caída com dor no peito e aciona o resgate fingindo ser sobrinho dela. Maurílio paga a fiança de Silvino e fotografa o rapaz saindo da prisão. Elizabeth mostra a foto a Ivone, que entra em choque.',
+    pages: SANGUE_CRUZADO_EPISODE_17_PAGES,
+    pdfUrl: '/assets/aistudio/remake-SC-cap.17.docx_1f8e7e7e.pdf',
+  },
+  {
+    number: 18,
+    label: 'Capítulo 18',
+    slug: 'capitulo-18',
+    title: 'Capítulo 18',
+    summary:
+      'Pedro volta de viagem e Elizabeth mente sobre Ivone. Ivone reencontra Silvino e desconfia da soltura repentina. Elizabeth mexe no celular de Pedro enquanto ele dorme e descobre mensagens de Esther registrada como "associado". Fazendo-se passar por Pedro, Elizabeth convida Esther para um jantar na casa deles. Ivone confronta Elizabeth pela fiança e é ameaçada. Maurílio descobre que alguém anônimo bancou a cirurgia cardíaca de Berenice. Esther chega para o jantar e é recebida por Elizabeth.',
+    pages: SANGUE_CRUZADO_EPISODE_18_PAGES,
+    pdfUrl: '/assets/aistudio/remake-SC-cap.18.docx_6665d27a.pdf',
+  },
+  {
+    number: 19,
+    label: 'Capítulo 19',
+    slug: 'capitulo-19',
+    title: 'Capítulo 19',
+    summary:
+      'Barraco no jantar: Elizabeth desmascara a farsa de Pedro e expõe a traição dele com Esther diante de Ivone. Esther vai embora revoltada. Ivone descobre que o "cliente generoso" que soltou o irmão é o comparsa de Elizabeth. Com medo de ser entregue, Elizabeth ordena que Maurílio mate Silvino. Maurílio assassina Silvino a tiros na rua. Pedro pede desculpas a Elizabeth e a leva de olhos vendados a um galpão. Ao tirar a venda, Elizabeth dá de cara com Cristina viva e sua filha Giovana.',
+    pages: SANGUE_CRUZADO_EPISODE_19_PAGES,
+    pdfUrl: '/assets/aistudio/remake-SC-cap.19.docx_452be423.pdf',
+  },
+  {
+    number: 20,
+    label: 'Capítulo 20',
+    slug: 'capitulo-20',
+    title: 'Capítulo 20',
+    summary:
+      'No galpão, Cristina, Giovana e Pedro revelam a armadilha contra Elizabeth; com a denúncia do assassinato de Silvino, a polícia cerca o local e prende Elizabeth e Maurílio. Meses depois, Maurílio pega 30 anos e Elizabeth 15 anos. No presídio, Cristina e Giovana visitam Elizabeth, que cai em lágrimas, se arrepende e pede perdão. Um ano depois, Pedro e Esther se casam na igreja e a família celebra reunida e em paz.',
+    pages: SANGUE_CRUZADO_EPISODE_20_PAGES,
+    pdfUrl: '/assets/aistudio/remake-SC-cap.20.docx_2ee9255e.pdf',
+  },
 ];
 
-// Remaining chapters 17 to 20 placeholders
-const REMAINING_SANGUE_CRUZADO_EPISODES: ChapterEpisode[] = Array.from({ length: 4 }, (_, i) => {
-  const num = i + 17;
-  const pad = String(num).padStart(2, '0');
-  return {
-    number: num,
-    label: `Capítulo ${pad}`,
-    slug: `capitulo-${pad}`,
-    title: `Capítulo ${pad}`,
-    summary: `Espaço oficial preparado para o capítulo ${pad} da web novela Sangue Cruzado. Em breve.`,
-    content: '',
-    pdfPages: [],
-  };
-});
-
-export const SANGUE_CRUZADO_EPISODES: ChapterEpisode[] = [
-  ...SANGUE_CRUZADO_EPISODES_RAW.map((ep) => ({
-    number: ep.number,
-    label: ep.label,
-    slug: ep.slug,
-    title: ep.title,
-    summary: ep.summary,
-    content: ep.pages.length > 0 ? ep.pages.join('\n\n--- PÁGINA SEGUINTE ---\n\n') : '',
-    pdfPages: ep.pages,
-    pdfUrl: ep.pdfUrl,
-  })),
-  ...REMAINING_SANGUE_CRUZADO_EPISODES,
-];
+export const SANGUE_CRUZADO_EPISODES: ChapterEpisode[] = SANGUE_CRUZADO_EPISODES_RAW.map((ep) => ({
+  number: ep.number,
+  label: ep.label,
+  slug: ep.slug,
+  title: ep.title,
+  summary: ep.summary,
+  content: ep.pages.length > 0 ? ep.pages.join('\n\n--- PÁGINA SEGUINTE ---\n\n') : '',
+  pdfPages: ep.pages,
+  pdfUrl: ep.pdfUrl,
+}));
