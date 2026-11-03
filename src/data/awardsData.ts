@@ -72,7 +72,7 @@ export const OFFICIAL_AWARDS: Record<string, ProductionAwardInfo> = {
     title: 'Nada Além do Seu Amor',
     author: 'Everton B Dutra',
     category: 'Web novela',
-    totalUnits: 10,
+    totalUnits: 21,
     coverImage: 'https://static.wixstatic.com/media/cbfc82_1d8d9b15852542a9b3d0cf3f4165561a~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_1d8d9b15852542a9b3d0cf3f4165561a~mv2.png',
     festivalOrAward: 'Global Choice Awards',
     awardText: 'Vencedora no Global Choice Awards, premiação internacional nas categorias: Best Foreign Language Soap Opera (Melhor Telenovela em Língua Estrangeira), Best Soap Opera (Melhor Telenovela), Best Soap Opera Author (Melhor Autor de Telenovela), Best Male Protagonist (Melhor Protagonista Masculino) e Best Male Supporting Role (Melhor Ator Coadjuvante).',

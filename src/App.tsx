@@ -288,6 +288,22 @@ function AppContent() {
       );
     }
 
+    // Direct shortcuts for /nada-alem-do-seu-amor
+    if (pathOnly === '/nada-alem-do-seu-amor') {
+      return <ProductionDetailPage slug="nada-alem-do-seu-amor" onNavigate={navigate} />;
+    }
+    const nadaAlemChapterMatch = pathOnly.match(/^\/nada-alem-do-seu-amor\/([^/]+)$/);
+    if (nadaAlemChapterMatch) {
+      const [, chapterSlug] = nadaAlemChapterMatch;
+      return (
+        <ChapterEpisodeReaderPage
+          productionSlug="nada-alem-do-seu-amor"
+          chapterSlug={chapterSlug}
+          onNavigate={navigate}
+        />
+      );
+    }
+
     // 3. Production Detail: /webs/:slug
     const productionMatch = pathOnly.match(/^\/webs\/([^/]+)$/);
     if (productionMatch) {

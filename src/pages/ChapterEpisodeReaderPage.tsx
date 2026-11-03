@@ -93,7 +93,7 @@ export function ChapterEpisodeReaderPage({
       : null;
 
   const hasPdf = Boolean(currentUnit?.pdfPages && currentUnit.pdfPages.length > 0);
-  const [activeTab, setActiveTab] = useState<'pdf' | 'text' | 'summary' | 'audio'>(hasPdf ? 'pdf' : 'text');
+  const [activeTab, setActiveTab] = useState<'pdf' | 'pdf-embed' | 'text' | 'summary' | 'audio'>(hasPdf ? 'pdf' : 'text');
   const [currentPdfPage, setCurrentPdfPage] = useState<number>(0);
   const [pdfViewMode, setPdfViewMode] = useState<'all' | 'single'>('all');
   const [isAudioPlayerOpen, setIsAudioPlayerOpen] = useState<boolean>(false);
@@ -398,7 +398,7 @@ export function ChapterEpisodeReaderPage({
               )}
             </div>
           </div>
-          <p className="text-sm text-slate-800 leading-relaxed font-sans font-medium">
+          <p className="text-sm text-slate-800 leading-relaxed font-sans font-medium whitespace-pre-line">
             {currentUnit.summary}
           </p>
         </div>
@@ -421,6 +421,21 @@ export function ChapterEpisodeReaderPage({
               <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-rose-100 text-[#D80050]">
                 {currentUnit?.pdfPages?.length} Páginas
               </span>
+            </button>
+          )}
+
+          {currentUnit?.pdfUrl && (
+            <button
+              onClick={() => setActiveTab('pdf-embed')}
+              className={`px-4 py-2 rounded-lg text-xs font-extrabold uppercase tracking-wider flex items-center gap-2 transition ${
+                activeTab === 'pdf-embed'
+                  ? 'bg-white text-slate-900 shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+              title="Visualizar o arquivo original em PDF"
+            >
+              <FileDown className="w-3.5 h-3.5 text-rose-600" />
+              <span>PDF Original</span>
             </button>
           )}
 
@@ -634,7 +649,20 @@ export function ChapterEpisodeReaderPage({
               </div>
             </div>
 
-            <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
+            <div className="flex items-center gap-2 self-end sm:self-auto shrink-0 flex-wrap">
+              {currentUnit.pdfUrl && (
+                <a
+                  href={currentUnit.pdfUrl}
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
+                  title="Baixar arquivo PDF original intacto"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>PDF Original</span>
+                </a>
+              )}
               <button
                 onClick={handleDownloadOrPrintPdf}
                 className="px-3 py-1.5 rounded-lg bg-[#D80050] hover:bg-[#eb0058] text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
@@ -705,6 +733,58 @@ export function ChapterEpisodeReaderPage({
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* VIEW MODE: Embedded Original PDF Document */}
+      {activeTab === 'pdf-embed' && currentUnit?.pdfUrl && (
+        <div className="space-y-4 mb-8">
+          <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-rose-50 text-[#D80050] border border-rose-200 flex items-center justify-center font-bold shrink-0">
+                <FileText className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                  <span>Arquivo PDF Original</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">
+                    Formato Original
+                  </span>
+                </h4>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Roteiro original do autor {production.author}, mantido na íntegra sem qualquer alteração de formato.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+              <a
+                href={currentUnit.pdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs"
+              >
+                <Eye className="w-3.5 h-3.5 text-rose-400" />
+                <span>Abrir em Nova Aba</span>
+              </a>
+              <a
+                href={currentUnit.pdfUrl}
+                download
+                className="px-3.5 py-2 rounded-xl bg-[#D80050] hover:bg-[#be0044] text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Baixar PDF</span>
+              </a>
+            </div>
+          </div>
+
+          <div className="w-full bg-slate-900 rounded-2xl overflow-hidden shadow-lg border border-slate-300">
+            <iframe
+              src={`${currentUnit.pdfUrl}#toolbar=1`}
+              title={`${production.title} - ${currentUnit.label}`}
+              className="w-full h-[850px] border-0"
+            />
+          </div>
         </div>
       )}
 
@@ -829,7 +909,7 @@ export function ChapterEpisodeReaderPage({
               <h4 className="text-xs font-extrabold text-[#D80050] uppercase tracking-wider mb-2">
                 Sinopse do Episódio
               </h4>
-              <p className="text-base text-slate-800 leading-relaxed font-sans">
+              <p className="text-base text-slate-800 leading-relaxed font-sans whitespace-pre-line">
                 {currentUnit?.summary}
               </p>
             </div>

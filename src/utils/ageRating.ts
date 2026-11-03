@@ -252,10 +252,10 @@ export const PRODUCTION_AGE_RATINGS: Record<string, ProductionAdvisory> = {
   },
   // Nada Além do Seu Amor
   'nada-alem-do-seu-amor': {
-    ageRating: 'L',
-    descriptors: ['Livre para todos os públicos'],
+    ageRating: '14',
+    descriptors: ['Drogas Ilícitas', 'Violência', 'Temas Sensíveis', 'Conflitos Amorosos'],
     advisoryNote:
-      'Comédia romântica açucarada com encontros divertidos e final feliz, livre de violência ou conteúdos impróprios.',
+      'Web novela dramática que aborda superação de dependência química, encontros do destino, preconceito, violência e conflitos familiares intensos.',
   },
   // Rute
   rute: {

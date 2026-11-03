@@ -25,6 +25,7 @@ import { EU_SOU_PIAF_EPISODES } from './euSouPiafData';
 import { RUTE_EPISODES } from './ruteData';
 import { ACESSO_1_EPISODES } from './acesso1Data';
 import { SANGUE_CRUZADO_EPISODES } from './sangueCruzadoData';
+import { NADA_ALEM_DO_SEU_AMOR_EPISODES } from './nadaAlemDoSeuAmorData';
 
 function generateUnits(count: number, unitType: UnitType): ChapterEpisode[] {
   const prefix = unitType === 'capítulos' ? 'Capítulo' : 'Episódio';
@@ -338,7 +339,7 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     status: 'Finalizada',
     coverImage: 'https://static.wixstatic.com/media/cbfc82_1781c057924d42a4ac6ddabec34f3ee1~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_1781c057924d42a4ac6ddabec34f3ee1~mv2.png',
     synopsis: 'Em uma noite tempestuosa e fatídica os destinos de Aquiles e André acabam se cruzando. André, embora de família rica, passou a morar nas ruas por ser um dependente químico e, na porta de uma igreja, era acometido por uma overdose. Prestes a morrer, o jovem é acudido por Aquiles, que estava a caminho do baile de formatura do ensino médio quando o ônibus quebrou e o mesmo precisou buscar abrigo na igreja. Inconsciente da tragédia que era a vida do rapaz, André acaba ficando com uma correntinha que Aquiles carregava no pescoço, o que viria a se tornar a única lembrança física da pessoa que salvou sua vida e combustível para sua busca por essa pessoa durante anos e anos a fio.',
-    episodes: generateUnits(21, 'capítulos')
+    episodes: NADA_ALEM_DO_SEU_AMOR_EPISODES
   },
   {
     id: 'sangue-cruzado',
