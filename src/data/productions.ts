@@ -26,6 +26,7 @@ import { RUTE_EPISODES } from './ruteData';
 import { ACESSO_1_EPISODES } from './acesso1Data';
 import { SANGUE_CRUZADO_EPISODES } from './sangueCruzadoData';
 import { NADA_ALEM_DO_SEU_AMOR_EPISODES } from './nadaAlemDoSeuAmorData';
+import { SOCIO_DO_AMOR_EPISODES } from './socioDoAmorData';
 
 function generateUnits(count: number, unitType: UnitType): ChapterEpisode[] {
   const prefix = unitType === 'capítulos' ? 'Capítulo' : 'Episódio';
@@ -155,7 +156,7 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     highlightOrder: 5,
     coverImage: 'https://static.wixstatic.com/media/cbfc82_9ada38d3744c4f66a4c6a0c377b41f06~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_9ada38d3744c4f66a4c6a0c377b41f06~mv2.png',
     synopsis: 'Miguel é um jovem do Vidigal, estudante de Jornalismo, apaixonado por comunicação e engajado nas causas da comunidade. Criado por Griselda e Eduardo, ele é querido por todos, mas carrega marcas de um amor mal resolvido com Juan, que abalou sua autoestima. Do outro lado da cidade está Rodrigo, um engenheiro ambicioso, bem-sucedido e solitário, que esconde seus conflitos pessoais atrás da carreira. Dividido entre desejos e aparências, ele vive relações vazias até se envolver com Jhonatan, um homem sedutor e interesseiro.\n\nOs caminhos de Miguel e Rodrigo se cruzam após um escândalo empresarial, quando um confronto profissional se transforma em atração. Entre choques, descobertas e paixão, eles se aproximam cada vez mais. Enquanto Miguel apresenta a força da vida na comunidade, Jhonatan fará de tudo para impedir esse amor. No contraste entre o Vidigal e o mundo dos negócios, os dois precisarão enfrentar preconceitos, ambições e seus próprios medos para viver um sentimento intenso e transformador.',
-    episodes: generateUnits(25, 'capítulos')
+    episodes: SOCIO_DO_AMOR_EPISODES
   },
   {
     id: 'eu-sou-piaf',

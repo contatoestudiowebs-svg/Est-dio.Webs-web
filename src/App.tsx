@@ -304,6 +304,22 @@ function AppContent() {
       );
     }
 
+    // Direct shortcuts for /socio-do-amor
+    if (pathOnly === '/socio-do-amor') {
+      return <ProductionDetailPage slug="socio-do-amor" onNavigate={navigate} />;
+    }
+    const socioDoAmorChapterMatch = pathOnly.match(/^\/socio-do-amor\/([^/]+)$/);
+    if (socioDoAmorChapterMatch) {
+      const [, chapterSlug] = socioDoAmorChapterMatch;
+      return (
+        <ChapterEpisodeReaderPage
+          productionSlug="socio-do-amor"
+          chapterSlug={chapterSlug}
+          onNavigate={navigate}
+        />
+      );
+    }
+
     // 3. Production Detail: /webs/:slug
     const productionMatch = pathOnly.match(/^\/webs\/([^/]+)$/);
     if (productionMatch) {
