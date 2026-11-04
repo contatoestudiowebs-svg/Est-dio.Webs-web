@@ -115,7 +115,7 @@ export function VemAiPage({ onNavigate }: VemAiPageProps) {
             Acompanhe a chegada das novas web novelas
           </h3>
           <p className="text-xs sm:text-sm text-slate-300 max-w-xl">
-            As datas de lançamento serão divulgadas em breve aqui e na Sala de Imprensa. Enquanto isso, aproveite as 31 produções 100% finalizadas do nosso catálogo.
+            As datas de lançamento serão divulgadas em breve aqui e na Sala de Imprensa. Enquanto isso, aproveite as 31 produções do nosso catálogo.
           </p>
         </div>
 

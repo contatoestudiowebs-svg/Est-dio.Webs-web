@@ -133,7 +133,7 @@ export function SalaDeImprensaPage({ onNavigate }: SalaDeImprensaPageProps) {
 
               {/* Summary / Lead */}
               <p className="text-base sm:text-lg text-slate-700 leading-relaxed font-normal mb-8 max-w-4xl">
-                A emissora virtual celebra a consolidação de seu acervo com 100% das obras catalogadas e finalizadas, amplia o suporte a roteiristas independentes com a nova ala de Comunidade e reforça seu compromisso com a valorização de histórias inéditas na internet.
+                A emissora virtual celebra a consolidação de seu acervo com obras catalogadas e completas, amplia o suporte a roteiristas independentes com a nova ala de Comunidade e reforça seu compromisso com a valorização de histórias inéditas na internet.
               </p>
 
               {/* EXPANDED CONTENT: Full article revealed when isExpanded === true */}

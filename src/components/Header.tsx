@@ -61,7 +61,6 @@ export function Header({ currentPath, onNavigate, onOpenSearch }: HeaderProps) {
           </div>
           <div className="hidden md:flex items-center gap-4 text-slate-400">
             <span>Catálogo Oficial de Web Séries e Web Novelas</span>
-            <span className="text-emerald-400 font-bold">• 100% Finalizadas</span>
           </div>
         </div>
       </div>
