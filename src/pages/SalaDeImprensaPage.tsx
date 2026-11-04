@@ -45,7 +45,7 @@ export function SalaDeImprensaPage({ onNavigate }: SalaDeImprensaPageProps) {
     <div className="min-h-screen bg-white">
       <SEOHead
         title="Sala de Imprensa | Estúdio Webs"
-        description="Sala de Imprensa oficial do Estúdio Webs: comunicados, notícias institucionais e informações sobre produções da teledramaturgia virtual."
+        description="Sala de Imprensa oficial do Estúdio Webs: comunicados, notícias institucionais e informações sobre produções do Mundo Virtual."
         canonicalPath="/sala-de-imprensa"
       />
 
@@ -99,7 +99,7 @@ export function SalaDeImprensaPage({ onNavigate }: SalaDeImprensaPageProps) {
               {/* Photo Caption Overlay */}
               <div className="absolute bottom-3 sm:bottom-4 left-4 sm:left-6 right-4 sm:right-6 flex items-center justify-between text-[11px] text-white/90">
                 <span className="font-medium drop-shadow-sm">
-                  Núcleo de Produção & Dramaturgia Virtual — Estúdio Webs
+                  Núcleo de Produção do Mundo Virtual — Estúdio Webs
                 </span>
                 <span className="hidden sm:inline-block text-white/70">
                   Foto: Divulgação Oficial
@@ -128,7 +128,7 @@ export function SalaDeImprensaPage({ onNavigate }: SalaDeImprensaPageProps) {
 
               {/* Article Headline */}
               <h2 className="font-brand font-black text-2xl sm:text-3xl lg:text-4xl text-slate-950 tracking-tight leading-tight mb-4">
-                Estúdio Webs consolida marco de 31 produções originais e estabelece novo horizonte para a teledramaturgia virtual brasileira
+                Estúdio Webs consolida marco de 31 produções originais e estabelece novo horizonte para o Mundo Virtual brasileiro na web emissora
               </h2>
 
               {/* Summary / Lead */}
@@ -153,7 +153,7 @@ export function SalaDeImprensaPage({ onNavigate }: SalaDeImprensaPageProps) {
                   {/* Curatorial Quote Box */}
                   <blockquote className="my-8 p-6 sm:p-8 bg-amber-50/70 border-l-0 border border-amber-200/80 rounded-2xl relative">
                     <p className="font-serif italic text-lg sm:text-xl text-slate-900 leading-relaxed">
-                      “A teledramaturgia virtual é mais do que um formato literário na web; é uma manifestação cultural legítima e vibrante. Nossa meta na Sala de Imprensa e em toda a plataforma é dar a cada autor o destaque que sua narrativa merece, preservando cada capítulo como patrimônio da ficção independente brasileira.”
+                      “O Mundo Virtual é mais do que um formato literário na web; é uma manifestação cultural legítima e vibrante da nossa web emissora. Nossa meta na Sala de Imprensa e em toda a plataforma é dar a cada autor o destaque que sua narrativa merece, preservando cada capítulo como patrimônio da ficção independente brasileira.”
                     </p>
                     <footer className="mt-4 text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-600 font-brand">
                       — Curadoria e Coordenação Geral de Roteiros, Estúdio Webs
@@ -171,7 +171,7 @@ export function SalaDeImprensaPage({ onNavigate }: SalaDeImprensaPageProps) {
                     Informações e Credenciamento de Imprensa
                   </h3>
                   <p>
-                    Veículos de comunicação, portais especializados em audiovisual, acadêmicos e pesquisadores de teledramaturgia virtual podem solicitar materiais institucionais em alta resolução, entrevistas com autores e relatórios sobre o consumo de ficção virtual pelo canal oficial de assessoria.
+                    Veículos de comunicação, portais especializados em audiovisual, acadêmicos e pesquisadores do Mundo Virtual podem solicitar materiais institucionais em alta resolução, entrevistas com autores e relatórios sobre o consumo de ficção virtual pelo canal oficial de assessoria da web emissora.
                   </p>
 
                   {/* Institutional Media Box */}

@@ -122,7 +122,7 @@ export function ContactPage() {
             <div className="pt-3 border-t border-slate-100 space-y-2.5 text-xs">
               <div className="flex items-center gap-2 text-slate-700">
                 <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Canal autenticado da teledramaturgia virtual</span>
+                <span>Canal autenticado da web emissora no Mundo Virtual</span>
               </div>
               <div className="flex items-center gap-2 text-slate-700">
                 <Clock className="w-4 h-4 text-slate-400 shrink-0" />

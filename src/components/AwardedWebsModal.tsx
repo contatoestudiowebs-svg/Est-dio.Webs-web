@@ -215,7 +215,7 @@ export function AwardedWebsModal({
         <div className="p-4 sm:p-5 bg-white border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-600">
           <div className="flex items-center gap-2">
             <Award className="w-4 h-4 text-amber-500" />
-            <span>Premiações Oficiais da Teledramaturgia Virtual</span>
+            <span>Premiações Oficiais do Mundo Virtual</span>
           </div>
           <button
             onClick={onClose}

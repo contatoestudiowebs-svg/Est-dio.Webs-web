@@ -101,7 +101,7 @@ export function CatalogPage({ onNavigate, initialCategory }: CatalogPageProps) {
               NOSSAS WEBS
             </h1>
             <p className="text-sm text-slate-600 mt-1">
-              Catálogo oficial de produções ficcionais da dramaturgia virtual.
+              Catálogo oficial de produções do Mundo Virtual.
             </p>
           </div>
 

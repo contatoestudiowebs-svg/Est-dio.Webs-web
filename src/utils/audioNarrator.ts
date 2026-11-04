@@ -180,7 +180,7 @@ export function prepareNarrationChunks(
 
   chunks.push({
     id: idCounter++,
-    text: `Fim do ${chapterLabel}. Estúdio Webs, teledramaturgia virtual.`,
+    text: `Fim do ${chapterLabel}. Estúdio Webs, web emissora do Mundo Virtual.`,
     label: 'Fim',
     type: 'outro',
   });

@@ -11,7 +11,7 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
     <div className="min-h-screen py-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       <SEOHead
         title="Sobre o Estúdio Webs | Web Emissora de Ficção"
-        description="Conheça a história, a proposta editorial e o propósito do Estúdio Webs: a emissora digital de teledramaturgia virtual e web produções."
+        description="Conheça a história, a proposta editorial e o propósito do Estúdio Webs: a web emissora do Mundo Virtual e web produções."
         canonicalPath="/sobre"
       />
 
@@ -37,7 +37,7 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
             </div>
             <div>
               <h2 className="text-xl font-bold text-slate-900 font-brand">
-                Uma Emissora Dedicada à Teledramaturgia Digital
+                Uma Web Emissora Dedicada ao Mundo Virtual
               </h2>
               <span className="text-xs text-slate-500">
                 Pioneirismo em webséries e webnovelas virtuais
@@ -48,9 +48,9 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
           <div className="space-y-4 text-sm sm:text-base text-slate-700 leading-relaxed">
             <p>
               O <strong className="text-slate-900">Estúdio Webs</strong> nasceu com o propósito de ser um espaço acolhedor,
-              profissional e estruturado para a difusão e preservação da teledramaturgia virtual.
+              profissional e estruturado para a difusão e preservação de produções do Mundo Virtual.
               Reunindo talentos independentes, roteiristas, autores e criadores de conteúdo ficcional,
-              a emissora atua como uma vitrine digital para produções audiovisuais e literárias serializadas.
+              a web emissora atua como uma vitrine digital para produções audiovisuais e literárias serializadas.
             </p>
 
             <p>

@@ -109,7 +109,7 @@ export function VemAiPage({ onNavigate }: VemAiPageProps) {
         <div className="space-y-1.5 text-center md:text-left">
           <div className="flex items-center justify-center md:justify-start gap-2 text-rose-400 text-xs font-black uppercase tracking-widest">
             <Film className="w-4 h-4" />
-            <span>Teledramaturgia Virtual em Expansão</span>
+            <span>Mundo Virtual em Expansão</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold font-brand text-white">
             Acompanhe a chegada das novas web novelas

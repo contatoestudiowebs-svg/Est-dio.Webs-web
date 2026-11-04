@@ -35,7 +35,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
     <div className="min-h-screen">
       <SEOHead
         title="Estúdio Webs - Web Emissora de Ficção"
-        description="Plataforma oficial do Estúdio Webs: catálogo de web novelas e web séries, capítulos, episódios e autores da teledramaturgia virtual."
+        description="Plataforma oficial do Estúdio Webs: catálogo de web novelas e web séries, capítulos, episódios e autores do Mundo Virtual."
         canonicalPath="/"
         schema={{
           '@context': 'https://schema.org',
@@ -130,7 +130,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
               {activeTab === 'novelas' ? (
                 <span className="flex items-center gap-1.5 text-[#D80050]">
                   <BookOpen className="w-4 h-4" />
-                  <span>Dramaturgia Virtual • Histórias em Capítulos</span>
+                  <span>Mundo Virtual • Histórias em Capítulos</span>
                 </span>
               ) : (
                 <span className="flex items-center gap-1.5 text-blue-600">
@@ -144,7 +144,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 mt-1">
               {activeTab === 'novelas'
-                ? `Aba de Web Novelas: ${totalNovelCount} obras completas da nossa teledramaturgia virtual para ler agora.`
+                ? `Aba de Web Novelas: ${totalNovelCount} obras completas do nosso Mundo Virtual na web emissora para ler agora.`
                 : `Aba de Web Séries: ${totalSeriesCount} séries completas e dinâmicas com episódios para ler agora.`}
             </p>
           </div>
@@ -292,7 +292,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
             </h3>
 
             <p className="text-sm text-slate-300 leading-relaxed mb-6 font-reading">
-              O Estúdio Webs apoia e divulga a produção independente de teledramaturgia digital.
+              O Estúdio Webs apoia e divulga a produção independente do Mundo Virtual na web emissora.
               Se você é autor ou roteirista, envie a sinopse e o projeto da sua obra para análise da nossa equipe editorial.
             </p>
 

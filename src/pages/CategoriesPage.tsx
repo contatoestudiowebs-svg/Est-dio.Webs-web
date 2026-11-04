@@ -15,7 +15,7 @@ export function CategoriesPage({ onNavigate }: CategoriesPageProps) {
     <div className="min-h-screen py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <SEOHead
         title="Categorias | Estúdio Webs"
-        description="Conheça as duas principais vertentes de teledramaturgia virtual do Estúdio Webs: Web Novelas e Web Séries."
+        description="Conheça as duas principais vertentes do Mundo Virtual na web emissora Estúdio Webs: Web Novelas e Web Séries."
         canonicalPath="/categorias"
       />
 
@@ -51,7 +51,7 @@ export function CategoriesPage({ onNavigate }: CategoriesPageProps) {
             </h2>
 
             <p className="text-sm text-slate-700 leading-relaxed font-reading mb-6">
-              Obras de teledramaturgia contínua estruturadas em <strong>Capítulos</strong>. Apresentam
+              Obras contínuas do Mundo Virtual estruturadas em <strong>Capítulos</strong>. Apresentam
               tramas paralelas elaboradas, núcleos de personagens profundos, romances marcantes,
               conflitos familiares e ganchos dramáticos clássicos do formato folhetinesco.
             </p>

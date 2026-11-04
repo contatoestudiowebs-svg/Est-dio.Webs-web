@@ -9,7 +9,7 @@ interface SEOHeadProps {
 
 export function SEOHead({
   title = 'Estúdio Webs - Web Emissora de Ficção',
-  description = 'Plataforma oficial do Estúdio Webs: catálogo de web novelas e web séries, capítulos, episódios e autores da teledramaturgia virtual.',
+  description = 'Plataforma oficial do Estúdio Webs: catálogo de web novelas e web séries, capítulos, episódios e autores do Mundo Virtual.',
   canonicalPath = '/',
   schema
 }: SEOHeadProps) {

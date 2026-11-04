@@ -81,7 +81,7 @@ export function WriterSoloPageRenderer({
 
         {/* Bottom Metadata */}
         <div className="text-[11px] text-slate-500 pt-4 border-t border-slate-100 font-sans flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>ESTÚDIO WEBS — Teledramaturgia Virtual</span>
+          <span>ESTÚDIO WEBS — Web Emissora do Mundo Virtual</span>
           <span className="text-[#D80050] font-semibold">
             Padrão de Roteiro WriterSolo (writersolo.com)
           </span>

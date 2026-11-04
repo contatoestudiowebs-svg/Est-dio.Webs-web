@@ -37,9 +37,9 @@ export function Footer({ onNavigate }: FooterProps) {
             </div>
 
             <p className="text-xs text-slate-300 leading-relaxed font-reading max-w-md">
-              O Estúdio Webs é uma emissora digital pioneira dedicada à exibição, catalogação e difusão de
+              O Estúdio Webs é uma web emissora pioneira dedicada à exibição, catalogação e difusão de
               web novelas e web séries ficcionais. Um espaço oficial que valoriza a criatividade,
-              o roteiro independente e os autores da dramaturgia virtual.
+              o roteiro independente e os autores do Mundo Virtual.
             </p>
 
             <div className="flex items-center gap-2 pt-2">
@@ -217,11 +217,11 @@ export function Footer({ onNavigate }: FooterProps) {
         <div className="mt-12 pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
           <div>
             © {new Date().getFullYear()} <strong className="text-white">ESTÚDIO WEBS</strong>. Todos os direitos reservados.
-            Obras ficcionais de teledramaturgia virtual.
+            Obras ficcionais do Mundo Virtual.
           </div>
 
           <div className="flex items-center gap-4 text-[11px] flex-wrap">
-            <span>Produzido para a comunidade de teledramaturgia virtual</span>
+            <span>Produzido para a comunidade do Mundo Virtual e da web emissora</span>
             <span className="text-slate-600 hidden sm:inline">•</span>
             <button
               onClick={openManagerModal}

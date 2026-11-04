@@ -887,7 +887,7 @@ export function ChapterEpisodeReaderPage({
             <div className="py-6 text-center border-t border-b border-slate-200 my-8">
               <p className="text-slate-500 text-sm font-sans mb-1">[ Fim do {currentUnit?.label} ]</p>
               <p className="text-xs text-slate-400 font-sans">
-                Estúdio Webs • Teledramaturgia Virtual Oficial
+                Estúdio Webs • Web Emissora do Mundo Virtual
               </p>
             </div>
           </div>

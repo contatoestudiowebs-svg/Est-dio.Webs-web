@@ -711,7 +711,7 @@ export function exportToFountain(
 Credit: escrito por
 Author: ${author}
 Draft date: ${new Date().toLocaleDateString('pt-BR')}
-Contact: Estúdio Webs • Teledramaturgia Virtual
+Contact: Estúdio Webs • Web Emissora do Mundo Virtual
 Episode: ${episodeLabel}
 
 ===
@@ -781,7 +781,7 @@ export function generateWriterSoloPrintHtml(
           
           <div class="ws-title-footer">
             <p><strong>ESTÚDIO WEBS</strong></p>
-            <p>Teledramaturgia Virtual Oficial</p>
+            <p>Web Emissora do Mundo Virtual</p>
             <p>Formatado no Padrão WriterSolo (writersolo.com)</p>
           </div>
         </div>

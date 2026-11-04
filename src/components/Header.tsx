@@ -56,7 +56,7 @@ export function Header({ currentPath, onNavigate, onOpenSearch }: HeaderProps) {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
             <span className="text-slate-200 uppercase tracking-widest font-bold">
-              ESTÚDIO WEBS • EMISSORA DE FICÇÃO & TELEDRAMATURGIA VIRTUAL
+              ESTÚDIO WEBS • WEB EMISSORA DE FICÇÃO & MUNDO VIRTUAL
             </span>
           </div>
           <div className="hidden md:flex items-center gap-4 text-slate-400">
