@@ -44,6 +44,12 @@ export function AccessibleAudioPlayer({
   initialMode = 'full',
 }: AccessibleAudioPlayerProps) {
   const [mode, setMode] = useState<'summary' | 'full'>(initialMode);
+
+  useEffect(() => {
+    if (initialMode) {
+      setMode(initialMode);
+    }
+  }, [initialMode]);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [currentChunkIndex, setCurrentChunkIndex] = useState<number>(0);
@@ -414,17 +420,23 @@ export function AccessibleAudioPlayer({
               {audioSource === 'tts' && (
                 <div className="flex items-center bg-slate-800/90 rounded-lg p-0.5 text-xs font-bold">
                   <button
-                    onClick={() => setMode('full')}
+                    onClick={() => {
+                      stopPlayback();
+                      setMode('full');
+                    }}
                     className={`px-2.5 py-1 rounded transition flex items-center gap-1 ${
                       mode === 'full' ? 'bg-[#D80050] text-white shadow-xs' : 'text-slate-400 hover:text-white'
                     }`}
-                    title="Ouvir capítulo completo com personagens e falas"
+                    title="Ouvir texto completo: cenas, descrições, personagens e falas"
                   >
                     <BookOpen className="w-3 h-3" />
-                    <span>Completo</span>
+                    <span>Texto Completo</span>
                   </button>
                   <button
-                    onClick={() => setMode('summary')}
+                    onClick={() => {
+                      stopPlayback();
+                      setMode('summary');
+                    }}
                     className={`px-2.5 py-1 rounded transition flex items-center gap-1 ${
                       mode === 'summary' ? 'bg-[#D80050] text-white shadow-xs' : 'text-slate-400 hover:text-white'
                     }`}
@@ -490,13 +502,23 @@ export function AccessibleAudioPlayer({
           {!isMinimized && audioSource === 'tts' && (
             <div className="p-3 sm:p-4 bg-slate-900/90 border-b border-slate-800 max-h-44 sm:max-h-52 overflow-y-auto" ref={textScrollRef}>
               <div className="flex items-center justify-between mb-2 pb-1.5 border-b border-slate-800 text-[11px] text-slate-400 font-sans">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <span className="font-bold uppercase tracking-wider text-rose-400">
                     Acompanhamento Visual:
                   </span>
+                  {currentChunk?.type === 'scene-heading' && (
+                    <span className="px-2 py-0.5 rounded font-bold uppercase bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[10px]">
+                      Cena
+                    </span>
+                  )}
+                  {currentChunk?.type === 'action' && (
+                    <span className="px-2 py-0.5 rounded font-bold uppercase bg-blue-500/20 text-blue-300 border border-blue-500/30 text-[10px]">
+                      Descrição
+                    </span>
+                  )}
                   {currentChunk?.characterName && (
-                    <span className="px-2 py-0.5 rounded font-bold uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                      {currentChunk.characterName}
+                    <span className="px-2 py-0.5 rounded font-bold uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px]">
+                      Personagem: {currentChunk.characterName}
                     </span>
                   )}
                   <span className="text-slate-400 hidden sm:inline">
@@ -541,6 +563,21 @@ export function AccessibleAudioPlayer({
                         >
                           {i + 1}
                         </span>
+                        {c.type === 'scene-heading' && (
+                          <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-rose-900/50 text-rose-300 border border-rose-800/60 shrink-0">
+                            Cena
+                          </span>
+                        )}
+                        {c.type === 'action' && (
+                          <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-blue-900/50 text-blue-300 border border-blue-800/60 shrink-0">
+                            Descrição
+                          </span>
+                        )}
+                        {c.characterName && (
+                          <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-amber-900/50 text-amber-300 border border-amber-800/60 shrink-0">
+                            {c.characterName}
+                          </span>
+                        )}
                         <p
                           className={`leading-relaxed ${
                             fontSize === 'huge'

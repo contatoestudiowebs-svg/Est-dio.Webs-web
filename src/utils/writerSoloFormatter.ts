@@ -106,7 +106,7 @@ export function isSceneHeading(line: string, nextLine?: string): boolean {
 export function isTransition(line: string): boolean {
   const trimmed = line.trim();
   if (!trimmed) return false;
-  return /^(CORTE PARA|CORTA PARA|FADE IN|FADE OUT|DISSOLVE PARA|FIM DO CAPÍTULO|FIM DO EPISÓDIO|FIM DA CENA|FIM)[\.:;]?(\s.*)?$/i.test(
+  return /^(CORTE RÁPIDO PARA|CORTE RÁPIDO|CORTA RÁPIDO PARA|CORTA RÁPIDO|CORTE PARA|CORTA PARA|CORTE A SEGUIR|FADE IN|FADE OUT|DISSOLVE PARA|FIM DO CAPÍTULO|FIM DO EPISÓDIO|FIM DA CENA|FIM)[\.:;]?(\s.*)?$/i.test(
     trimmed
   );
 }

@@ -107,6 +107,7 @@ export function ChapterEpisodeReaderPage({
   useEffect(() => {
     setCurrentPdfPage(0);
     if (typeof window !== 'undefined' && window.location.search.includes('audio=true')) {
+      setAudioInitialMode('full');
       setActiveTab('audio');
       setIsAudioPlayerOpen(true);
     } else if (hasPdf) {
@@ -377,13 +378,26 @@ export function ChapterEpisodeReaderPage({
             <div className="flex items-center gap-2 flex-wrap">
               <button
                 onClick={() => {
+                  setAudioInitialMode('full');
+                  setActiveTab('audio');
+                  setIsAudioPlayerOpen(true);
+                }}
+                className="inline-flex items-center gap-1.5 text-xs text-white font-bold bg-[#D80050] hover:bg-[#be0044] px-3.5 py-1.5 rounded-full shadow-sm transition cursor-pointer"
+                title="Ouvir todo o texto: cenas, descrições, personagens e suas falas"
+              >
+                <Headphones className="w-3.5 h-3.5 text-white" />
+                <span>Ouvir Texto Completo</span>
+              </button>
+
+              <button
+                onClick={() => {
                   setAudioInitialMode('summary');
                   setIsAudioPlayerOpen(true);
                 }}
                 className="inline-flex items-center gap-1.5 text-xs text-amber-950 font-bold bg-amber-100 hover:bg-amber-200 px-3 py-1 rounded-full border border-amber-300 shadow-2xs transition cursor-pointer"
-                title="Ouvir o resumo oficial em áudio narrado"
+                title="Ouvir apenas o resumo oficial em áudio narrado"
               >
-                <Headphones className="w-3.5 h-3.5 text-amber-800" />
+                <Sparkles className="w-3.5 h-3.5 text-amber-800" />
                 <span>Ouvir Resumo</span>
               </button>
 
@@ -465,6 +479,7 @@ export function ChapterEpisodeReaderPage({
 
           <button
             onClick={() => {
+              setAudioInitialMode('full');
               setActiveTab('audio');
               setIsAudioPlayerOpen(true);
             }}
@@ -473,10 +488,10 @@ export function ChapterEpisodeReaderPage({
                 ? 'bg-amber-400 text-slate-950 shadow-sm'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
-            title="Formato de áudio para pessoas com dificuldade de leitura ou PCD / PSD"
+            title="Ouvir todo o texto: cenas, descrições, personagens e falas (Acessibilidade PCD)"
           >
             <Headphones className="w-3.5 h-3.5 text-amber-700" />
-            <span>Áudio (Acessibilidade PCD)</span>
+            <span>Ouvir Texto (Áudio)</span>
           </button>
         </div>
 
@@ -998,23 +1013,27 @@ export function ChapterEpisodeReaderPage({
               <div className="max-w-xl">
                 <h4 className="text-base font-black text-slate-900 mb-2 flex items-center gap-2">
                   <Headphones className="w-5 h-5 text-[#D80050]" />
-                  <span>Narração em Áudio Fluida em Português do Brasil</span>
+                  <span>Narração Completa: Cenas, Descrições, Personagens e Falas</span>
                 </h4>
                 <p className="text-sm text-slate-700 leading-relaxed font-sans mb-3">
-                  Desenvolvido especialmente para pessoas com deficiência visual, baixa visão, dislexia, TDAH, pessoas com dificuldades de leitura e todos que preferem acompanhar as obras através de áudio narrado com falas dos personagens.
+                  Desenvolvido para que o ouvinte tenha acesso a todo o roteiro original: cabeçalhos de cena e locais, todas as descrições de ação e ambiente, nomes dos personagens e as suas respectivas falas completas.
                 </p>
                 <div className="flex items-center gap-3 text-xs font-bold text-slate-600 flex-wrap">
                   <span className="flex items-center gap-1">
                     <Check className="w-4 h-4 text-emerald-600" />
-                    Velocidade ajustável (0.75x a 2.0x)
+                    Cenas e Locais
                   </span>
                   <span className="flex items-center gap-1">
                     <Check className="w-4 h-4 text-emerald-600" />
-                    Acompanhamento visual sincronizado
+                    Descrições de Ação e Ambiente
                   </span>
                   <span className="flex items-center gap-1">
                     <Check className="w-4 h-4 text-emerald-600" />
-                    Personagens e falas dramatizadas
+                    Personagens e Falas
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Check className="w-4 h-4 text-emerald-600" />
+                    Acompanhamento Visual Sincronizado
                   </span>
                 </div>
               </div>
@@ -1028,7 +1047,7 @@ export function ChapterEpisodeReaderPage({
                   className="px-6 py-3.5 rounded-xl bg-[#D80050] hover:bg-[#be0044] text-white font-black text-xs uppercase tracking-wider transition shadow-md shadow-[#D80050]/20 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Headphones className="w-4 h-4" />
-                  <span>Ouvir Capítulo Completo</span>
+                  <span>Ouvir Texto Completo (Cenas, Ações e Falas)</span>
                 </button>
 
                 <button
