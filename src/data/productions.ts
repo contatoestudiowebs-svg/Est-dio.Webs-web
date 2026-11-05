@@ -27,6 +27,7 @@ import { ACESSO_1_EPISODES } from './acesso1Data';
 import { SANGUE_CRUZADO_EPISODES } from './sangueCruzadoData';
 import { NADA_ALEM_DO_SEU_AMOR_EPISODES } from './nadaAlemDoSeuAmorData';
 import { SOCIO_DO_AMOR_EPISODES } from './socioDoAmorData';
+import { TOPAZIO_EPISODES } from './topazioData';
 
 function generateUnits(count: number, unitType: UnitType): ChapterEpisode[] {
   const prefix = unitType === 'capítulos' ? 'Capítulo' : 'Episódio';
@@ -411,14 +412,14 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     id: 'topazio',
     title: 'Topázio',
     slug: 'topazio',
-    author: 'Fred Reids',
+    author: 'Jheff Reis',
     category: 'Web novela',
-    unitType: 'episódios',
+    unitType: 'capítulos',
     totalUnits: 25,
     status: 'Finalizada',
     coverImage: 'https://static.wixstatic.com/media/cbfc82_bddc617935314ef48dffa8bbf62515a7~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_bddc617935314ef48dffa8bbf62515a7~mv2.png',
     synopsis: 'No início da adolescência, Beatriz (Bita) perde seu pai Robério. Anos depois descobre que a morte do seu pai foi por negligência dos patrões dele Marcelo e Regina, que o acusaram de roubar o diamante Topázio. Bita acredita na inocência do pai e promete vingança. Por ironia do destino consegue um trabalho como babá na casa da família Topázio. Lá ela luta para descobrir os segredos da família e destruir com todos. Bita conta com a ajuda de Ítalo, sobrinho de Marcelo, e Agnes, irmã de Marcelo. Os dois querem algo na empresa de Marcelo e passaram a chantagear Lucas. Bita descobre segredos e consegue a vingança que tanto planejou.',
-    episodes: generateUnits(25, 'episódios')
+    episodes: TOPAZIO_EPISODES
   },
   {
     id: 'amar-a-seu-modo',
