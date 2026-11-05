@@ -11,11 +11,8 @@ import {
   Type,
   Share2,
   Check,
-  Download,
-  Printer,
   FileText,
   AlignLeft,
-  FileDown,
   Sparkles,
   Layers,
   Eye,
@@ -34,7 +31,6 @@ import { WriterSoloPageRenderer } from '../components/WriterSoloPageRenderer';
 import { AccessibleAudioPlayer } from '../components/AccessibleAudioPlayer';
 import { AgeRatingBadgeButton } from '../components/AgeRatingBadgeButton';
 import {
-  generateWriterSoloPrintHtml,
   exportToFountain,
   parseScreenplayPage,
   parseScreenplayPagesContinuous,
@@ -119,25 +115,6 @@ export function ChapterEpisodeReaderPage({
     navigator.clipboard?.writeText(window.location.href);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  const handleDownloadOrPrintPdf = () => {
-    if (!currentUnit?.pdfPages || currentUnit.pdfPages.length === 0) return;
-    const printWindow = window.open('', '_blank');
-    if (!printWindow) {
-      window.print();
-      return;
-    }
-
-    const html = generateWriterSoloPrintHtml(
-      production.title,
-      currentUnit.label,
-      production.author,
-      currentUnit.pdfPages
-    );
-
-    printWindow.document.write(html);
-    printWindow.document.close();
   };
 
   const handleExportFountain = () => {
@@ -271,42 +248,17 @@ export function ChapterEpisodeReaderPage({
               <span className="sm:hidden">Áudio PCD</span>
             </button>
 
-            {hasPdf && (
-              <>
-                <button
-                  onClick={handleDownloadOrPrintPdf}
-                  className="px-3.5 py-2 rounded-xl bg-[#D80050] hover:bg-[#be0044] text-white font-bold text-xs flex items-center gap-1.5 transition shadow-xs cursor-pointer"
-                  title="Salvar como PDF ou Imprimir Roteiro formatado no padrão WriterSolo"
-                >
-                  <Printer className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">PDF WriterSolo</span>
-                  <span className="sm:hidden">PDF WS</span>
-                </button>
-
-                <button
-                  onClick={handleExportFountain}
-                  className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center gap-1.5 transition shadow-xs cursor-pointer"
-                  title="Exportar arquivo .fountain para abrir no writersolo.com"
-                >
-                  <FileCode2 className="w-3.5 h-3.5 text-rose-400" />
-                  <span className="hidden sm:inline">Exportar .Fountain</span>
-                  <span className="sm:hidden">Fountain</span>
-                </button>
-              </>
-            )}
-
             {currentUnit?.pdfUrl && (
               <a
                 href={currentUnit.pdfUrl}
-                download
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 transition border border-slate-200 shadow-xs"
-                title="Baixar arquivo original"
+                className="px-3.5 py-2 rounded-xl bg-[#D80050] hover:bg-[#be0044] text-white font-bold text-xs flex items-center gap-1.5 transition shadow-xs"
+                title="Abrir PDF original em nova aba"
               >
-                <FileDown className="w-3.5 h-3.5" />
+                <FileText className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">PDF Original</span>
-                <span className="sm:hidden">Original</span>
+                <span className="sm:hidden">PDF Original</span>
               </a>
             )}
 
@@ -448,7 +400,7 @@ export function ChapterEpisodeReaderPage({
               }`}
               title="Visualizar o arquivo original em PDF"
             >
-              <FileDown className="w-3.5 h-3.5 text-rose-600" />
+              <FileText className="w-3.5 h-3.5 text-[#D80050]" />
               <span>PDF Original</span>
             </button>
           )}
@@ -668,24 +620,15 @@ export function ChapterEpisodeReaderPage({
               {currentUnit.pdfUrl && (
                 <a
                   href={currentUnit.pdfUrl}
-                  download
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
-                  title="Baixar arquivo PDF original intacto"
+                  className="px-3 py-1.5 rounded-lg bg-[#D80050] hover:bg-[#be0044] text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
+                  title="Abrir arquivo PDF original em nova aba"
                 >
-                  <Download className="w-3.5 h-3.5" />
+                  <FileText className="w-3.5 h-3.5" />
                   <span>PDF Original</span>
                 </a>
               )}
-              <button
-                onClick={handleDownloadOrPrintPdf}
-                className="px-3 py-1.5 rounded-lg bg-[#D80050] hover:bg-[#eb0058] text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
-                title="Salvar como PDF no formato WriterSolo"
-              >
-                <Printer className="w-3.5 h-3.5" />
-                <span>Salvar PDF</span>
-              </button>
               <button
                 onClick={handleExportFountain}
                 className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition flex items-center gap-1.5 border border-white/20 cursor-pointer active:scale-95"
@@ -777,25 +720,18 @@ export function ChapterEpisodeReaderPage({
                 href={currentUnit.pdfUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs"
+                className="px-4 py-2 rounded-xl bg-[#D80050] hover:bg-[#be0044] text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs"
+                title="Abrir PDF original em tela cheia na nova aba"
               >
-                <Eye className="w-3.5 h-3.5 text-rose-400" />
+                <Eye className="w-3.5 h-3.5" />
                 <span>Abrir em Nova Aba</span>
-              </a>
-              <a
-                href={currentUnit.pdfUrl}
-                download
-                className="px-3.5 py-2 rounded-xl bg-[#D80050] hover:bg-[#be0044] text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs"
-              >
-                <Download className="w-3.5 h-3.5" />
-                <span>Baixar PDF</span>
               </a>
             </div>
           </div>
 
           <div className="w-full bg-slate-900 rounded-2xl overflow-hidden shadow-lg border border-slate-300">
             <iframe
-              src={`${currentUnit.pdfUrl}#toolbar=1`}
+              src={`${currentUnit.pdfUrl}#toolbar=0&navpanes=0`}
               title={`${production.title} - ${currentUnit.label}`}
               className="w-full h-[850px] border-0"
             />
@@ -972,13 +908,18 @@ export function ChapterEpisodeReaderPage({
                   <FileText className="w-4 h-4" />
                   <span>Ler Roteiro em PDF Agora</span>
                 </button>
-                <button
-                  onClick={handleDownloadOrPrintPdf}
-                  className="px-6 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 font-bold text-xs uppercase tracking-wider transition flex items-center gap-2"
-                >
-                  <Download className="w-4 h-4 text-slate-600" />
-                  <span>Baixar / Imprimir PDF</span>
-                </button>
+                {currentUnit?.pdfUrl && (
+                  <a
+                    href={currentUnit.pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-6 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 font-bold text-xs uppercase tracking-wider transition flex items-center gap-2"
+                    title="Abrir PDF original em nova aba"
+                  >
+                    <FileText className="w-4 h-4 text-[#D80050]" />
+                    <span>Abrir PDF Original</span>
+                  </a>
+                )}
               </div>
             )}
           </div>

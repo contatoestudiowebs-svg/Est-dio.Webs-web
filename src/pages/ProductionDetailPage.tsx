@@ -12,7 +12,6 @@ import {
   ImagePlus,
   Sparkles,
   FileText,
-  FileDown,
   Star,
   Trophy,
   Clock,
@@ -458,15 +457,14 @@ export function ProductionDetailPage({ slug, onNavigate }: ProductionDetailPageP
                   {ep.pdfUrl && (
                     <a
                       href={ep.pdfUrl}
-                      download
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className="inline-flex items-center gap-1 text-[10px] font-bold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-2 py-0.5 rounded border border-slate-200 transition"
-                      title="Baixar PDF original"
+                      className="inline-flex items-center gap-1 text-[10px] font-bold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-2 py-0.5 rounded border border-slate-300 transition"
+                      title="Abrir PDF original em nova aba"
                     >
-                      <FileDown className="w-3 h-3 text-[#D80050]" />
-                      <span>PDF</span>
+                      <FileText className="w-3 h-3 text-[#D80050]" />
+                      <span>PDF Original</span>
                     </a>
                   )}
                   <span className="text-slate-400 group-hover:text-[#D80050] transition">→</span>

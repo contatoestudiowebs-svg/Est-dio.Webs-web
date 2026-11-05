@@ -1,3 +1,4 @@
+import { TOPAZIO_EPISODE_01_PAGES } from './topazioEpisodes/episode01';
 import { TOPAZIO_EPISODE_02_PAGES } from './topazioEpisodes/episode02';
 import { TOPAZIO_EPISODE_03_PAGES } from './topazioEpisodes/episode03';
 import { TOPAZIO_EPISODE_04_PAGES } from './topazioEpisodes/episode04';
@@ -17,6 +18,11 @@ import { TOPAZIO_EPISODE_17_PAGES } from './topazioEpisodes/episode17';
 import { TOPAZIO_EPISODE_18_PAGES } from './topazioEpisodes/episode18';
 import { TOPAZIO_EPISODE_19_PAGES } from './topazioEpisodes/episode19';
 import { TOPAZIO_EPISODE_20_PAGES } from './topazioEpisodes/episode20';
+import { TOPAZIO_EPISODE_21_PAGES } from './topazioEpisodes/episode21';
+import { TOPAZIO_EPISODE_22_PAGES } from './topazioEpisodes/episode22';
+import { TOPAZIO_EPISODE_23_PAGES } from './topazioEpisodes/episode23';
+import { TOPAZIO_EPISODE_24_PAGES } from './topazioEpisodes/episode24';
+import { TOPAZIO_EPISODE_25_PAGES } from './topazioEpisodes/episode25';
 import { ChapterEpisode } from '../types';
 
 export interface TopazioEpisodeDef {
@@ -38,7 +44,8 @@ export const TOPAZIO_EPISODES_RAW: TopazioEpisodeDef[] = [
     title: 'Capítulo 01',
     summary:
       'Marcelo chega em casa preocupado e diz a Regina que está à beira da falência. Ele sugere vender a pedra Topázio e conta seu plano. Marcelo pede para Robério guardar o diamante. Agnes e Roberto discutem, ela entra no banheiro e sai ao ouvir barulho de tiro. Marcelo acusa Roberio de ter roubado o diamante Topázio.',
-    pages: [],
+    pages: TOPAZIO_EPISODE_01_PAGES,
+    pdfUrl: '/assets/aistudio/TOP_ZIO.CAP01.docx_8d76e4ac.pdf',
   },
   {
     number: 2,
@@ -126,7 +133,7 @@ export const TOPAZIO_EPISODES_RAW: TopazioEpisodeDef[] = [
     slug: 'capitulo-10',
     title: 'Capítulo 10',
     summary:
-      'Agnes aparece na casa de Marcelo e insiste para falar com Regina. Bita ouve conversa de Lucas, atrás da porta. Ítalo discute com Melina e acaba contando que matou Roberto. Melina põe Ítalo pra fora de sua casa. Fábio vai até a boate e acaba encontrando-se com Lucas, os dois conversam e se beijam.',
+      'Agnes aparece na casa de Marcelo e insiste para falar com Regina. Bita ouve conversa de Lucas, atrás da porta. Ítalo discute com Douglas. Lucas descobre que Bita ouviu a conversa dele. Marcelo aceita que Ítalo trabalhe na empresa. Patrícia pede a Bita para ir na viagem com ela.',
     pages: TOPAZIO_EPISODE_10_PAGES,
     pdfUrl: '/assets/aistudio/TOP_ZIO.CAP10.docx_7de60fed.pdf',
   },
@@ -166,7 +173,7 @@ export const TOPAZIO_EPISODES_RAW: TopazioEpisodeDef[] = [
     slug: 'capitulo-14',
     title: 'Capítulo 14',
     summary:
-      'Bita encontra-se com Ítalo e entrega a ele os matérias. Bita põe algo no suco de Marcelo e leva para ele. Lucas vai ao encontro de Fábio. O homem faz fotos dos dois juntos. Adriana liga para Bita e as duas conversam. Fábio conta a Lucas que vai embora. Ítalo entrega os resultados a Bita, ela olha e faz mistério.',
+      'Bita encontra-se com Ítalo e entrega a ele os matérias. Bita põe algo no suco de Marcelo e leva para ele. Lucas vai ao encontro de Fábio. O homem faz fotos dos dois juntos. Adriana liga para Bita e as duas conversam. Fábio conta a Lucas que vai embora. Ítalo entrega o material para fazer o DNA e depois procura um homem para revelar as fotos. Bita coloca o exame de DNA entre as coisas de Douglas.',
     pages: TOPAZIO_EPISODE_14_PAGES,
     pdfUrl: '/assets/aistudio/TOP_ZIO.CAP14.docx_05caf5f3.pdf',
   },
@@ -176,7 +183,7 @@ export const TOPAZIO_EPISODES_RAW: TopazioEpisodeDef[] = [
     slug: 'capitulo-15',
     title: 'Capítulo 15',
     summary:
-      'Bita põe novamente algo no suco de Marcelo. Ítalo conta a Agnes que entregou os resultados do exame a Bita. Fábio aparece no trabalho de Bita e entrega as fotos a ela. Bita marca um encontro com Ítalo. O médico examina Marcelo. Bita entrega para Ítalo as fotos de Lucas com Fábio.',
+      'Bita põe o exame na mala de Douglas. Douglas e Patrícia arrumam as malas para voltar da viagem. Ítalo pega as fotos que mandou revelar. Regina percebe Marcelo estranho e pede pra ele ir ao médico, mas ele recusa. Lurdes fala para Regina que não confia em Bita. Ítalo abre o envelope e vê as fotos de Lucas e Fábio.',
     pages: TOPAZIO_EPISODE_15_PAGES,
     pdfUrl: '/assets/aistudio/TOP_ZIO.CAP15.docx_c3a510de.pdf',
   },
@@ -230,19 +237,56 @@ export const TOPAZIO_EPISODES_RAW: TopazioEpisodeDef[] = [
     pages: TOPAZIO_EPISODE_20_PAGES,
     pdfUrl: '/assets/aistudio/TOP_ZIO.CAP20.docx_8bfe9c68.pdf',
   },
-  // Capítulos 21 a 25 da obra
-  ...Array.from({ length: 5 }, (_, idx) => {
-    const num = idx + 21;
-    const pad = String(num).padStart(2, '0');
-    return {
-      number: num,
-      label: `Capítulo ${pad}`,
-      slug: `capitulo-${pad}`,
-      title: `Capítulo ${pad}`,
-      summary: 'Capítulo em preparação editorial para publicação.',
-      pages: [],
-    };
-  }),
+  {
+    number: 21,
+    label: 'Capítulo 21',
+    slug: 'capitulo-21',
+    title: 'Capítulo 21',
+    summary:
+      'Lurdes e Bita discutem. Bita conta a Lurdes que vai se vingar da família Topázio. Melina encontra-se com Patrícia e pede desculpas, as duas discutem. Bita diz a Ítalo que vai entregar as fotos para a imprensa e ele pede pra ela não fazer. Regina fala para Marcelo sobre Adriana e ele diz não conhecer. Lurdes pede para Bita parar com a vingança e ela se recusa. Lurdes mostra uma gravação que fez de Bita falando da vingança e da ameaça.',
+    pages: TOPAZIO_EPISODE_21_PAGES,
+    pdfUrl: '/assets/aistudio/TOP_ZIO.CAP21.docx_b41edd9f.pdf',
+  },
+  {
+    number: 22,
+    label: 'Capítulo 22',
+    slug: 'capitulo-22',
+    title: 'Capítulo 22',
+    summary:
+      'Lurdes e Bita continuam discutindo. Lurdes revela a Bita que ela é filha de Marcelo. Marcelo conta a Lucas sobre Adriana. Marcelo pede para Lucas procurá-la. Ítalo liga para Bita e os dois conversam. Agnes vai até a casa de Melina.',
+    pages: TOPAZIO_EPISODE_22_PAGES,
+    pdfUrl: '/assets/aistudio/TOP_ZIO.CAP22.docx_1b9a6ec4.pdf',
+  },
+  {
+    number: 23,
+    label: 'Capítulo 23',
+    slug: 'capitulo-23',
+    title: 'Capítulo 23',
+    summary:
+      'Melina e Agnes conversam, Agnes pede o perdão de Melina. Patrícia conta a Bita que vai embora. Lucas liga para Fábio e fala sobre as fotos, Fábio finge não saber e não se importa. Adriana liga para Bita e as duas acertam em desmascarar Marcelo. Bita chega em casa e fala com Esmeralda sobre Marcelo ser seu pai.',
+    pages: TOPAZIO_EPISODE_23_PAGES,
+    pdfUrl: '/assets/aistudio/TOP_ZIO.CAP23.docx_6190a288.pdf',
+  },
+  {
+    number: 24,
+    label: 'Capítulo 24',
+    slug: 'capitulo-24',
+    title: 'Capítulo 24',
+    summary:
+      'Confira agora o penúltimo capítulo de Topázio e o encaminhar dos desfechos da história e seus personagens.',
+    pages: TOPAZIO_EPISODE_24_PAGES,
+    pdfUrl: '/assets/aistudio/TOP_ZIO.CAP24.docx_df3add03.pdf',
+  },
+  {
+    number: 25,
+    label: 'Capítulo 25',
+    slug: 'capitulo-25',
+    title: 'Capítulo 25',
+    summary:
+      'Confira agora o último capítulo de Topázio e os desfechos da história e seus personagens.',
+    pages: TOPAZIO_EPISODE_25_PAGES,
+    pdfUrl: '/assets/aistudio/TOP_ZIO.CAP25.docx_59b77855.pdf',
+  },
 ];
 
 export const TOPAZIO_EPISODES: ChapterEpisode[] = TOPAZIO_EPISODES_RAW.map((ep) => ({

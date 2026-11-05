@@ -1040,7 +1040,6 @@ export function generateWriterSoloPrintHtml(
     </div>
     <div style="display:flex; align-items:center; gap:12px;">
       <span style="font-size:12px; opacity:0.8;">Padrão Oficial de Roteiro WriterSolo (writersolo.com)</span>
-      <button class="ws-btn-print" onclick="window.print()">Salvar como PDF / Imprimir</button>
     </div>
   </div>
 
