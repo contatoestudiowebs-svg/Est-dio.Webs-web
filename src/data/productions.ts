@@ -28,6 +28,7 @@ import { SANGUE_CRUZADO_EPISODES } from './sangueCruzadoData';
 import { NADA_ALEM_DO_SEU_AMOR_EPISODES } from './nadaAlemDoSeuAmorData';
 import { SOCIO_DO_AMOR_EPISODES } from './socioDoAmorData';
 import { TOPAZIO_EPISODES } from './topazioData';
+import { AMAR_A_SEU_MODO_EPISODES } from './amarASeuModoData';
 
 function generateUnits(count: number, unitType: UnitType): ChapterEpisode[] {
   const prefix = unitType === 'capítulos' ? 'Capítulo' : 'Episódio';
@@ -432,7 +433,7 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     status: 'Finalizada',
     coverImage: 'https://static.wixstatic.com/media/cbfc82_942fc93608c44ae99f933eb023b12bc3~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_942fc93608c44ae99f933eb023b12bc3~mv2.png',
     synopsis: 'Felippo e Elói eram amigos inseparáveis quando crianças, mas essa amizade é brutalmente interrompida pela ignorância e impetuosidade de Alberto, pai de Felippo, que nunca enxergou com bons olhos o sentimento que os dois nutriam um pelo outro. Anos depois, já adultos, os caminhos dos dois rapazes se cruzam novamente e um sentimento nasce a partir da maneira como cada um deles enxerga a vida. Amar a Seu Modo narra as diferentes maneiras de amar, e o amor em seus mais diversos modos.',
-    episodes: generateUnits(31, 'capítulos')
+    episodes: AMAR_A_SEU_MODO_EPISODES
   },
   {
     id: 'ponto-fraco',
