@@ -29,6 +29,7 @@ import { NADA_ALEM_DO_SEU_AMOR_EPISODES } from './nadaAlemDoSeuAmorData';
 import { SOCIO_DO_AMOR_EPISODES } from './socioDoAmorData';
 import { TOPAZIO_EPISODES } from './topazioData';
 import { AMAR_A_SEU_MODO_EPISODES } from './amarASeuModoData';
+import { BUSCA_DE_BERCOS_EPISODES } from './buscaDeBercosData';
 
 function generateUnits(count: number, unitType: UnitType): ChapterEpisode[] {
   const prefix = unitType === 'capítulos' ? 'Capítulo' : 'Episódio';
@@ -277,7 +278,7 @@ export const PRODUCTIONS_DATA: WebProduction[] = [
     status: 'Finalizada',
     coverImage: 'https://static.wixstatic.com/media/cbfc82_67a3c93990124e7cbef2fa9b05ba8f22~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_67a3c93990124e7cbef2fa9b05ba8f22~mv2.png',
     synopsis: 'Órfã desde criança, Asha sempre sonhou em encontrar seu pai biológico. Aos vinte e dois anos, ela decide seguir essa busca, mas o que parecia um simples desejo de pertencimento a arrasta para uma realidade sombria e perigosa — onde os laços de sangue podem ser tanto uma bênção quanto uma maldição, e onde, para conseguir o que quer, talvez ela precise pagar um preço alto demais.',
-    episodes: generateUnits(35, 'capítulos')
+    episodes: BUSCA_DE_BERCOS_EPISODES
   },
   {
     id: 'homem-com-h',
