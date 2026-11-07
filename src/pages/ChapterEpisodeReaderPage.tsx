@@ -335,22 +335,10 @@ export function ChapterEpisodeReaderPage({
                   setIsAudioPlayerOpen(true);
                 }}
                 className="inline-flex items-center gap-1.5 text-xs text-white font-bold bg-[#D80050] hover:bg-[#be0044] px-3.5 py-1.5 rounded-full shadow-sm transition cursor-pointer"
-                title="Ouvir todo o texto: cenas, descrições, personagens e suas falas"
+                title="Ouvir o capítulo completo: cenas, ambientações, personagens e falas"
               >
                 <Headphones className="w-3.5 h-3.5 text-white" />
-                <span>Ouvir Texto Completo</span>
-              </button>
-
-              <button
-                onClick={() => {
-                  setAudioInitialMode('summary');
-                  setIsAudioPlayerOpen(true);
-                }}
-                className="inline-flex items-center gap-1.5 text-xs text-amber-950 font-bold bg-amber-100 hover:bg-amber-200 px-3 py-1 rounded-full border border-amber-300 shadow-2xs transition cursor-pointer"
-                title="Ouvir apenas o resumo oficial em áudio narrado"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-amber-800" />
-                <span>Ouvir Resumo</span>
+                <span>Ouvir Capítulo Completo</span>
               </button>
 
               <span className="text-xs text-slate-700 font-semibold flex items-center gap-1.5 bg-slate-100 px-2.5 py-1 rounded-full border border-slate-200 shadow-2xs">
@@ -988,18 +976,7 @@ export function ChapterEpisodeReaderPage({
                   className="px-6 py-3.5 rounded-xl bg-[#D80050] hover:bg-[#be0044] text-white font-black text-xs uppercase tracking-wider transition shadow-md shadow-[#D80050]/20 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Headphones className="w-4 h-4" />
-                  <span>Ouvir Texto Completo (Cenas, Ações e Falas)</span>
-                </button>
-
-                <button
-                  onClick={() => {
-                    setAudioInitialMode('summary');
-                    setIsAudioPlayerOpen(true);
-                  }}
-                  className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <Sparkles className="w-4 h-4 text-amber-400" />
-                  <span>Ouvir Apenas Resumo</span>
+                  <span>Ouvir Capítulo Completo (Cenas, Ações e Falas)</span>
                 </button>
               </div>
             </div>
@@ -1017,9 +994,9 @@ export function ChapterEpisodeReaderPage({
               </div>
 
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
-                <strong className="block text-slate-900 font-bold mb-1">Modos de Narração:</strong>
+                <strong className="block text-slate-900 font-bold mb-1">Leitura do Capítulo Completo:</strong>
                 <p className="text-slate-600 leading-relaxed">
-                  Você pode alternar entre ouvir o roteiro completo detalhado (com falas dos personagens) ou o resumo oficial conciso.
+                  A narração em áudio lê 100% do roteiro: ambientação, cabeçalhos de cena, descrições visuais de ações, nomes de personagens e todas as suas falas completas.
                 </p>
               </div>
 

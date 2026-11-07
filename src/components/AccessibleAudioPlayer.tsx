@@ -41,15 +41,10 @@ export function AccessibleAudioPlayer({
   chapter,
   isOpen,
   onClose,
-  initialMode = 'full',
 }: AccessibleAudioPlayerProps) {
-  const [mode, setMode] = useState<'summary' | 'full'>(initialMode);
+  // Always enforce full chapter reading: scenes, actions, characters and dialogue
+  const mode: 'full' = 'full';
 
-  useEffect(() => {
-    if (initialMode) {
-      setMode(initialMode);
-    }
-  }, [initialMode]);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [currentChunkIndex, setCurrentChunkIndex] = useState<number>(0);
@@ -75,18 +70,18 @@ export function AccessibleAudioPlayer({
   const isComponentMounted = useRef<boolean>(true);
   const textScrollRef = useRef<HTMLDivElement | null>(null);
 
-  // Generate chunks based on mode
+  // Generate chunks: always full chapter (scenes, descriptions, characters, dialogue)
   const chunks: NarrationChunk[] = useMemo(() => {
     return prepareNarrationChunks(
       production.title,
       chapter.label,
       production.author,
-      mode,
+      'full',
       chapter.summary,
       chapter.pdfPages,
       chapter.content
     );
-  }, [production.title, chapter.label, production.author, mode, chapter.summary, chapter.pdfPages, chapter.content]);
+  }, [production.title, chapter.label, production.author, chapter.summary, chapter.pdfPages, chapter.content]);
 
   // Load voices on mount
   useEffect(() => {
@@ -113,7 +108,7 @@ export function AccessibleAudioPlayer({
     };
   }, []);
 
-  // Reset state when chapter or mode changes
+  // Reset state when chapter changes
   useEffect(() => {
     stopPlayback();
     setCurrentChunkIndex(0);
@@ -122,7 +117,7 @@ export function AccessibleAudioPlayer({
     } else {
       setAudioSource('tts');
     }
-  }, [chapter.slug, mode]);
+  }, [chapter.slug]);
 
   // Auto-scroll follow along text box
   useEffect(() => {
@@ -134,16 +129,18 @@ export function AccessibleAudioPlayer({
     }
   }, [currentChunkIndex, followAlong]);
 
-  // Keep-alive workaround for browser SpeechSynthesis bug (Chrome pauses after 14s)
+  // Keep-alive workaround for browser SpeechSynthesis bug (Chrome pauses after 10-14s)
   useEffect(() => {
     let keepAliveTimer: any = null;
     if (isPlaying && !isPaused && audioSource === 'tts') {
       keepAliveTimer = setInterval(() => {
-        if (typeof window !== 'undefined' && window.speechSynthesis && window.speechSynthesis.speaking) {
-          window.speechSynthesis.pause();
-          window.speechSynthesis.resume();
+        if (typeof window !== 'undefined' && window.speechSynthesis) {
+          if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+            window.speechSynthesis.pause();
+            window.speechSynthesis.resume();
+          }
         }
-      }, 10000);
+      }, 9000);
     }
     return () => {
       if (keepAliveTimer) clearInterval(keepAliveTimer);
@@ -154,12 +151,18 @@ export function AccessibleAudioPlayer({
   const speakChunk = (index: number) => {
     if (typeof window === 'undefined' || !window.speechSynthesis) return;
 
+    // Disconnect event handlers from previous utterance to avoid cascade error triggers
+    if (currentUtteranceRef.current) {
+      currentUtteranceRef.current.onend = null;
+      currentUtteranceRef.current.onerror = null;
+    }
     window.speechSynthesis.cancel();
 
     if (index >= chunks.length) {
       setIsPlaying(false);
       setIsPaused(false);
       setCurrentChunkIndex(0);
+      (window as any).__websCurrentUtterance = null;
       return;
     }
 
@@ -192,12 +195,17 @@ export function AccessibleAudioPlayer({
         setIsPlaying(false);
         setIsPaused(false);
         setCurrentChunkIndex(0);
+        (window as any).__websCurrentUtterance = null;
       }
     };
 
-    utterance.onerror = (e) => {
+    utterance.onerror = (e: SpeechSynthesisErrorEvent) => {
+      // Do not cascade on intentional cancellation or user interruptions
+      if (e.error === 'canceled' || e.error === 'interrupted') {
+        return;
+      }
       console.warn('SpeechSynthesis error:', e);
-      if (index + 1 < chunks.length) {
+      if (index + 1 < chunks.length && isComponentMounted.current) {
         setCurrentChunkIndex(index + 1);
         speakChunk(index + 1);
       } else {
@@ -207,6 +215,9 @@ export function AccessibleAudioPlayer({
     };
 
     currentUtteranceRef.current = utterance;
+    // Retain globally to prevent browser garbage collection stoppage mid-speech
+    (window as any).__websCurrentUtterance = utterance;
+
     window.speechSynthesis.speak(utterance);
     setIsPlaying(true);
     setIsPaused(false);
@@ -221,10 +232,12 @@ export function AccessibleAudioPlayer({
     }
 
     if (isPaused && typeof window !== 'undefined' && window.speechSynthesis) {
-      window.speechSynthesis.resume();
-      setIsPlaying(true);
-      setIsPaused(false);
-      return;
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+        setIsPlaying(true);
+        setIsPaused(false);
+        return;
+      }
     }
 
     speakChunk(currentChunkIndex);
@@ -246,6 +259,11 @@ export function AccessibleAudioPlayer({
   };
 
   const stopPlayback = () => {
+    if (currentUtteranceRef.current) {
+      currentUtteranceRef.current.onend = null;
+      currentUtteranceRef.current.onerror = null;
+    }
+    (window as any).__websCurrentUtterance = null;
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       window.speechSynthesis.cancel();
     }
@@ -416,37 +434,12 @@ export function AccessibleAudioPlayer({
                 </div>
               )}
 
-              {/* Mode Toggle (Resumo vs Completo) */}
-              {audioSource === 'tts' && (
-                <div className="flex items-center bg-slate-800/90 rounded-lg p-0.5 text-xs font-bold">
-                  <button
-                    onClick={() => {
-                      stopPlayback();
-                      setMode('full');
-                    }}
-                    className={`px-2.5 py-1 rounded transition flex items-center gap-1 ${
-                      mode === 'full' ? 'bg-[#D80050] text-white shadow-xs' : 'text-slate-400 hover:text-white'
-                    }`}
-                    title="Ouvir texto completo: cenas, descrições, personagens e falas"
-                  >
-                    <BookOpen className="w-3 h-3" />
-                    <span>Texto Completo</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      stopPlayback();
-                      setMode('summary');
-                    }}
-                    className={`px-2.5 py-1 rounded transition flex items-center gap-1 ${
-                      mode === 'summary' ? 'bg-[#D80050] text-white shadow-xs' : 'text-slate-400 hover:text-white'
-                    }`}
-                    title="Ouvir apenas o resumo oficial do capítulo"
-                  >
-                    <Sparkles className="w-3 h-3" />
-                    <span>Resumo</span>
-                  </button>
-                </div>
-              )}
+              {/* Full Chapter Indicator Badge */}
+              <div className="flex items-center bg-rose-950/80 border border-[#D80050]/50 rounded-lg px-2.5 py-1 text-xs font-bold text-rose-200 gap-1.5 shadow-xs">
+                <BookOpen className="w-3.5 h-3.5 text-[#D80050]" />
+                <span className="hidden sm:inline">Capítulo Completo</span>
+                <span className="sm:hidden">Completo</span>
+              </div>
 
               {/* Font Size Selector */}
               <div className="hidden sm:flex items-center bg-slate-800 rounded-lg p-0.5 text-xs">
