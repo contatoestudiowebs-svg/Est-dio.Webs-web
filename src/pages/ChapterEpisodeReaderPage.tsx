@@ -136,6 +136,14 @@ export function ChapterEpisodeReaderPage({
     URL.revokeObjectURL(url);
   };
 
+  const isCommunity =
+    (typeof window !== 'undefined' && window.location.pathname.startsWith('/comunidade')) ||
+    ['o-grao-de-mostarda', 'coliseu', 'quao-forte-e-o-seu-coracao'].includes(production.slug);
+
+  const parentBasePath = isCommunity ? `/comunidade/${production.slug}` : `/webs/${production.slug}`;
+  const parentCatalogPath = isCommunity ? '/comunidade' : '/webs';
+  const parentCatalogLabel = isCommunity ? 'Comunidade' : 'Nossas Webs';
+
   const seoTitle = `${currentUnit?.label} | ${production.title} | Estúdio Webs`;
   const seoDescription = `Leia agora o ${currentUnit?.label} de ${production.title}, de ${production.author}, na plataforma oficial do Estúdio Webs.`;
 
@@ -144,7 +152,7 @@ export function ChapterEpisodeReaderPage({
       <SEOHead
         title={seoTitle}
         description={seoDescription}
-        canonicalPath={`/webs/${production.slug}/${currentUnit?.slug}`}
+        canonicalPath={`${parentBasePath}/${currentUnit?.slug}`}
       />
 
       {/* Top Breadcrumb & Quick Back */}
@@ -154,12 +162,12 @@ export function ChapterEpisodeReaderPage({
             Início
           </button>
           <span className="text-slate-400">/</span>
-          <button onClick={() => onNavigate('/webs')} className="hover:text-slate-900 transition">
-            Nossas Webs
+          <button onClick={() => onNavigate(parentCatalogPath)} className="hover:text-slate-900 transition font-medium">
+            {parentCatalogLabel}
           </button>
           <span className="text-slate-400">/</span>
           <button
-            onClick={() => onNavigate(`/webs/${production.slug}`)}
+            onClick={() => onNavigate(parentBasePath)}
             className="hover:text-slate-900 transition font-medium text-slate-700"
           >
             {production.title}
@@ -169,8 +177,8 @@ export function ChapterEpisodeReaderPage({
         </nav>
 
         <button
-          onClick={() => onNavigate(`/webs/${production.slug}`)}
-          className="inline-flex items-center gap-1.5 text-xs text-slate-700 hover:text-slate-900 font-bold uppercase tracking-wider bg-white hover:bg-slate-50 px-3.5 py-1.5 rounded-lg border border-slate-200 shadow-xs transition self-start sm:self-auto"
+          onClick={() => onNavigate(parentBasePath)}
+          className="inline-flex items-center gap-1.5 text-xs text-slate-700 hover:text-slate-900 font-bold uppercase tracking-wider bg-white hover:bg-slate-50 px-3.5 py-1.5 rounded-lg border border-slate-200 shadow-xs transition self-start sm:self-auto cursor-pointer"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Voltar para a Obra</span>
@@ -1023,26 +1031,26 @@ export function ChapterEpisodeReaderPage({
       {/* Bottom Navigation Buttons */}
       <div className="bg-white border border-slate-200 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
         <button
-          onClick={() => prevUnit && onNavigate(`/webs/${production.slug}/${prevUnit.slug}`)}
+          onClick={() => prevUnit && onNavigate(`${parentBasePath}/${prevUnit.slug}`)}
           disabled={!prevUnit}
-          className="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 disabled:opacity-40 disabled:cursor-not-allowed text-xs font-bold uppercase tracking-wider text-slate-800 border border-slate-200 transition flex items-center justify-center gap-2"
+          className="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 disabled:opacity-40 disabled:cursor-not-allowed text-xs font-bold uppercase tracking-wider text-slate-800 border border-slate-200 transition flex items-center justify-center gap-2 cursor-pointer"
         >
           <ChevronLeft className="w-4 h-4" />
           <span>{prevUnit ? `${unitLabelSingular} Anterior` : 'Primeiro'}</span>
         </button>
 
         <button
-          onClick={() => onNavigate(`/webs/${production.slug}`)}
-          className="w-full sm:w-auto px-6 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 text-xs font-black uppercase tracking-wider transition flex items-center justify-center gap-2"
+          onClick={() => onNavigate(parentBasePath)}
+          className="w-full sm:w-auto px-6 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 text-xs font-black uppercase tracking-wider transition flex items-center justify-center gap-2 cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Voltar para a Obra</span>
         </button>
 
         <button
-          onClick={() => nextUnit && onNavigate(`/webs/${production.slug}/${nextUnit.slug}`)}
+          onClick={() => nextUnit && onNavigate(`${parentBasePath}/${nextUnit.slug}`)}
           disabled={!nextUnit}
-          className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#D80050] hover:bg-[#be0044] disabled:opacity-40 disabled:cursor-not-allowed text-xs font-bold uppercase tracking-wider text-white transition flex items-center justify-center gap-2 shadow-md shadow-[#D80050]/20"
+          className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#D80050] hover:bg-[#be0044] disabled:opacity-40 disabled:cursor-not-allowed text-xs font-bold uppercase tracking-wider text-white transition flex items-center justify-center gap-2 shadow-md shadow-[#D80050]/20 cursor-pointer"
         >
           <span>{nextUnit ? `Próximo ${unitLabelSingular}` : 'Obra Concluída'}</span>
           <ChevronRight className="w-4 h-4" />

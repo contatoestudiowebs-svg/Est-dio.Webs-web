@@ -1,5 +1,4 @@
-import React from 'react';
-import { BookOpen, Sparkles, Clock, Film } from 'lucide-react';
+import { BookOpen, Sparkles, Clock, Film, FileText } from 'lucide-react';
 import { CommunityStory } from '../data/communityData';
 
 interface CommunityStoryCardProps {
@@ -61,8 +60,9 @@ export function CommunityStoryCard({ story, onSelectStory }: CommunityStoryCardP
             <span className="text-[#efae54] font-bold uppercase tracking-wider text-[10px] truncate max-w-[130px]">
               {story.category}
             </span>
-            <span className="font-semibold text-slate-400 text-[10px] shrink-0">
-              {story.totalEpisodes} eps
+            <span className="font-bold text-amber-200/90 text-[10px] shrink-0 flex items-center gap-1 bg-[#512f2e]/60 px-1.5 py-0.5 rounded border border-[#efae54]/30">
+              <FileText className="w-2.5 h-2.5 text-[#efae54]" />
+              <span>{story.totalEpisodes} eps em PDF</span>
             </span>
           </div>
 

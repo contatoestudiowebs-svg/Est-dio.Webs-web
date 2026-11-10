@@ -241,12 +241,13 @@ export function CommunityPage({ onNavigate }: CommunityPageProps) {
         </div>
       </section>
 
-      {/* Video Player Modal */}
+      {/* Video / Script Player Modal */}
       {selectedStoryForModal && (
         <CommunityStoryPlayerModal
           story={selectedStoryForModal}
           isOpen={isPlayerOpen}
           onClose={() => setIsPlayerOpen(false)}
+          onReadPdf={(epSlug) => onNavigate(`/comunidade/${selectedStoryForModal.slug}/${epSlug}`)}
         />
       )}
     </div>

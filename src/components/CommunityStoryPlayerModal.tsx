@@ -15,7 +15,9 @@ import {
   Clock,
   User,
   Share2,
-  Check
+  Check,
+  BookOpen,
+  FileText
 } from 'lucide-react';
 import { CommunityStory, CommunityEpisode } from '../data/communityData';
 
@@ -25,6 +27,7 @@ interface CommunityStoryPlayerModalProps {
   isOpen: boolean;
   onClose: () => void;
   onNavigateEpisode?: (epNumber: number) => void;
+  onReadPdf?: (epSlug: string) => void;
 }
 
 export function CommunityStoryPlayerModal({
@@ -32,6 +35,7 @@ export function CommunityStoryPlayerModal({
   initialEpisodeNumber = 1,
   isOpen,
   onClose,
+  onReadPdf,
 }: CommunityStoryPlayerModalProps) {
   const [currentEpNum, setCurrentEpNum] = useState(initialEpisodeNumber);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -108,9 +112,24 @@ export function CommunityStoryPlayerModal({
           </div>
 
           <div className="flex items-center gap-2">
+            {onReadPdf && (
+              <button
+                onClick={() => {
+                  onClose();
+                  onReadPdf(currentEp.slug);
+                }}
+                className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#512f2e] to-[#733e3b] hover:brightness-110 text-white border border-[#efae54] text-xs font-bold uppercase tracking-wider transition flex items-center gap-1.5 shadow-sm cursor-pointer"
+                title="Ler roteiro completo em PDF"
+              >
+                <BookOpen className="w-3.5 h-3.5 text-[#efae54]" />
+                <span className="hidden sm:inline">Ler Roteiro em PDF</span>
+                <span className="sm:hidden">PDF</span>
+              </button>
+            )}
+
             <button
               onClick={handleShare}
-              className="p-2 rounded-lg bg-[#1a1414] hover:bg-[#2a1d1d] text-slate-300 hover:text-[#efae54] border border-[#512f2e]/40 transition text-xs flex items-center gap-1.5"
+              className="p-2 rounded-lg bg-[#1a1414] hover:bg-[#2a1d1d] text-slate-300 hover:text-[#efae54] border border-[#512f2e]/40 transition text-xs flex items-center gap-1.5 cursor-pointer"
               title="Compartilhar episódio"
             >
               {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Share2 className="w-4 h-4" />}
@@ -118,7 +137,7 @@ export function CommunityStoryPlayerModal({
             </button>
             <button
               onClick={onClose}
-              className="p-2 rounded-lg bg-[#1a1414] hover:bg-[#512f2e] text-slate-300 hover:text-white border border-[#512f2e]/40 transition"
+              className="p-2 rounded-lg bg-[#1a1414] hover:bg-[#512f2e] text-slate-300 hover:text-white border border-[#512f2e]/40 transition cursor-pointer"
               title="Fechar reprodutor (Esc)"
             >
               <X className="w-4 h-4" />

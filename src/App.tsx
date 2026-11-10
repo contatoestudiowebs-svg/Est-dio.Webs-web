@@ -333,6 +333,19 @@ function AppContent() {
       return <CatalogPage onNavigate={navigate} initialCategory={catParam || undefined} />;
     }
 
+    // Community Episode Reader: /comunidade/:slug/:chapterSlug
+    const communityEpisodeMatch = pathOnly.match(/^\/comunidade\/([^/]+)\/([^/]+)$/);
+    if (communityEpisodeMatch) {
+      const [, prodSlug, chSlug] = communityEpisodeMatch;
+      return (
+        <ChapterEpisodeReaderPage
+          productionSlug={prodSlug}
+          chapterSlug={chSlug}
+          onNavigate={navigate}
+        />
+      );
+    }
+
     // Community Story Detail: /comunidade/:slug
     const communityStoryMatch = pathOnly.match(/^\/comunidade\/([^/]+)$/);
     if (communityStoryMatch) {

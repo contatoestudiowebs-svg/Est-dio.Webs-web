@@ -30,6 +30,7 @@ import { SOCIO_DO_AMOR_EPISODES } from './socioDoAmorData';
 import { TOPAZIO_EPISODES } from './topazioData';
 import { AMAR_A_SEU_MODO_EPISODES } from './amarASeuModoData';
 import { BUSCA_DE_BERCOS_EPISODES } from './buscaDeBercosData';
+import { getCommunityStoryBySlug, convertCommunityStoryToProduction } from './communityData';
 
 function generateUnits(count: number, unitType: UnitType): ChapterEpisode[] {
   const prefix = unitType === 'capítulos' ? 'Capítulo' : 'Episódio';
@@ -506,7 +507,14 @@ export function getProductionBySlug(slug: string): WebProduction | undefined {
   if (slug === 'um-novo-rei-2-temporada' || slug === 'um-novo-rei-segunda-temporada') {
     return PRODUCTIONS_DATA.find((p) => p.slug === 'um-novo-rei-2');
   }
-  return PRODUCTIONS_DATA.find((p) => p.slug === slug);
+  const match = PRODUCTIONS_DATA.find((p) => p.slug === slug);
+  if (match) return match;
+
+  const communityStory = getCommunityStoryBySlug(slug);
+  if (communityStory) {
+    return convertCommunityStoryToProduction(communityStory);
+  }
+  return undefined;
 }
 
 export function getProductionsByAuthor(authorName: string): WebProduction[] {

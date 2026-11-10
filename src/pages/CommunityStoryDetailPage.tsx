@@ -15,7 +15,10 @@ import {
   Send,
   Eye,
   Info,
-  BookOpen
+  BookOpen,
+  FileText,
+  Headphones,
+  Download
 } from 'lucide-react';
 import {
   getCommunityStoryBySlug,
@@ -218,10 +221,10 @@ export function CommunityStoryDetailPage({
                 </div>
               </div>
 
-              {/* Primary Action Button: Leia agora */}
+              {/* Primary Action Buttons: Leia agora (PDF) */}
               <div className="pt-4 flex flex-wrap items-center gap-3">
                 <button
-                  onClick={() => handleWatchEpisode(1)}
+                  onClick={() => onNavigate(`/comunidade/${story.slug}/${story.episodes[0]?.slug || 'episodio-01'}`)}
                   className="px-8 py-4 rounded-xl bg-gradient-to-r from-[#512f2e] via-[#512f2e] to-[#efae54] hover:brightness-110 text-white font-black text-sm uppercase tracking-wider transition shadow-xl shadow-[#512f2e]/60 border border-[#efae54] flex items-center gap-2.5 cursor-pointer transform hover:scale-102"
                 >
                   <BookOpen className="w-5 h-5 text-[#efae54]" />
@@ -229,13 +232,19 @@ export function CommunityStoryDetailPage({
                 </button>
 
                 <button
-                  onClick={() => {
-                    const el = document.getElementById('sinopse');
-                    el?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="px-6 py-4 rounded-xl bg-[#181111] hover:bg-[#251717] text-slate-300 hover:text-white border border-[#512f2e]/60 text-xs font-bold uppercase tracking-wider transition"
+                  onClick={() => onNavigate(`/comunidade/${story.slug}/${story.episodes[0]?.slug || 'episodio-01'}`)}
+                  className="px-6 py-4 rounded-xl bg-[#181111] hover:bg-[#251717] text-slate-200 hover:text-white border border-[#512f2e]/60 hover:border-[#efae54]/60 text-xs font-bold uppercase tracking-wider transition flex items-center gap-2 cursor-pointer shadow-md"
                 >
-                  <span>Ver Detalhes</span>
+                  <FileText className="w-4 h-4 text-[#efae54]" />
+                  <span>Roteiro em PDF (WriterSolo)</span>
+                </button>
+
+                <button
+                  onClick={() => handleWatchEpisode(1)}
+                  className="px-5 py-4 rounded-xl bg-[#140e0e] hover:bg-[#1f1515] text-slate-300 hover:text-white border border-[#512f2e]/40 text-xs font-bold uppercase tracking-wider transition flex items-center gap-2 cursor-pointer"
+                >
+                  <Film className="w-4 h-4 text-[#efae54]" />
+                  <span>Assistir Prévia</span>
                 </button>
               </div>
             </div>
@@ -272,53 +281,62 @@ export function CommunityStoryDetailPage({
           </div>
         </section>
 
-        {/* 3. EPISÓDIOS */}
+        {/* 3. EPISÓDIOS COM ROTEIRO EM PDF */}
         <section id="episodios">
-          <div className="flex items-end justify-between mb-6 pb-2.5 border-b border-[#512f2e]/40">
+          <div className="flex items-end justify-between mb-6 pb-2.5 border-b border-[#512f2e]/40 flex-wrap gap-2">
             <div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#efae54]">
-                Temporada Completa
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#efae54] flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#efae54]" />
+                Temporada Completa • Roteiros Oficiais em PDF
               </span>
               <h2 className="text-2xl sm:text-3xl font-black text-white font-brand">
                 Episódios ({story.totalEpisodes})
               </h2>
             </div>
-            <span className="text-xs text-slate-400">
-              Duração média: ~11 min por episódio
-            </span>
+            <div className="flex items-center gap-2 text-xs">
+              <span className="px-3 py-1.5 rounded-lg bg-[#181111] border border-[#512f2e]/60 text-slate-300 font-bold flex items-center gap-1.5">
+                <FileText className="w-3.5 h-3.5 text-[#efae54]" />
+                <span>Episódios Disponíveis em PDF</span>
+              </span>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {story.episodes.map((ep) => (
               <div
                 key={ep.slug}
-                onClick={() => handleWatchEpisode(ep.number)}
-                className="group relative flex flex-col sm:flex-row gap-4 p-4 rounded-2xl bg-[#120d0d] hover:bg-[#1c1313] border border-[#512f2e]/50 hover:border-[#efae54]/60 transition-all duration-300 shadow-lg hover:shadow-2xl cursor-pointer"
+                onClick={() => onNavigate(`/comunidade/${story.slug}/${ep.slug}`)}
+                className="group relative flex flex-col sm:flex-row gap-4 p-4 rounded-2xl bg-[#120d0d] hover:bg-[#1a1212] border border-[#512f2e]/50 hover:border-[#efae54]/70 transition-all duration-300 shadow-lg hover:shadow-2xl cursor-pointer"
               >
-                {/* Thumbnail */}
-                <div className="relative aspect-video sm:w-48 sm:h-28 rounded-xl overflow-hidden bg-black shrink-0">
+                {/* Thumbnail with PDF badge */}
+                <div className="relative aspect-video sm:w-52 sm:h-32 rounded-xl overflow-hidden bg-black shrink-0">
                   <img
                     src={ep.thumbnail}
                     alt={ep.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 filter brightness-90"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors flex items-center justify-center">
-                    <div className="w-10 h-10 rounded-full bg-[#512f2e]/90 text-[#efae54] border border-[#efae54] flex items-center justify-center transform scale-90 group-hover:scale-110 transition-transform">
-                      <Play className="w-4 h-4 fill-current ml-0.5" />
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                    <div className="px-3 py-1.5 rounded-lg bg-[#512f2e]/90 text-[#efae54] border border-[#efae54] flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider transform scale-90 group-hover:scale-105 transition-transform shadow-lg">
+                      <FileText className="w-3.5 h-3.5 text-[#efae54]" />
+                      <span>Ver Roteiro</span>
                     </div>
                   </div>
-                  <span className="absolute bottom-1.5 right-1.5 text-[10px] font-mono px-1.5 py-0.5 rounded bg-black/80 text-slate-300">
-                    {ep.duration}
+                  <span className="absolute bottom-1.5 right-1.5 text-[10px] font-mono px-1.5 py-0.5 rounded bg-black/85 text-slate-300 border border-white/10">
+                    {ep.pdfPages?.length || 4} Páginas
                   </span>
                 </div>
 
                 {/* Content */}
                 <div className="flex flex-col justify-between flex-1">
                   <div>
-                    <div className="flex items-center gap-2 mb-1">
+                    <div className="flex items-center justify-between gap-2 mb-1">
                       <span className="text-xs font-black text-[#efae54]">
                         EP. {String(ep.number).padStart(2, '0')}
+                      </span>
+                      <span className="text-[10px] font-bold text-amber-200 bg-[#512f2e]/60 border border-[#efae54]/30 px-2 py-0.5 rounded-md flex items-center gap-1">
+                        <FileText className="w-2.5 h-2.5 text-[#efae54]" />
+                        <span>Roteiro em PDF</span>
                       </span>
                     </div>
 
@@ -326,26 +344,65 @@ export function CommunityStoryDetailPage({
                       {ep.title}
                     </h4>
 
-                    <p className="text-xs text-slate-400 line-clamp-2 mt-1 leading-relaxed font-reading">
+                    <div className="flex items-center gap-1.5 text-[11px] text-slate-400 my-1.5">
+                      <Clock className="w-3 h-3 text-[#efae54] shrink-0" />
+                      <span>Tempo de leitura: <strong>~{Math.ceil((ep.pdfPages?.length || 4) * 2.2)} min</strong></span>
+                    </div>
+
+                    <p className="text-xs text-slate-300 line-clamp-2 leading-relaxed font-reading">
                       {ep.summary}
                     </p>
                   </div>
 
-                  <div className="mt-3 flex items-center justify-between pt-2 border-t border-[#512f2e]/30">
-                    <span className="text-[11px] text-slate-500 font-medium">
-                      Disponível em 4K
-                    </span>
-
+                  {/* Actions Bar */}
+                  <div className="mt-3 flex items-center justify-between pt-2 border-t border-[#512f2e]/40 flex-wrap gap-2">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleWatchEpisode(ep.number);
+                        onNavigate(`/comunidade/${story.slug}/${ep.slug}`);
                       }}
-                      className="px-3.5 py-1.5 rounded-lg bg-[#512f2e] hover:bg-[#efae54] hover:text-black text-[#efae54] text-xs font-bold uppercase tracking-wider transition border border-[#efae54]/40 flex items-center gap-1.5"
+                      className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#512f2e] to-[#6e3e3c] hover:brightness-110 text-white text-xs font-black uppercase tracking-wider transition border border-[#efae54]/60 flex items-center gap-1.5 shadow-sm cursor-pointer"
                     >
-                      <BookOpen className="w-3 h-3" />
-                      <span>Ler</span>
+                      <BookOpen className="w-3.5 h-3.5 text-[#efae54]" />
+                      <span>Ler Roteiro em PDF</span>
                     </button>
+
+                    <div className="flex items-center gap-1.5">
+                      {ep.pdfUrl && (
+                        <a
+                          href={ep.pdfUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="p-2 rounded-lg bg-[#1c1313] hover:bg-[#2c1d1d] text-slate-300 hover:text-white border border-[#512f2e]/40 text-xs transition"
+                          title="Abrir arquivo PDF original em nova aba"
+                        >
+                          <FileText className="w-3.5 h-3.5 text-[#efae54]" />
+                        </a>
+                      )}
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onNavigate(`/comunidade/${story.slug}/${ep.slug}?audio=true`);
+                        }}
+                        className="p-2 rounded-lg bg-[#1c1313] hover:bg-[#2c1d1d] text-slate-300 hover:text-white border border-[#512f2e]/40 text-xs transition cursor-pointer"
+                        title="Ouvir leitura acessível deste episódio em áudio (PCD)"
+                      >
+                        <Headphones className="w-3.5 h-3.5 text-amber-400" />
+                      </button>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleWatchEpisode(ep.number);
+                        }}
+                        className="p-2 rounded-lg bg-[#1c1313] hover:bg-[#2c1d1d] text-slate-300 hover:text-white border border-[#512f2e]/40 text-xs transition cursor-pointer"
+                        title="Ver prévia cinematográfica"
+                      >
+                        <Play className="w-3.5 h-3.5 text-[#efae54]" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -523,12 +580,13 @@ export function CommunityStoryDetailPage({
         )}
       </div>
 
-      {/* Video Player Modal */}
+      {/* Video / Script Player Modal */}
       <CommunityStoryPlayerModal
         story={story}
         initialEpisodeNumber={selectedEpNumber}
         isOpen={isPlayerOpen}
         onClose={() => setIsPlayerOpen(false)}
+        onReadPdf={(epSlug) => onNavigate(`/comunidade/${story.slug}/${epSlug}`)}
       />
     </div>
   );
