@@ -1,6 +1,19 @@
 import React, { useEffect } from 'react';
 import { Trophy, Star, X, Award, BookOpen, User, Sparkles, ChevronRight } from 'lucide-react';
 import { ALL_OFFICIAL_AWARDS_LIST, AUTHOR_AWARDS, ProductionAwardInfo } from '../data/awardsData';
+import { useProductionCover } from '../utils/imageManager';
+
+function AwardPosterImage({ slug, fallbackUrl, title }: { slug: string; fallbackUrl: string; title: string }) {
+  const resolvedCover = useProductionCover(slug, fallbackUrl);
+  return (
+    <img
+      src={resolvedCover}
+      alt={title}
+      className="w-full h-full object-contain p-1"
+      referrerPolicy="no-referrer"
+    />
+  );
+}
 
 interface AwardedWebsModalProps {
   isOpen: boolean;
@@ -132,11 +145,10 @@ export function AwardedWebsModal({
                 <div className="flex flex-col sm:flex-row gap-4 items-start">
                   {/* Thumbnail Cover */}
                   <div className="w-20 sm:w-24 aspect-[2/3] rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0 shadow-xs relative">
-                    <img
-                      src={prod.coverImage}
-                      alt={prod.title}
-                      className="w-full h-full object-contain p-1"
-                      referrerPolicy="no-referrer"
+                    <AwardPosterImage
+                      slug={prod.slug}
+                      fallbackUrl={prod.coverImage}
+                      title={prod.title}
                     />
                     <span className="absolute top-1 right-1 p-1 rounded-full bg-amber-400 text-slate-950 shadow-xs">
                       <Star className="w-3 h-3 fill-slate-950" />

@@ -28,8 +28,8 @@ export const OFFICIAL_AWARDS: Record<string, ProductionAwardInfo> = {
     title: 'Amar a Seu Modo',
     author: 'Everton B Dutra',
     category: 'Web novela',
-    totalUnits: 10,
-    coverImage: 'https://static.wixstatic.com/media/cbfc82_52d8ad982b5f4be8a8165b4c405663b6~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_52d8ad982b5f4be8a8165b4c405663b6~mv2.png',
+    totalUnits: 31,
+    coverImage: 'https://static.wixstatic.com/media/cbfc82_942fc93608c44ae99f933eb023b12bc3~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_942fc93608c44ae99f933eb023b12bc3~mv2.png',
     festivalOrAward: 'TFA 2023 (The Felipa Awards)',
     awardText: 'Vencedor de Melhor Autor (Everton B. Dutra) e Melhor Obra Inspiradora no TFA 2023.',
     type: 'production'
@@ -39,8 +39,8 @@ export const OFFICIAL_AWARDS: Record<string, ProductionAwardInfo> = {
     title: 'Busca de Berços',
     author: 'Guilhardo Almeida',
     category: 'Web novela',
-    totalUnits: 25,
-    coverImage: 'https://static.wixstatic.com/media/cbfc82_d74116c9dc8648e89793081e7d23d8e5~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_d74116c9dc8648e89793081e7d23d8e5~mv2.png',
+    totalUnits: 35,
+    coverImage: 'https://static.wixstatic.com/media/cbfc82_67a3c93990124e7cbef2fa9b05ba8f22~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_67a3c93990124e7cbef2fa9b05ba8f22~mv2.png',
     festivalOrAward: 'Festival Carta Aberta',
     awardText: 'Vencedora de Melhor Coadjuvante Feminino e Melhor Argumento no Festival Carta Aberta.',
     type: 'production'
@@ -51,7 +51,7 @@ export const OFFICIAL_AWARDS: Record<string, ProductionAwardInfo> = {
     author: 'Fred Reids',
     category: 'Web série',
     totalUnits: 6,
-    coverImage: 'https://static.wixstatic.com/media/cbfc82_017b2b0728c347919865f3775b8bebf6~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_017b2b0728c347919865f3775b8bebf6~mv2.png',
+    coverImage: 'https://static.wixstatic.com/media/cbfc82_eeb860d4f26d46438edd141a87f0b1e8~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_eeb860d4f26d46438edd141a87f0b1e8~mv2.png',
     festivalOrAward: 'Festival Carta Aberta',
     awardText: 'Vencedora de Melhor Estética no Festival Carta Aberta.',
     type: 'production'
@@ -61,8 +61,8 @@ export const OFFICIAL_AWARDS: Record<string, ProductionAwardInfo> = {
     title: 'Eu Sou Piaf',
     author: 'Fred Reids',
     category: 'Web novela',
-    totalUnits: 8,
-    coverImage: 'https://static.wixstatic.com/media/cbfc82_89a008c26bb547bf841ebaf6bf6e3305~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_89a008c26bb547bf841ebaf6bf6e3305~mv2.png',
+    totalUnits: 16,
+    coverImage: 'https://static.wixstatic.com/media/cbfc82_8abfe7f8146048788a481427bfb9c63b~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_8abfe7f8146048788a481427bfb9c63b~mv2.png',
     festivalOrAward: 'Festival Carta Aberta',
     awardText: 'Vencedora de Melhor Série ou Minissérie no Festival Carta Aberta.',
     type: 'production'
@@ -73,7 +73,7 @@ export const OFFICIAL_AWARDS: Record<string, ProductionAwardInfo> = {
     author: 'Everton B Dutra',
     category: 'Web novela',
     totalUnits: 21,
-    coverImage: 'https://static.wixstatic.com/media/cbfc82_1d8d9b15852542a9b3d0cf3f4165561a~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_1d8d9b15852542a9b3d0cf3f4165561a~mv2.png',
+    coverImage: 'https://static.wixstatic.com/media/cbfc82_1781c057924d42a4ac6ddabec34f3ee1~mv2.png/v1/fill/w_362,h_536,al_c,q_85,enc_avif,quality_auto/cbfc82_1781c057924d42a4ac6ddabec34f3ee1~mv2.png',
     festivalOrAward: 'Global Choice Awards',
     awardText: 'Vencedora no Global Choice Awards, premiação internacional nas categorias: Best Foreign Language Soap Opera (Melhor Telenovela em Língua Estrangeira), Best Soap Opera (Melhor Telenovela), Best Soap Opera Author (Melhor Autor de Telenovela), Best Male Protagonist (Melhor Protagonista Masculino) e Best Male Supporting Role (Melhor Ator Coadjuvante).',
     detailedCategories: [

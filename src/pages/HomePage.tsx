@@ -817,41 +817,45 @@ export function HomePage({ onNavigate }: HomePageProps) {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {ALL_OFFICIAL_AWARDS_LIST.slice(0, 3).map((award) => (
-            <div
-              key={award.slug}
-              onClick={() => onNavigate(`/webs/${award.slug}`)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  onNavigate(`/webs/${award.slug}`);
-                }
-              }}
-              className="group bg-white hover:bg-slate-50 rounded-2xl border border-slate-200/90 hover:border-slate-300 p-5 flex items-start gap-4 transition-all duration-150 cursor-pointer shadow-2xs hover:shadow-md"
-            >
-              <img
-                src={award.coverImage}
-                alt={award.title}
-                referrerPolicy="no-referrer"
-                loading="lazy"
-                className="w-16 h-24 rounded-xl object-cover shrink-0 border border-slate-200"
-              />
-              <div className="min-w-0">
-                <div className="text-[10px] font-extrabold uppercase tracking-widest text-[#D80050]">
-                  {award.festivalOrAward}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {ALL_OFFICIAL_AWARDS_LIST.map((award) => {
+            const matchedProd = PRODUCTIONS_DATA.find((p) => p.slug === award.slug);
+            const originalCover = matchedProd?.coverImage || award.coverImage;
+            return (
+              <div
+                key={award.slug}
+                onClick={() => onNavigate(`/webs/${award.slug}`)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onNavigate(`/webs/${award.slug}`);
+                  }
+                }}
+                className="group bg-white hover:bg-slate-50 rounded-2xl border border-slate-200/90 hover:border-slate-300 p-5 flex items-start gap-4 transition-all duration-150 cursor-pointer shadow-2xs hover:shadow-md"
+              >
+                <img
+                  src={originalCover}
+                  alt={award.title}
+                  referrerPolicy="no-referrer"
+                  loading="lazy"
+                  className="w-16 h-24 rounded-xl object-cover shrink-0 border border-slate-200"
+                />
+                <div className="min-w-0">
+                  <div className="text-[10px] font-extrabold uppercase tracking-widest text-[#D80050]">
+                    {award.festivalOrAward}
+                  </div>
+                  <h3 className="mt-1 text-base font-extrabold text-slate-950 font-brand group-hover:text-[#D80050] transition-colors line-clamp-1">
+                    {award.title}
+                  </h3>
+                  <p className="mt-1 text-xs text-slate-600 font-reading line-clamp-3 leading-relaxed">
+                    {award.awardText}
+                  </p>
                 </div>
-                <h3 className="mt-1 text-base font-extrabold text-slate-950 font-brand group-hover:text-[#D80050] transition-colors line-clamp-1">
-                  {award.title}
-                </h3>
-                <p className="mt-1 text-xs text-slate-600 font-reading line-clamp-3 leading-relaxed">
-                  {award.awardText}
-                </p>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
