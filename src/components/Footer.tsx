@@ -11,7 +11,7 @@ interface FooterProps {
 export function Footer({ onNavigate }: FooterProps) {
   const { isManager, openManagerModal } = useManager();
   return (
-    <footer className="w-full bg-[#0f172a] border-t border-slate-800 text-slate-300 mt-20">
+    <footer className="w-full bg-[#0f172a] border-t border-slate-800 text-slate-300">
       {/* Broadcaster brand accent banner */}
       <div className="h-1 w-full bg-gradient-to-r from-[#D80050] via-rose-500 to-indigo-600" />
 
@@ -42,10 +42,8 @@ export function Footer({ onNavigate }: FooterProps) {
               o roteiro independente e os autores do Mundo Virtual.
             </p>
 
-            <div className="flex items-center gap-2 pt-2">
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-rose-950/80 border border-rose-800/60 text-[11px] font-semibold text-rose-300">
-                31 Produções Oficiais
-              </span>
+            <div className="pt-1 text-[11px] font-bold uppercase tracking-widest text-rose-400">
+              31 Produções Oficiais · Mundo Virtual
             </div>
           </div>
 

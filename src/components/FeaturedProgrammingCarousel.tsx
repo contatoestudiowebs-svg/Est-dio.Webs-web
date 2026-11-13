@@ -155,7 +155,7 @@ function ProductionCardItem({
             {/* Category / Premiere Badge */}
             <div className="mb-1.5 flex items-center justify-center gap-1.5 flex-wrap">
               {isAmoresFeridos ? (
-                <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] sm:text-[11px] font-black uppercase tracking-wider bg-[#D80050] text-white shadow-md animate-pulse">
+                <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] sm:text-[11px] font-black uppercase tracking-wider bg-[#D80050] text-white shadow-md">
                   <Calendar className="w-3 h-3" />
                   <span>Estreia 11 de janeiro</span>
                 </span>
@@ -311,14 +311,10 @@ export function FeaturedProgrammingCarousel({ onNavigate }: FeaturedProgrammingC
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Top Header Bar */}
         <div className="flex items-center justify-between mb-4 sm:mb-6">
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-2.5 w-2.5 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D80050] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#D80050]"></span>
-            </span>
-            <h2 className="text-xs sm:text-sm uppercase tracking-widest font-black text-slate-900 flex items-center gap-2 font-brand">
-              <Sparkles className="w-3.5 h-3.5 text-[#D80050]" />
-              <span>Destaque da Programação</span>
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-[#D80050]" />
+            <h2 className="text-xs sm:text-sm uppercase tracking-widest font-black text-slate-900 font-brand">
+              Destaque da Programação
             </h2>
           </div>
 
