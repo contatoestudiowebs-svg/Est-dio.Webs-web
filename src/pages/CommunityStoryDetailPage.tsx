@@ -334,10 +334,17 @@ export function CommunityStoryDetailPage({
                       <span className="text-xs font-black text-[#efae54]">
                         EP. {String(ep.number).padStart(2, '0')}
                       </span>
-                      <span className="text-[10px] font-bold text-amber-200 bg-[#512f2e]/60 border border-[#efae54]/30 px-2 py-0.5 rounded-md flex items-center gap-1">
-                        <FileText className="w-2.5 h-2.5 text-[#efae54]" />
-                        <span>Roteiro em PDF</span>
-                      </span>
+                      {(ep.pdfPages && ep.pdfPages.length > 0) || ep.pdfUrl ? (
+                        <span className="text-[10px] font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-500/40 px-2 py-0.5 rounded-md flex items-center gap-1">
+                          <Check className="w-2.5 h-2.5 text-emerald-400" />
+                          <span>Episódio disponível</span>
+                        </span>
+                      ) : (
+                        <span className="text-[10px] font-bold text-amber-200 bg-[#512f2e]/60 border border-[#efae54]/30 px-2 py-0.5 rounded-md flex items-center gap-1">
+                          <Clock className="w-2.5 h-2.5 text-[#efae54]" />
+                          <span>Episódio em breve</span>
+                        </span>
+                      )}
                     </div>
 
                     <h4 className="text-base font-bold text-white group-hover:text-[#efae54] transition line-clamp-1 font-brand">
